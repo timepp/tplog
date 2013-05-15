@@ -10,6 +10,7 @@
 #include <tplog_impl.h>
 
 #define TPUT_MODNAME Main
+#define LOGTEST_REG_PATH L"SOFTWARE\\tplog\\test"
 
 class CTestOutputDeviceBase : public ILogOutputDevice
 {
@@ -530,7 +531,7 @@ TPUT_DEFINE_BLOCK(L"#Pipe.Interact", L"")
 {
 	ILogController* ctrl = GetLogController();
 
-	ctrl->Init(L"logtest");
+	ctrl->Init(LOGTEST_REG_PATH);
 	ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:1");
 	ctrl->AddOutputDevice(L"file", LODT_FILE, L"enalbe:0");
 
@@ -546,7 +547,7 @@ TPUT_DEFINE_BLOCK(L"#Pipe.Interact", L"")
 TPUT_DEFINE_BLOCK(L"#Performance", L"")
 {
 	ILogController* ctrl = GetLogController();
-	ctrl->Init(L"logtest");
+	ctrl->Init(LOGTEST_REG_PATH);
 	ctrl->AddOutputDevice(L"sm", LODT_SHARED_MEMORY, L"enable:1");
 
 	for (size_t i = 0; i < 1000000; i++)
@@ -559,7 +560,7 @@ TPUT_DEFINE_BLOCK(L"LOD.DebugOutput", L"")
 {
 	ILogController* ctrl = GetLogController();
 	ctrl->UnInit();
-	ctrl->Init(L"logtest");
+	ctrl->Init(LOGTEST_REG_PATH);
 	ctrl->AddOutputDevice(L"dbgout", LODT_DEBUGOUTPUT, L"enable:true");
 
 	Log(LL_EVENT, TAG_DEFAULT, L"%s", L"Hello, Debug Output.");
@@ -569,7 +570,7 @@ TPUT_DEFINE_BLOCK(L"LOD.Pipe", L"")
 {
 	ILogController* ctrl = GetLogController();
 	ctrl->UnInit();
-	ctrl->Init(L"logtest");
+	ctrl->Init(LOGTEST_REG_PATH);
 	ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:true");
 
 	Log(LL_EVENT, TAG_DEFAULT, L"%s", L"Hello, Pipe.");
@@ -579,7 +580,7 @@ TPUT_DEFINE_BLOCK(L"LOD.File", L"")
 {
 	ILogController* ctrl = GetLogController();
 	ctrl->UnInit();
-	ctrl->Init(L"logtest");
+	ctrl->Init(LOGTEST_REG_PATH);
 	ctrl->AddOutputDevice(L"file", LODT_FILE, L"enable:true path:'d:\\${T}.log'");
 
 	for (size_t i = 0; i < 10; i++)

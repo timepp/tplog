@@ -223,7 +223,7 @@ bool CConfig::Load(LPCWSTR pszFileName)
 	pDoc->selectSingleNode(CComBSTR(L"/config"), &pNode);
 	if (pNode)
 	{
-		m_cfg.product_name = helper::XML_GetAttributeAsString(pNode, L"product_name", L"");
+		m_cfg.log_config_path = helper::XML_GetAttributeAsString(pNode, L"log_config_path", L"");
 	}
 
 	SetEmptyValueDefaults();
@@ -307,7 +307,7 @@ bool CConfig::Save()
 	pRootNode->appendChild(helper::XML_CreateNode(pDoc, NODE_ELEMENT, L"search"), &pSearchNode);
 	helper::XML_AddAttribute(pDoc, pSearchNode, L"history", m_cfg.search.history.c_str());
 
-	helper::XML_AddAttribute(pDoc, pRootNode, L"product_name", m_cfg.product_name.c_str());
+	helper::XML_AddAttribute(pDoc, pRootNode, L"log_config_path", m_cfg.log_config_path.c_str());
 
 	pDoc->save(CComVariant(m_strConfigFilePath));
 

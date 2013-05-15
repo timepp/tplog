@@ -37,9 +37,9 @@ struct helper
 	static CStringW GetModuleFilePath();
 	static CStringW GetModuleDir();
 	static CStringW GetDir(const CStringW& strPath);
+	static CStringW GetSpecialDir(int csidl, LPCWSTR subdir);
 	static CStringW GetFileName(LPCWSTR pszFilePath);
 	static CStringW GetErrorDesc(DWORD dwErr);
-	static CStringW GetProductName();
 	
 	static CStringW XML_GetAttributeAsString(IXMLDOMNode* pNode, LPCWSTR pszAttr, LPCWSTR pszDefault);
 	static COLORREF XML_GetAttributeAsColor(IXMLDOMNode* pNode, LPCWSTR pszAttr, COLORREF crDefault);
@@ -65,8 +65,6 @@ struct helper
 	static HRESULT WriteFileIfNotExist(LPCWSTR path, LPCWSTR rcname, LPCWSTR rctype);
 	static CStringW GetTextFileContent(LPCWSTR path);
 	static HRESULT SaveTextContentToFile(LPCWSTR path, LPCWSTR content); // utf-8 bom
-
-	static CStringW DecryptXLogFile(LPCWSTR pszFileName);
 
 	static void GUIReportError(LPCWSTR pszError);
 	static void GUIReportError(LPCWSTR pszError, HRESULT hr);

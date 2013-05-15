@@ -352,96 +352,6 @@ void helper::GUIReportError(LPCWSTR pszError, HRESULT hr)
 	::MessageBoxW(NULL, strInfo, L"日志查看器", MB_OK|MB_ICONERROR);
 }
 
-CStringW helper::DecryptXLogFile(LPCWSTR pszFileName)
-{
-	class Buffer
-	{
-	public:
-		Buffer(size_t init_size) : m_size(0), m_buf(0)
-		{
-			EnsureSize(init_size);
-		}
-		void EnsureSize(size_t sz)
-		{
-			if (sz > m_size)
-			{
-				m_size = sz * 2;
-				delete[] m_buf;
-				m_buf = new char[m_size];
-			}
-		}
-		operator char*() { return m_buf; }
-	private:
-		char* m_buf;
-		size_t m_size;
-	};
-
-	WCHAR szPath[MAX_PATH];
-	CStringW strDecryptedFileName;
-	::GetTempPathW(_countof(szPath), szPath);
-	strDecryptedFileName.Format(L"%s\\xlogreader_decrypt_temp", szPath);
-
-	// 就当完成了吧
-	HANDLE hFile1 = ::CreateFile(pszFileName, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_SEQUENTIAL_SCAN, NULL);
-	if (hFile1 == INVALID_HANDLE_VALUE)
-	{
-		GUIReportError(L"打开文件失败");
-		return L"";
-	}
-	
-	HANDLE hFile2 = ::CreateFile(strDecryptedFileName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile2 == INVALID_HANDLE_VALUE)
-	{
-		::CloseHandle(hFile1);
-		GUIReportError(L"创建临时文件失败");
-		return L"";
-	}
-
-	DWORD dwSrcSize = ::GetFileSize(hFile1, NULL);
-
-	const LPCSTR pszLogKey = "baidu_log_duan_";
-	bool bHeader = true;
-	Buffer buf(65536);
-	for (;;)
-	{
-		DWORD bytesRead = 0;
-		BOOL ret = ::ReadFile(hFile1, buf, 4, &bytesRead, NULL);
-		if (!ret || bytesRead != 4) break;
-		if (bHeader)
-		{
-			if (static_cast<unsigned char>(buf[0]) == 0xFF && static_cast<unsigned char>(buf[1]) == 0xFE)
-			{
-				// 这应该是个明文，直接返回原文件吧
-				::CloseHandle(hFile2);
-				::CloseHandle(hFile1);
-				return pszFileName;
-			}
-			bHeader = false;
-		}
-
-		UINT32 len = *(UINT32*)(char*)buf;
-		if (len >= dwSrcSize)
-		{
-			break;
-		}
-
-		buf.EnsureSize(len);
-		ret = ::ReadFile(hFile1, buf, len, &bytesRead, NULL);
-		if (!ret || bytesRead != len) break;
-		for (UINT32 i = 0; i < len; i++)
-		{
-			buf[i] ^= pszLogKey[i & 7];
-		}
-
-		DWORD writeBytes;
-		::WriteFile(hFile2, buf, len, &writeBytes, NULL);
-	}
-
-	::CloseHandle(hFile2);
-	::CloseHandle(hFile1);
-	return strDecryptedFileName;
-}
-
 void helper::RunOffline(LPCWSTR pszFilePath)
 {
 	CStringW strPath;
@@ -660,7 +570,6 @@ CStringW helper::ExpandPath(LPCWSTR pszPath)
 				CStringW varname(q+1, r-q-1);
 				if (varname == L"PRODUCT")
 				{
-					ret += GetProductName();
 				}
 			}
 
@@ -671,11 +580,6 @@ CStringW helper::ExpandPath(LPCWSTR pszPath)
 	WCHAR dst[MAX_PATH];
 	::ExpandEnvironmentStringsW(ret, dst, _countof(dst));
 	return dst;
-}
-
-CStringW helper::GetProductName()
-{
-	return CConfig::Instance()->GetConfig().product_name.c_str();
 }
 
 CStringW helper::GetLogLevelDescription(UINT level)
@@ -767,18 +671,24 @@ bool helper::FileExists(LPCWSTR path)
 	return _waccess_s(path, 0) == 0;
 }
 
-CStringW helper::GetConfigDir()
+static CStringW GetSpecialDir(int csidl, LPCWSTR subdir)
 {
 	CStringW strPath;
 
 	WCHAR szPath[MAX_PATH];
-	SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
+	SHGetFolderPathW(NULL, csidl, NULL, SHGFP_TYPE_CURRENT, szPath);
 	strPath = szPath;
 
-	strPath += L"\\Baidu\\tplogview";
+	strPath += L"\\";
+	strPath += subdir;
 	::SHCreateDirectory(NULL, strPath);
 
 	return strPath;
+}
+
+CStringW helper::GetConfigDir()
+{
+	return GetModuleDir();
 }
 
 bool helper::DownloadUrlToFile(LPCWSTR url, LPCWSTR path)

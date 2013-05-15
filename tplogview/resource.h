@@ -42,7 +42,6 @@
 #define IDD_FILTER_EDIT_PROCESSNAME     138
 #define IDD_FILTER_EDIT_PID             139
 #define IDD_FILTER_EDIT_TID             140
-#define IDD_SPECIAL_POS                 143
 #define IDD_HILIGHTER_EDIT              144
 #define IDI_STAR                        146
 #define IDD_LOG_SOURCE                  147
@@ -123,7 +122,6 @@
 #define IDC_EDIT_VERSION                1030
 #define IDC_RADIO3                      1031
 #define IDC_STATIC_OFFLINE_TIP          1031
-#define IDC_EDIT1                       1032
 #define IDC_EDIT2                       1033
 #define IDC_COMBO_LOGCLASS              1034
 #define IDC_BUTTON_IMPORT               1034
@@ -147,14 +145,12 @@
 #define IDC_EDIT_LOG_PROCESSNAME        1050
 #define IDC_BTN_SELECT_PROCESS_ID       1051
 #define IDC_BUTTON1                     1051
-#define IDC_BUTTON_REF1                 1051
 #define IDC_BUTTON_ADD_HL               1051
 #define IDC_BUTTON_BG                   1051
 #define IDC_QF_RESETFILTER              1051
 #define IDC_BUTTON_SHOW_VERSIONINFO     1051
 #define IDC_BUTTON_APPLY                1051
 #define IDC_COMBO_HILIGHTER             1052
-#define IDC_BUTTON_REF2                 1052
 #define IDC_BUTTON2                     1052
 #define IDC_BUTTON_MODIFY_HL            1052
 #define IDC_BUTTON_FG                   1052
@@ -171,12 +167,9 @@
 #define IDC_BUTTON_DEL                  1057
 #define IDC_STATIC_COLOR_TEXT           1058
 #define IDC_STATIC_COLOR_BK             1059
-#define IDC_STATIC_REF1                 1060
-#define IDC_STATIC_REF2                 1061
-#define IDC_STATIC_REF3                 1062
 #define IDC_STATIC_VERSION              1063
 #define IDC_STATIC_EXPIRE_TIME          1064
-#define IDC_STATIC_PRODUCT_NAME         1064
+#define IDC_STATIC_LOG_CONFIG_PATH      1064
 #define IDC_STATIC_CONF_PATH            1065
 #define IDC_STATIC_SAMPLE_LOG           1066
 #define IDC_QF_LEVEL                    1067

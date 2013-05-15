@@ -3,6 +3,7 @@
 #include "helper.h"
 #include <algorithm>
 #include "resource.h"
+#include "config.h"
 #include "servicehelper.h"
 
 class CAutoCriticalSection
@@ -25,7 +26,6 @@ CLogCenter::CLogCenter()
 	m_timerID = 0;
 	m_buffer.reserve(1000);
 	m_logDB.reserve(100000);
-	m_autoEnablePipeDeviceFile = false;
 	m_autoEnablePipeDeviceReg = false;
 }
 
@@ -42,10 +42,8 @@ void CLogCenter::Init()
 void CLogCenter::ConnectPipe()
 {
 	Disconnect();
-
-//	m_cfgPathFile = helper::ExpandPath(BSP_BDXLOG_INI);
-	m_cfgPathReg = CStringW(L"Software\\Baidu\\TPLOG\\") + helper::GetProductName();
-	m_autoEnablePipeDeviceFile = EnablePipeDeviceFile(true);
+	
+	m_cfgPathReg = CConfig::Instance()->GetConfig().log_config_path.c_str();
 	m_autoEnablePipeDeviceReg = EnablePipeDeviceReg(true);
 
 	m_logPipeReader.set_listener(this);
@@ -116,12 +114,6 @@ void CLogCenter::Disconnect()
 				(*it)->OnDisconnect();
 			}
 	}
-
-	if (m_autoEnablePipeDeviceFile)
-	{
-		EnablePipeDeviceFile(false);
-	}
-	m_autoEnablePipeDeviceFile = false;
 
 	if (m_autoEnablePipeDeviceReg)
 	{
@@ -275,34 +267,6 @@ void CLogCenter::UnlockLog()
 	m_csLogDB.Leave();
 }
 
-bool CLogCenter::EnablePipeDeviceFile(bool bEnable)
-{
-	CStringW desiredEnableString = bEnable? L"enable:true" : L"enable:false";
-	WCHAR buffer[4096];
-	::GetPrivateProfileStringW(L"LOG_CONFIG", L"ld_pipe", L"", buffer, _countof(buffer), m_cfgPathFile);
-	CStringW bufR = buffer;
-	CStringW bufW = buffer;
-	bufR.MakeLower();
-	int pos = bufR.Find(L"enable:");
-	if (pos == -1)
-	{
-		bufW = desiredEnableString + L" " + bufW;
-	}
-	else
-	{
-		int pos2 = bufR.Find(L' ', pos);
-		if (pos2 == -1) pos2 = bufR.GetLength();
-		bufW = bufW.Mid(0, pos) + desiredEnableString + bufW.Mid(pos2);
-	}
-
-	if (bufW.Compare(buffer) != 0)
-	{
-		::WritePrivateProfileStringW(L"LOG_CONFIG", L"ld_pipe", bufW, m_cfgPathFile);
-		return true;
-	}
-
-	return false;
-}
 
 bool CLogCenter::EnablePipeDeviceReg(bool bEnable)
 {

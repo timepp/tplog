@@ -5,7 +5,7 @@
 #include "config.h"
 #include "mainframe.h"
 #include <time.h>
-#include "firsttimedlg.h"
+#include "optiondlg.h"
 #include "logicvis.h"
 #include "servicehelper.h"
 #include "scripthost.h"
@@ -21,9 +21,10 @@ int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
 
 	Updater::NotifyNewVersion();
 
-	if (CConfig::Instance()->GetConfig().product_name.empty())
+	if (CConfig::Instance()->GetConfig().log_config_path.empty())
 	{
-		CFirsttimeDlg dlg;
+		COptionDlg dlg;
+		dlg.SetWizzardMode(true);
 		dlg.DoModal();
 	}
 
@@ -46,7 +47,7 @@ int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
 	if (_time64(NULL) - CConfig::Instance()->GetConfig().syscfg.last_check_update_time > 86400)
 	{
 		CConfig::Instance()->GetConfig().syscfg.last_check_update_time = _time64(NULL);
-		Updater::CheckAndUpdate(TRUE);
+		// Updater::CheckAndUpdate(TRUE);
 	}
 
 	int nRet = theLoop.Run();
@@ -67,14 +68,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR lps
 
 	// 兼容旧版本的配置文件
 	CConfig* cfg = CConfig::Instance();
-	if (helper::FileExists(CConfig::GetDefaultConfigFilePath()))
-	{
-		cfg->Load(L"");
-	}
-	else
-	{
-		cfg->Load(helper::GetConfigDir() + L"\\..\\tplogview.xml");
-	}
+	cfg->Load(L"");
 
 	INITCOMMONCONTROLSEX iccx;
 	iccx.dwSize = sizeof(iccx);

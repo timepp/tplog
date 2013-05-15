@@ -9,7 +9,6 @@
 #include <share.h>
 #include <shlobj.h>
 #include "filtersetdlg.h"
-#include "specialpathdlg.h"
 #include "concretefilter.h"
 #include "logsourceinfodlg.h"
 #include "hilightermanagedlg.h"
@@ -395,17 +394,6 @@ LRESULT CMainFrame::OnUserFirstTimeRun(UINT /*uMsg*/, WPARAM /*wp*/, LPARAM /*lp
 	return 0;
 }
 
-LRESULT CMainFrame::OnEditXlogIni(WORD, WORD, HWND, BOOL&)
-{
-	CStringW strMessage;
-	strMessage.Format(
-		L"日志配置已经从文件移至注册表，请编辑注册表的如下位置:\n"
-		L"HKCU\\Software\\Baidu\\TPLOG\\%s", 
-		m_cfg.product_name.c_str());
-	MessageBox(strMessage, L"提示", MB_OK|MB_ICONINFORMATION);
-	return 0;
-}
-
 LRESULT CMainFrame::OnEditDebugset(WORD, WORD, HWND, BOOL&)
 {
 	// TODO delete function
@@ -542,8 +530,6 @@ void CMainFrame::OpenXLog(LPCWSTR pszFileName)
 
 	UpdateMRU();
 
-	// TODO decrypt遇到大文件会崩溃，目前没有decrypt的需求 所以先屏蔽
-	// strFileName = helper::DecryptXLogFile(strFileName);
 	ServiceHelper::GetLogCenter()->ConnectFile(pszFileName);
 }
 
@@ -942,12 +928,6 @@ LRESULT CMainFrame::OnViewLogSourceInfo(WORD, WORD, HWND, BOOL&)
 	return 0;
 }
 
-LRESULT CMainFrame::OnViewSpecialPath(WORD, WORD, HWND, BOOL&)
-{
-	CSpecialPathDlg dlg;
-	dlg.DoModal();
-	return 0;
-}
 
 LRESULT CMainFrame::OnEditHilight(WORD, WORD, HWND, BOOL&)
 {

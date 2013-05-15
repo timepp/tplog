@@ -114,11 +114,11 @@ struct ILogController
 {
 	/** 初始化日志管理器
 	 *  
-	 *  @param configname [opt] logcontroller会在HKCU\Software\Baidu\TPLOG\configname下查找配置信息
+	 *  @param configname [opt] logcontroller会在HKCU\configpath下查找配置信息
 	 *         configname不能超过32个字符
 	 *         configname为NULL表示日志管理器不会从注册表读取config信息
 	 */
-	virtual HRESULT Init(const wchar_t* configname) = 0;
+	virtual HRESULT Init(const wchar_t* configpath) = 0;
 	virtual HRESULT UnInit() = 0;
 
 	/** 输出日志

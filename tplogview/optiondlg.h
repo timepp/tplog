@@ -24,6 +24,9 @@ public:
 		NOTIFY_HANDLER(IDC_TREE, TVN_SELCHANGED, OnTvnSelchangedTree)
 	END_MSG_MAP()
 
+	void SetWizzardMode(bool m);
+	COptionDlg();
+
 private:
 	CTreeViewCtrlEx m_tree;
 
@@ -31,6 +34,8 @@ private:
 	COptPage_System m_optSystem;
 
 	std::vector<COptPage*> m_pages;
+
+	bool m_wizzardMode;
 
 private:
 	void CreateOptionPages();

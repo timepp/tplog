@@ -68,9 +68,6 @@
     <ClCompile Include="..\tplogview\quickfilterdlg.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\tplogview\specialpathdlg.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\tplogview\tagselector.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -181,9 +178,6 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\tplogview\searchdlg.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tplogview\specialpathdlg.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\tplogview\tagselector.h">

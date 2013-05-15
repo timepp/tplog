@@ -141,7 +141,6 @@
     <ClCompile Include="..\tplogview\logsourceinfodlg.cpp" />
     <ClCompile Include="..\tplogview\mainframe.cpp" />
     <ClCompile Include="..\tplogview\quickfilterdlg.cpp" />
-    <ClCompile Include="..\tplogview\specialpathdlg.cpp" />
     <ClCompile Include="..\tplogview\tagselector.cpp" />
     <ClCompile Include="..\tplogview\config.cpp" />
     <ClCompile Include="..\tplogview\tplogview.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="..\tplogview\modelesskeyprocessor.h" />
     <ClInclude Include="..\tplogview\quickfilterdlg.h" />
     <ClInclude Include="..\tplogview\searchdlg.h" />
-    <ClInclude Include="..\tplogview\specialpathdlg.h" />
     <ClInclude Include="..\tplogview\tagselector.h" />
     <ClInclude Include="..\tplogview\vislogicdlg.h" />
     <ClInclude Include="..\tplogview\whitebkdlg.h" />

@@ -71,7 +71,7 @@ struct config
 
 	bool first_time_run;
 
-	std::wstring product_name;
+	std::wstring log_config_path;
 };
 
 class CConfig

@@ -20,12 +20,6 @@ private:
 	LRESULT OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/)
 	{
 		CenterWindow(GetParent());
-
-		CComboBox combo = (HWND)GetDlgItem(IDC_COMBO_PRODUCT);
-		combo.AddString(L"BaiduBrowser");
-		combo.AddString(L"BaiduPinyin");
-		combo.SelectString(0, L"BaiduBrowser");
-
 		return 0;
 	}
 
@@ -40,7 +34,7 @@ private:
 		GetDlgItem(IDC_COMBO_PRODUCT).GetWindowText(text);
 		if (!text.IsEmpty())
 		{
-			CConfig::Instance()->GetConfig().product_name = text;
+			CConfig::Instance()->GetConfig().log_config_path = text;
 			EndDialog(IDOK);
 		}
 		

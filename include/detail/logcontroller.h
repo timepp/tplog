@@ -27,7 +27,7 @@ public:
 	virtual ~CLogController();
 
 public:
-	virtual HRESULT Init(const wchar_t* configname);
+	virtual HRESULT Init(const wchar_t* configpath);
 	virtual HRESULT UnInit();
 	virtual HRESULT MonitorConfigChange();
 	virtual BOOL NeedLog(LogLevel level, const wchar_t* tag);
@@ -67,7 +67,6 @@ private:
 	OutputDevice* m_ods[32];
 	size_t m_odsLen;
 
-	wchar_t m_configpath[64];
 	HKEY m_hConfigKey;
 
 	unsigned __int64 m_logID;
@@ -100,7 +99,6 @@ inline CLogController::CLogController()
 {
 	LOGFUNC;
 
-	m_configpath[0] = 0;
 	m_constructed = true;
 }
 
@@ -111,7 +109,7 @@ inline CLogController::~CLogController()
 	m_destructed = true;
 }
 
-inline HRESULT CLogController::Init(const wchar_t* configname)
+inline HRESULT CLogController::Init(const wchar_t* configpath)
 {
 	LOGFUNC;
 	MULTI_TRHEAD_GUARD(m_csLog);
@@ -124,13 +122,9 @@ inline HRESULT CLogController::Init(const wchar_t* configname)
 	m_calldepthTlsIndex = ::TlsAlloc();
 	m_accurateTime.Init();
 
-	if (configname && configname[0])
+	if (configpath && configpath[0])
 	{
-		textstream s(m_configpath, _countof(m_configpath));
-		// todo 注册表路径由外界传入
-		s << LSTR(L"Software\\Baidu\\TPLOG\\") << configname;
-
-		::RegCreateKeyExW(HKEY_CURRENT_USER, m_configpath, 0, NULL, 0, KEY_QUERY_VALUE|KEY_NOTIFY, NULL, &m_hConfigKey, NULL);
+		::RegCreateKeyExW(HKEY_CURRENT_USER, configpath, 0, NULL, 0, KEY_QUERY_VALUE|KEY_NOTIFY, NULL, &m_hConfigKey, NULL);
 		if (!m_hConfigKey)
 		{
 			LOGWINERR(L"打开配置键值");

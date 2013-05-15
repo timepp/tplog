@@ -130,7 +130,7 @@ BEGIN
     LTEXT           "日志查看器是配合TPLOG使用的工具。可以实时查看应用程序的管道日志(LODT_PIPE)的输出；可以查看应用应用程序的共享内存日志(LODT_SHAREMEMORY)的内容；也可以以离线模式打开计算机中的BDLOG日志文件。",IDC_STATIC,53,7,244,35
     ICON            IDR_MAINFRAME,IDC_STATIC,7,9,20,20,SS_REALSIZEIMAGE
     LTEXT           "Static",IDC_STATIC_VERSION,111,49,60,12,SS_CENTERIMAGE
-    LTEXT           "Static",IDC_STATIC_PRODUCT_NAME,111,64,194,12,SS_CENTERIMAGE
+    LTEXT           "Static",IDC_STATIC_LOG_CONFIG_PATH,111,64,194,12,SS_CENTERIMAGE
     LTEXT           "Static",IDC_STATIC_CONF_PATH,111,80,194,10
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,97,298,1
 END
@@ -291,20 +291,6 @@ BEGIN
     PUSHBUTTON      "取消",IDCANCEL,235,69,50,14
 END
 
-IDD_SPECIAL_POS DIALOGEX 0, 0, 387, 183
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "打开常用位置"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "",IDC_STATIC_REF3,"Static",SS_ETCHEDHORZ | NOT WS_VISIBLE,9,47,371,1
-    PUSHBUTTON      "日志输出配置",IDC_BUTTON_REF1,7,7,57,14,NOT WS_VISIBLE
-    LTEXT           "c:\\Users\\timepp\\AppData\\Roaming\\Baidu\\BaiduProduct\\",IDC_STATIC_REF1,75,7,305,14,SS_CENTERIMAGE | NOT WS_VISIBLE
-    PUSHBUTTON      "日志输出配置",IDC_BUTTON_REF2,7,25,57,14,NOT WS_VISIBLE
-    LTEXT           "c:\\Users\\timepp\\AppData\\Roaming\\Baidu\\BaiduProduct\\",IDC_STATIC_REF2,75,25,305,14,SS_CENTERIMAGE | NOT WS_VISIBLE
-    EDITTEXT        IDC_EDIT1,7,162,373,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
-    LTEXT           "打开目录使用(%p为目录名)：",IDC_STATIC,7,147,373,14,SS_CENTERIMAGE | NOT WS_VISIBLE
-END
-
 IDD_HILIGHTER_EDIT DIALOGEX 0, 0, 399, 239
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "高亮规则编辑"
@@ -376,7 +362,7 @@ BEGIN
     DEFPUSHBUTTON   "确定",IDOK,259,116,50,14
     COMBOBOX        IDC_COMBO_PRODUCT,129,76,109,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "请选择使用日志查看器的产品：",IDC_STATIC,7,76,116,12,SS_CENTERIMAGE
-    LTEXT           "日志查看器在监视管道时，会自动把管道日志设备设为启用。这是通过修改注册表项来实现的。对不同的产品线，有不同的注册表项，注册表路径是用产品名字拼成的。\r\n\r\n产品名字是在具体产品的日志系统初始化时指定的，比如浏览器的产品名字是""BaiduBrowser""。其它产品名字请咨询对应的开发者。",IDC_STATIC,7,18,305,52
+    LTEXT           "日志查看器在监视管道时，会通过修改日志配置，把管道日志设备设为启用。请在此输入日志配置的注册表路径(即传给ILogController::Init的路径)。",IDC_STATIC,7,18,305,52
 END
 
 IDD_VISLOGIC DIALOGEX 0, 0, 431, 159
@@ -430,9 +416,9 @@ IDD_OPT_SYSTEM DIALOGEX 0, 0, 319, 196
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "日志查看器在监视管道时，会自动把管道日志设备设为启用。这是通过修改注册表项来实现的。对不同的产品线，有不同的注册表项，注册表路径是用产品名字拼成的。\r\n\r\n产品名字是在具体产品的日志系统初始化时指定的，比如浏览器的产品名字是""BaiduBrowser""。其它产品名字请咨询对应的开发者。",-1,7,7,305,52
-    LTEXT           "日志配置名（产品名）：",-1,7,83,92,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT,7,99,185,14,ES_AUTOHSCROLL
+    LTEXT           "日志查看器在监视管道时，会通过修改日志配置，把管道日志设备设为启用。请在此输入日志配置的注册表路径(即传给ILogController::Init的路径)。",-1,7,7,305,52
+    LTEXT           "日志配置的注册表路径：",-1,7,83,305,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT,7,99,305,14,ES_AUTOHSCROLL
 END
 
 
@@ -551,14 +537,6 @@ BEGIN
         BOTTOMMARGIN, 83
     END
 
-    IDD_SPECIAL_POS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 380
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 176
-    END
-
     IDD_HILIGHTER_EDIT, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -672,13 +650,13 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
-            VALUE "CompanyName", "Baidu"
-            VALUE "FileDescription", "百度客户端日志查看器"
+            VALUE "CompanyName", "tpsoft"
+            VALUE "FileDescription", "tplog viewer"
             VALUE "FileVersion", "9.0.0.1"
             VALUE "InternalName", "tplogview"
-            VALUE "LegalCopyright", "Baidu.  All rights reserved."
+            VALUE "LegalCopyright", "tpsoft.  All rights reserved."
             VALUE "OriginalFilename", "tplogview.exe"
-            VALUE "ProductName", "百度客户端日志查看器"
+            VALUE "ProductName", "tplogview"
             VALUE "ProductVersion", "9.0.0.1"
         END
     END
@@ -802,8 +780,6 @@ BEGIN
     POPUP "工具(&O)"
     BEGIN
         MENUITEM "选项(&O)...",                   ID_OPTION
-        MENUITEM "编辑日志配置文件(&C)",                ID_EDIT_XLOG_INI
-        MENUITEM "常用位置...(&P)\tCtrl+D",         ID_VIEW_SPECIAL_PATH
         MENUITEM "日志源信息(&S)...",                ID_LOG_SOURCE_INFO
         MENUITEM "逻辑可视化(&L)",                   ID_SHOW_VISUAL_LOGIC
         MENUITEM "执行脚本(E)...",                  ID_RUN_SCRIPT

@@ -23,12 +23,12 @@ void COptPage_PerfMark::Save()
 
 LRESULT COptPage_System::OnInitDialog(HWND, LPARAM)
 {
-	CDlgItem(m_hWnd, IDC_EDIT).SetText(CFG.product_name.c_str());
+	CDlgItem(m_hWnd, IDC_EDIT).SetText(CFG.log_config_path.c_str());
 	return TRUE;
 }
 
 void COptPage_System::Save()
 {
-	CFG.product_name = CDlgItem(m_hWnd, IDC_EDIT).GetText();
+	CFG.log_config_path = CDlgItem(m_hWnd, IDC_EDIT).GetText();
 }
 

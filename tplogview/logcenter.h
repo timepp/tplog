@@ -73,7 +73,6 @@ private:
 		);
 
 	void MergeBuffer();
-	bool EnablePipeDeviceFile(bool bEnable);
 	bool EnablePipeDeviceReg(bool bEnable);
 
 	void ShowNotifyMsg();
@@ -110,8 +109,6 @@ private:
 	UINT m_notifyTimerID;
 	int m_notifyID;
 
-	bool m_autoEnablePipeDeviceFile;
-	CStringW m_cfgPathFile;
 	bool m_autoEnablePipeDeviceReg;
 	CStringW m_cfgPathReg;
 };

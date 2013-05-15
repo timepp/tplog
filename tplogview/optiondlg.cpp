@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "optiondlg.h"
 
+COptionDlg::COptionDlg() : m_wizzardMode(false)
+{
+}
+
+void COptionDlg::SetWizzardMode(bool m)
+{
+	m_wizzardMode = m;
+}
+
 LRESULT COptionDlg::OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/)
 {
 	CenterWindow(GetParent());
@@ -10,14 +19,20 @@ LRESULT COptionDlg::OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/)
 	m_tree = GetDlgItem(IDC_TREE);
 	m_tree.ModifyStyle(0, TVS_HASBUTTONS|TVS_HASLINES|TVS_LINESATROOT);
 
-	CTreeItem itemView = AddOptionPage(NULL, L"显示", NULL);
-	AddOptionPage(itemView, L"性能标记", &m_optPerfMark);
-	
-	AddOptionPage(NULL, L"系统", &m_optSystem);
-
-	ExpandAllChildItem(m_tree.GetRootItem());
-
-	itemView.Select();
+	if (m_wizzardMode)
+	{
+		CTreeItem itemSys = AddOptionPage(NULL, L"系统", &m_optSystem);
+		SetWindowText(L"设置向导");
+		itemSys.Select();
+	}
+	else
+	{
+		CTreeItem itemView = AddOptionPage(NULL, L"显示", NULL);
+		AddOptionPage(itemView, L"性能标记", &m_optPerfMark);
+		CTreeItem itemSys = AddOptionPage(NULL, L"系统", &m_optSystem);
+		ExpandAllChildItem(m_tree.GetRootItem());
+		itemView.Select();
+	}
 
 	return 0;
 }
