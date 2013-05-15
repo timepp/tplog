@@ -1,27 +1,25 @@
-bdlog
-=====
+#tplog
 
 highly extensible c++ log library on windows system
-forked from https://svn.baidu.com/app/gensoft/bull/trunk/bdlog:816
 
-bdlog include: 
-      bdlog library; 
-      bdlogview, a GUI tool for viewing bdlog pipe device output;
-      testbdlog, for bdlog functional testing.
+tplog include: 
+
+ - tplog library; 
+ - tplogview, a GUI tool for viewing tplog pipe device output;
+ - testtplog, for tplog functional testing.
 
 
-dir structure
-=============
+#dir structure
 
-[bdlog]          files for wrapping log functionality into DLL
-[bdlogview]      bdlogview source
-[build]          vcprojs for building
-[doc]            documents
-[include]        [detail]          bdlog implementation
-                 bdlog.h           bdlog interface
-                 bdlog_util.h      bdlog util interface
-                 accutime.h        bdlog sync time reader
-                 bdlogprovider.h   bdlog pipe receiver and file reader (bdlogprovider.h)
-[testbdlog]      functional test
-[thirdsrc]       third party source, only used by bdlogview and testbdlog
-[tools]          misc util
+ * [tplog]          files for wrapping log functionality into DLL
+ * [tplogview]      tplogview source
+ * [build]          vcprojs for building
+ * [doc]            documents
+ * [include]        [detail]          tplog implementation
+ *                  tplog.h           tplog interface
+ *                  tplog_util.h      tplog util interface
+ *                  accutime.h        tplog sync time reader
+ *                  tplogprovider.h   tplog pipe receiver and file reader (tplogprovider.h)
+ * [testtplog]      functional test
+ * [thirdsrc]       third party source, only used by tplogview and testtplog
+ * [tools]          misc util
