@@ -2,6 +2,7 @@
 *.sdf
 *.aps
 *.opensdf
+*.vcxproj.user
 intermediate/
 ipch/
 output/Win32/

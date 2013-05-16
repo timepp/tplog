@@ -11,15 +11,45 @@ tplog include:
 
 #dir structure
 
- * [tplog]          files for wrapping log functionality into DLL
- * [tplogview]      tplogview source
- * [build]          vcprojs for building
- * [doc]            documents
- * [include]        [detail]          tplog implementation
- *                  tplog.h           tplog interface
- *                  tplog_util.h      tplog util interface
- *                  accutime.h        tplog sync time reader
- *                  tplogprovider.h   tplog pipe receiver and file reader (tplogprovider.h)
- * [testtplog]      functional test
- * [thirdsrc]       third party source, only used by tplogview and testtplog
- * [tools]          misc util
+<table>
+	<tr>
+		<td>[tplog]</td>
+		<td></td>
+		<td>files for wrapping log functionality into DLL</td>
+	</tr>
+	<tr>
+		<td>[tplogview]</td>
+		<td></td>
+		<td>tplogview source</td>
+	</tr>
+	<tr>
+		<td>[build]</td>
+		<td></td>
+		<td>vcprojs for building</td>
+	</tr>
+	<tr>
+		<td>[include]</td>
+		<td></td>
+		<td>tplog main</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>[detail]</td>
+		<td>tplog detail implementation</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>tplog.h</td>
+		<td>tplog interface</td>
+	</tr>
+	<tr>
+		<td>[testlog]</td>
+		<td></td>
+		<td>functional test</td>
+	</tr>
+	<tr>
+		<td>tools</td>
+		<td></td>
+		<td>misc tool</td>
+	</tr>
+</table>
