@@ -30,6 +30,9 @@
     <ClCompile Include="..\testlog\testlog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\testlog\mainframe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\testlog\profiler.h">
@@ -47,5 +50,16 @@
     <ClInclude Include="..\testlog\testlog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\testlog\mainframe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\testlog\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\testlog\testlog.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

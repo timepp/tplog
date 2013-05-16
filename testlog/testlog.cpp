@@ -4,10 +4,13 @@
 #include <vector>
 #include <iostream>
 #include <tplib/include/auto_release.h>
-#include "unittest.h"
+#include <tplib/include/unittest.h>
 #include <map>
 #include <string>
 #include <tplog_impl.h>
+#include "mainframe.h"
+
+CAppModule _Module;
 
 #define TPUT_MODNAME Main
 #define LOGTEST_REG_PATH L"SOFTWARE\\tplog\\test"
@@ -242,17 +245,17 @@ TPUT_DEFINE_BLOCK(L"Init", L"")
 	};
 
 	ctrl->UnInit();
-	TPUT_EXPECT_WITH_MSG(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(之前未初始化过)");
+	TPUT_EXPECT(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(之前未初始化过)");
 	ctrl->Init(L".");
 	ctrl->UnInit();
-	TPUT_EXPECT_WITH_MSG(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(初始化后又注销)");
+	TPUT_EXPECT(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(初始化后又注销)");
 
-	TPUT_EXPECT(SUCCEEDED(ctrl->Init(NULL)));
+	TPUT_EXPECT(SUCCEEDED(ctrl->Init(NULL)), 0);
 	ctrl->UnInit();
-	TPUT_EXPECT(SUCCEEDED(ctrl->Init(NULL)));
+	TPUT_EXPECT(SUCCEEDED(ctrl->Init(NULL)), 0);
 
 	ctrl->Init(L".");
-	TPUT_EXPECT_WITH_MSG(ctrl->Init(L".") == TPLOG_E_ALREADY_INITED, L"重复初始化时返回对应的错误码");
+	TPUT_EXPECT(ctrl->Init(L".") == TPLOG_E_ALREADY_INITED, L"重复初始化时返回对应的错误码");
 
 	HRESULT hr = S_OK;
 	for (size_t i = 0; i < 100; i++)
@@ -262,7 +265,7 @@ TPUT_DEFINE_BLOCK(L"Init", L"")
 		hr = ctrl->Init(L".");
 		if (FAILED(hr)) break;
 	}
-	TPUT_EXPECT_WITH_MSG(SUCCEEDED(hr), L"反复初始化/注销时不出错");
+	TPUT_EXPECT(SUCCEEDED(hr), L"反复初始化/注销时不出错");
 }
 
 TPUT_DEFINE_BLOCK(L"LogOption", L"")
@@ -314,7 +317,7 @@ TPUT_DEFINE_BLOCK(L"LogOption", L"")
 		L"k8:'~!@#$%^&*()_+{}|:\"?><,./;[]\\=-`\n\r\t'";
 	TestLOD1* lod1 = new TestLOD1(opts);
 	ctrl->AddCustomOutputDevice(L"test", lod1, optstr);
-	TPUT_EXPECT_WITH_MSG(lod1->AllOptionIsAsExpect(), L"日志设备能正确收到配置");
+	TPUT_EXPECT(lod1->AllOptionIsAsExpect(), L"日志设备能正确收到配置");
 
 	ctrl->RemoveOutputDevice(L"test");
 }
@@ -349,7 +352,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 				if (!lod->CompareCount(-1, -1, (t.match? 1 : 0), -1)) break;
 			}
 
-			TPUT_EXPECT_WITH_MSG(i == len, desc);
+			TPUT_EXPECT(i == len, desc);
 
 			ctrl->RemoveOutputDevice(L"test");
 		}
@@ -474,7 +477,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(1, 0, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(1, 0, 1, 0);
-	TPUT_EXPECT_WITH_MSG(ret, L"以启用方式添加设备能调用Open并且设备接收到日志");
+	TPUT_EXPECT(ret, L"以启用方式添加设备能调用Open并且设备接收到日志");
 
 	ret = true;
 	lod->ResetCount();
@@ -482,7 +485,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(0, 1, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(0, 1, 0, 0);
-	TPUT_EXPECT_WITH_MSG(ret, L"更改日志设备为禁用时能调用Close并且设备不再接收日志");
+	TPUT_EXPECT(ret, L"更改日志设备为禁用时能调用Close并且设备不再接收日志");
 	ctrl->RemoveOutputDevice(L"test");
 
 	ret = true;
@@ -491,7 +494,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(0, 0, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(0, 0, 0, 0);
-	TPUT_EXPECT_WITH_MSG(ret, L"以禁用方式添加设备不调用Open并且不接收日志");
+	TPUT_EXPECT(ret, L"以禁用方式添加设备不调用Open并且不接收日志");
 
 	ret = true;
 	lod->ResetCount();
@@ -499,7 +502,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(1, 0, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(1, 0, 1, 0);
-	TPUT_EXPECT_WITH_MSG(ret, L"更改日志设备为启用时能调用Open和接收日志");
+	TPUT_EXPECT(ret, L"更改日志设备为启用时能调用Open和接收日志");
 }
 
 TPUT_DEFINE_BLOCK(L"#a3", L"")
@@ -507,7 +510,7 @@ TPUT_DEFINE_BLOCK(L"#a3", L"")
 	ILogController* ctrl = GetLogController();
 	HRESULT hr;
 	ctrl->Init(L".");
-	TPUT_EXPECT(ctrl->RemoveOutputDevice(L"aaa") == TPLOG_E_NOT_INITED);
+	TPUT_EXPECT(ctrl->RemoveOutputDevice(L"aaa") == TPLOG_E_NOT_INITED, 0);
 }
 
 TPUT_DEFINE_BLOCK(L"#初始化日志系统", L"")
@@ -519,7 +522,7 @@ TPUT_DEFINE_BLOCK(L"#初始化日志系统", L"")
 TPUT_DEFINE_BLOCK(L"#OutputDevice.Pipe", L"")
 {
 	ILogController* ctrl = GetLogController();
-	TPUT_EXPECT_WITH_MSG(ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:1") == S_OK, L"添加管道日志设备");
+	TPUT_EXPECT(ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:1") == S_OK, L"添加管道日志设备");
 
 	for (size_t i = 0; i < 100; i++)
 	{
@@ -589,12 +592,39 @@ TPUT_DEFINE_BLOCK(L"LOD.File", L"")
 	}
 }
 
+int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
+{
+	CMessageLoop theLoop;
 
-int wmain(int argc, wchar_t* argv[])
+	_Module.AddMessageLoop(&theLoop);
+
+	CMainFrame g_mainframe;
+	if(g_mainframe.CreateEx() == NULL)
+	{
+		ATLTRACE(_T("Main window creation failed!\n"));
+		return 0;
+	}
+
+	g_mainframe.ShowWindow(nCmdShow);
+
+	int nRet = theLoop.Run();
+
+	_Module.RemoveMessageLoop();
+	return nRet;
+}
+
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR lpstrCmdLine, int nCmdShow)
 {
 	setlocale(LC_ALL, "chs");
 
-	tp::unittest::instance().run_test();
+	HRESULT hRes = _Module.Init(NULL, hInstance);
+	(hRes);
+	ATLASSERT(SUCCEEDED(hRes));
+
+	int nRet = Run(lpstrCmdLine, nCmdShow);
+
+	_Module.Term();
+
 
 	return 0;
 }

@@ -22,6 +22,7 @@ BD_NO_WARNING_AREA_BEGIN()
 #include <atlbase.h>
 #include <atlwin.h>
 #include <atlcom.h>
+#include <WTL/atlapp.h>
 #include <atlstr.h>
 
 #include <iostream>
