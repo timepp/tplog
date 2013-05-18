@@ -81,7 +81,7 @@ void CMainFrame::CreateStatusBar()
 
 void CMainFrame::CreateList()
 {
-	DWORD dwStyle = LVS_REPORT;
+	DWORD dwStyle = LVS_REPORT|LVS_OWNERDATA;
 	DWORD dwExStyle = LVS_EX_FULLROWSELECT|LVS_EX_DOUBLEBUFFER;
 //	dwExStyle |= LVS_EX_GRIDLINES;
 
@@ -102,7 +102,9 @@ void CMainFrame::CreateList()
 	{
 		L"", 20,
 		L"结果", 60, 
-		L"说明", 600,
+		L"类别", 200,
+		L"说明", 500,
+		L"附加信息", 200,
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
 	{
@@ -174,10 +176,11 @@ LRESULT CMainFrame::OnNMCustomdrawList(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*b
 	if (pNMCD->nmcd.dwDrawStage == CDDS_ITEMPREPAINT)
 	{
 		int index = static_cast<int>(pNMCD->nmcd.dwItemSpec);
-		if (index < m_list.GetItemCount())
+		const tp::TestResult& tr = m_results[index];
+		if (!tr.success)
 		{
 			pNMCD->clrTextBk = RGB(255, 224, 224);
-			return CDRF_NOTIFYSUBITEMDRAW;
+			//return CDRF_NOTIFYSUBITEMDRAW;
 		}
 	}
 	if (pNMCD->nmcd.dwDrawStage == (CDDS_ITEMPREPAINT|CDDS_ITEM|CDDS_SUBITEM))
@@ -252,12 +255,24 @@ LRESULT CMainFrame::OnListGetDispInfo(int /**/, LPNMHDR pNMHDR, BOOL& /**/)
 	int subindex = pItem->iSubItem;
 	size_t textlen = static_cast<size_t>(pItem->cchTextMax);
 
+	const tp::TestResult& tr = m_results[index];
+
 	wchar_t cvtbuf[1024];
 	if (pItem->mask & LVIF_TEXT)
 	{
 		switch(subindex)
 		{
 		case 1:
+			wcsncpy_s(pItem->pszText, textlen, tr.success?L"成功":L"失败", _TRUNCATE);
+			break;
+		case 2:
+			wcsncpy_s(pItem->pszText, textlen, tr.block->name, _TRUNCATE);
+			break;
+		case 3:
+			wcsncpy_s(pItem->pszText, textlen, tr.operation.c_str(), _TRUNCATE);
+			break;
+		case 4:
+			wcsncpy_s(pItem->pszText, textlen, tr.comment.c_str(), _TRUNCATE);
 			break;
 		}
 	}
@@ -340,22 +355,29 @@ void CMainFrame::OnContextMenu(HWND hWnd, CPoint pt)
 LRESULT CMainFrame::OnStartTest(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	m_list.DeleteAllItems();
-	tp::unittest& ut = tp::unittest::instance();
-	ut.set_test_output(this);
-	ut.run_test();
-
+	HANDLE thread = (HANDLE)_beginthreadex(NULL, 0, work_thread, this, 0, NULL);
+	::CloseHandle(thread);
 	return 0;
 }
 
+unsigned int CMainFrame::work_thread(void* param)
+{
+	CMainFrame* frame = static_cast<CMainFrame*>(param);
+	tp::unittest& ut = tp::unittest::instance();
+	ut.set_test_output(frame);
+	ut.run_test();
+	return 0;
+}
+
+static std::wstring blockname;
 void CMainFrame::BlockBegin(const tp::TestBlock& block)
 {
+	blockname = block.name;
 }
 void CMainFrame::OutputResult(const tp::TestResult& res)
 {
-	int index = m_list.GetItemCount();
-	m_list.InsertItem(index, NULL);
-	m_list.SetItemText(index, 1, res.success?L"成功" : L"失败");
-	m_list.SetItemText(index, 2, res.operation);
+	m_results.push_back(res);
+	m_list.SetItemCount(m_results.size());
 }
 void CMainFrame::TestEnd(int total, int succeeded)
 {

@@ -1,11 +1,4 @@
 #include "resource.h"
-#include <shellapi.h>
-#include <wtl/atlframe.h>
-#include <wtl/atlcrack.h>
-#include <wtl/atlmisc.h>
-#include <wtl/atlctrls.h>
-#include <wtl/atlctrlx.h>
-#include <wtl/atlctrlw.h>
 #include <tplib/include/unittest.h>
 
 class CMainFrame 
@@ -33,8 +26,8 @@ public:
 		MSG_WM_SYSCOMMAND(OnSysCommand)
 		
 		//NOTIFY_HANDLER(IDC_LIST, NM_DBLCLK, OnNMDblclkList)
-		//NOTIFY_HANDLER(IDC_LIST, NM_CUSTOMDRAW, OnNMCustomdrawList)
-		//NOTIFY_HANDLER(IDC_LIST, LVN_GETDISPINFO, OnListGetDispInfo)
+		NOTIFY_HANDLER(IDC_LIST, NM_CUSTOMDRAW, OnNMCustomdrawList)
+		NOTIFY_HANDLER(IDC_LIST, LVN_GETDISPINFO, OnListGetDispInfo)
 		//NOTIFY_HANDLER(IDC_LIST, LVN_ITEMCHANGED, OnListStateChanged)
 
 		COMMAND_ID_HANDLER(ID_START_TEST, OnStartTest)
@@ -55,8 +48,8 @@ private:
 	void CreateReBar();
 	void CreateStatusBar();
 	void CreateList();
-
 	void UpdateUI();
+	static unsigned int __stdcall work_thread(void* param);
 
 private:
 	LRESULT OnCreate(LPCREATESTRUCTW cs);
@@ -90,4 +83,6 @@ private:
 	CListViewCtrl m_list;
 	CImageList m_listImageList;
 	CFont m_listFont;
+
+	std::vector<tp::TestResult> m_results;
 };

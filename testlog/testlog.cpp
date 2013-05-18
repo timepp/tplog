@@ -246,14 +246,11 @@ TPUT_DEFINE_BLOCK(L"Init", L"")
 
 	ctrl->UnInit();
 	TPUT_EXPECT(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(之前未初始化过)");
-	ctrl->Init(L".");
-	ctrl->UnInit();
-	TPUT_EXPECT(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(初始化后又注销)");
+	tp::unittest::expect(SUCCEEDED(ctrl->Init(NULL)), L"正常初始化成功");
+	tp::unittest::expect(SUCCEEDED(ctrl->UnInit()), L"正常注销成功");
+	tp::unittest::expect(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(初始化后又注销)");
 
-	TPUT_EXPECT(SUCCEEDED(ctrl->Init(NULL)), 0);
 	ctrl->UnInit();
-	TPUT_EXPECT(SUCCEEDED(ctrl->Init(NULL)), 0);
-
 	ctrl->Init(L".");
 	TPUT_EXPECT(ctrl->Init(L".") == TPLOG_E_ALREADY_INITED, L"重复初始化时返回对应的错误码");
 

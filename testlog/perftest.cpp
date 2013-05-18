@@ -1,15 +1,16 @@
 #include "stdafx.h"
+#include <tplib/include/unittest.h>
+#include <tplib/include/util_win.h>
 
 LARGE_INTEGER CProfiler::m_freq = {};
 BOOL CProfiler::m_avaliable = ::QueryPerformanceFrequency(&CProfiler::m_freq);
 
 // 测试tplog的性能
 
-#define BATCH_COUNT 1
-static int PerformanceTest(const wchar_t* /*description*/)
+static int PerformanceTest(size_t times)
 {
 	CProfiler pf(true);
-	for (size_t i = 0; i < BATCH_COUNT; i++)
+	for (size_t i = 0; i < times; i++)
 	{
 		Log(LL_DEBUG, TAG(L"aa;bb"), L"aaa", 1);
 		Log(LL_DEBUG, NOTAG, L"simple log text with code analysis warning %d", L"hhh");
@@ -18,42 +19,64 @@ static int PerformanceTest(const wchar_t* /*description*/)
 	return pf.GetElapsedMicroSeconds();
 }
 
-static void RunPerformanceTest(const wchar_t* desc, int times = 1)
+static void RunPerformanceTest(const wchar_t* scene, double expect_us)
 {
+	size_t times = 100000;
 	int total_us = 0;
-	for (int i = 0; i < times; i++)
-	{
-		total_us += PerformanceTest(desc);
-	}
-	int total_count = times * BATCH_COUNT * 3;
+	total_us += PerformanceTest(times);
+	int total_count = times * 3;
 	double avg_us = static_cast<double>(total_us) / total_count;
-	wprintf_s(L"%-40s %16d %16d %f\n", desc, total_count, total_us, avg_us);
+	wchar_t desc[1024];
+	_snwprintf_s(desc, _TRUNCATE, L"%s, 平均每条日志时间 < %.2f 微秒", scene, expect_us);
+	tp::unittest::expect(avg_us < expect_us, desc, L"平均时间:%.4f微秒", avg_us);
 }
 
-void TEST_Performance()
+TPUT_DEFINE_BLOCK(L"performance", L"perf")
 {
+	std::vector<tp::oswin::file> files;
+	tp::oswin::list_dir(files, L".", L"test_perf_*.log");
+	for (size_t i = 0; i < files.size(); i++)
+	{
+		::DeleteFileW(files[i].rela_path.c_str());
+	}
+
 	ILogController* ctrl = GetLogController();
+	ctrl->UnInit();
+	ctrl->Init(NULL);
 	ctrl->RemoveOutputDevice(NULL);
 
 	ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"");
-	ctrl->AddOutputDevice(L"sm", LODT_SHARED_MEMORY, L"enable:1 filter:level>32");
-	RunPerformanceTest(L"EndUser_Normal");
+	ctrl->AddOutputDevice(L"file", LODT_FILE, L"");
+	ctrl->AddOutputDevice(L"sm", LODT_SHARED_MEMORY, L"enable:true");
 
-	ctrl->ChangeOutputDeviceConfig(L"sm", L"filter:level>0");
-	RunPerformanceTest(L"EndUser_ManyError");
+	ctrl->ChangeOutputDeviceConfig(L"sm", L"filter:level>100");
+	RunPerformanceTest(L"共享内存日志, 全部过滤", 0.1);
 
-	ctrl->AddOutputDevice(L"file", LODT_FILE, L"enable:1 async:1 path:log_file0.txt");
-	RunPerformanceTest(L"InternalUser_FileEnabled");
+	ctrl->ChangeOutputDeviceConfig(L"sm", L"filter:");
+	RunPerformanceTest(L"共享内存日志", 1);
+	
+	ctrl->ChangeOutputDeviceConfig(L"pipe", L"enable:true");
+	RunPerformanceTest(L"共享内存+管道未连接", 1);
 
-	ctrl->ChangeOutputDeviceConfig(L"file", L"path:log_file1.txt");
-	RunPerformanceTest(L"InternalUser_FileEnabled_Async");
+	ctrl->ChangeOutputDeviceConfig(L"pipe", L"enable:false");
 
-	ctrl->ChangeOutputDeviceConfig(L"file", L"share_read:0 path:log_file2.txt");
-	RunPerformanceTest(L"InternalUser_FileEnabled_NoShareRead");
+	ctrl->ChangeOutputDeviceConfig(L"file", L"enable:true path:test_perf_sm_fsb.log");
+	RunPerformanceTest(L"共享内存+文件同步缓存", 2);
 
-	ctrl->ChangeOutputDeviceConfig(L"file", L"buffer_size:0 path:log_file3.txt");
-	RunPerformanceTest(L"InternalUser_FileEnabled_NoBuffer");
+	ctrl->ChangeOutputDeviceConfig(L"sm", L"enable:false");
 
-	ctrl->ChangeOutputDeviceConfig(L"file", L"buffer_size:0 async:1 path:log_file4.txt");
-	RunPerformanceTest(L"InternalUser_FileEnabled_NoBuffer_Async");
+	ctrl->ChangeOutputDeviceConfig(L"file", L"async:false path:test_perf_fsb.log");
+	RunPerformanceTest(L"文件同步缓存", 2);
+
+	ctrl->ChangeOutputDeviceConfig(L"file", L"async:true path:test_perf_fab.log");
+	RunPerformanceTest(L"文件异步缓存", 2);
+
+	ctrl->ChangeOutputDeviceConfig(L"file", L"buffer_size:0 async:false path:test_perf_fs.log");
+	RunPerformanceTest(L"文件同步", 10);
+
+	ctrl->ChangeOutputDeviceConfig(L"file", L"buffer_size:0 async:true path:test_perf_fa.log");
+	RunPerformanceTest(L"文件异步", 10);
+
+	ctrl->ChangeOutputDeviceConfig(L"file", L"async:false buffer_size:1000000 share_read:false path:test_perf_fsbe.log");
+	RunPerformanceTest(L"文件同步缓存, 独占模式", 3);
 }

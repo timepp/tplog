@@ -44,9 +44,6 @@
     <ClInclude Include="..\testlog\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\testlog\unittest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\testlog\testlog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
