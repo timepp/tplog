@@ -197,8 +197,9 @@ inline FILETIME helper::UnixTimeToFileTime(__int64 t)
 
 inline void helper::FileTimeToString(FILETIME ft, const wchar_t* fmt, wchar_t* buf, size_t buflen)
 {
+	FILETIME lft;
 	SYSTEMTIME st;
-	if (!::FileTimeToSystemTime(&ft, &st))
+	if (!::FileTimeToLocalFileTime(&ft, &lft) || !::FileTimeToSystemTime(&lft, &st))
 	{
 		LOGWINERR(L"Ê±¼ä×ª»»Ê§°Ü:");
 	}

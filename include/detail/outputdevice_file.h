@@ -137,6 +137,7 @@ public:
 	{
 		m_lastTime.dwHighDateTime = m_lastTime.dwLowDateTime = 0;
 		m_path[0] = L'\0';
+		memset(&m_overlap, 0, sizeof(m_overlap));
 	}
 
 	~CLOD_File()
