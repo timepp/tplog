@@ -416,7 +416,7 @@ IDD_OPT_SYSTEM DIALOGEX 0, 0, 319, 196
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "日志查看器在监视管道时，会通过修改日志配置，把管道日志设备设为启用。请在此输入日志配置的注册表路径(即传给ILogController::Init的路径)。",-1,7,7,305,52
+    LTEXT           "日志查看器在监视管道时，会通过修改日志配置，把管道日志设备设为启用。请在此输入日志配置的注册表路径(即传给ILogController::Init的路径)。\r\n\r\n例如: SOFTWARE\\Company\\Product\\Log",-1,7,7,305,48
     LTEXT           "日志配置的注册表路径：",-1,7,83,305,14,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT,7,99,305,14,ES_AUTOHSCROLL
 END
