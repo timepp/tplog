@@ -3,6 +3,7 @@
 *.aps
 *.opensdf
 *.vcxproj.user
+test_*.log
 intermediate/
 ipch/
 output/Win32/
