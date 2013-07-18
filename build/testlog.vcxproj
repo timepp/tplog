@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugLib|Win32">
       <Configuration>DebugLib</Configuration>
@@ -30,24 +30,24 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLib|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLib|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -157,7 +157,6 @@
   <ItemGroup>
     <ClCompile Include="..\testlog\earlyinvoke.cpp" />
     <ClCompile Include="..\testlog\file2.cpp" />
-    <ClCompile Include="..\testlog\mainframe.cpp" />
     <ClCompile Include="..\testlog\perftest.cpp" />
     <ClCompile Include="..\testlog\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugLib|Win32'">Create</PrecompiledHeader>
@@ -168,7 +167,6 @@
     <ClCompile Include="..\testlog\testlog.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\testlog\mainframe.h" />
     <ClInclude Include="..\testlog\profiler.h" />
     <ClInclude Include="..\testlog\resource.h" />
     <ClInclude Include="..\testlog\stdafx.h" />

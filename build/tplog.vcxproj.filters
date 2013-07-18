@@ -9,8 +9,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\bdlog\resource.h" />
-    <ClInclude Include="..\bdlog\stdafx.h" />
     <ClInclude Include="..\include\detail\lock.h">
       <Filter>include\detail</Filter>
     </ClInclude>
@@ -65,12 +63,14 @@
     <ClInclude Include="..\include\tplog_util.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\tplog\resource.h" />
+    <ClInclude Include="..\tplog\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\bdlog\bdlog.cpp" />
-    <ClCompile Include="..\bdlog\stdafx.cpp" />
+    <ClCompile Include="..\tplog\stdafx.cpp" />
+    <ClCompile Include="..\tplog\tplog.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\bdlog\bdlog.rc" />
+    <ResourceCompile Include="..\tplog\tplog.rc" />
   </ItemGroup>
 </Project>

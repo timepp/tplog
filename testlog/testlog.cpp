@@ -5,10 +5,10 @@
 #include <iostream>
 #include <tplib/include/auto_release.h>
 #include <tplib/include/unittest.h>
+#include <tplib/include/unittest_output.h>
 #include <map>
 #include <string>
 #include <tplog_impl.h>
-#include "mainframe.h"
 
 CAppModule _Module;
 
@@ -589,39 +589,13 @@ TPUT_DEFINE_BLOCK(L"LOD.File", L"")
 	}
 }
 
-int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT)
-{
-	CMessageLoop theLoop;
-
-	_Module.AddMessageLoop(&theLoop);
-
-	CMainFrame g_mainframe;
-	if(g_mainframe.CreateEx() == NULL)
-	{
-		ATLTRACE(_T("Main window creation failed!\n"));
-		return 0;
-	}
-
-	g_mainframe.ShowWindow(nCmdShow);
-
-	int nRet = theLoop.Run();
-
-	_Module.RemoveMessageLoop();
-	return nRet;
-}
-
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR lpstrCmdLine, int nCmdShow)
 {
-	setlocale(LC_ALL, "chs");
-
-	HRESULT hRes = _Module.Init(NULL, hInstance);
-	(hRes);
-	ATLASSERT(SUCCEEDED(hRes));
-
-	int nRet = Run(lpstrCmdLine, nCmdShow);
-
-	_Module.Term();
-
+    tp::unittest& ut = tp::unittest::instance();
+    tp::ListTestOutput lto(L"TPLOG TEST");
+    ut.set_test_output(&lto);
+    ut.run_test();
+    lto.WaitUIExit();
 
 	return 0;
 }

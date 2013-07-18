@@ -27,8 +27,8 @@ static void RunPerformanceTest(const wchar_t* scene, double expect_us)
 	int total_count = times * 3;
 	double avg_us = static_cast<double>(total_us) / total_count;
 	wchar_t desc[1024];
-	_snwprintf_s(desc, _TRUNCATE, L"%s, 平均每条日志时间 < %.2f 微秒", scene, expect_us);
-	tp::unittest::expect(avg_us < expect_us, desc, L"平均时间:%.4f微秒", avg_us);
+	_snwprintf_s(desc, _TRUNCATE, L"%s, everage time per log < %.2f us", scene, expect_us);
+	tp::unittest::expect(avg_us < expect_us, desc, L"actual : %.4f us", avg_us);
 }
 
 TPUT_DEFINE_BLOCK(L"performance", L"perf")
@@ -50,33 +50,33 @@ TPUT_DEFINE_BLOCK(L"performance", L"perf")
 	ctrl->AddOutputDevice(L"sm", LODT_SHARED_MEMORY, L"enable:true");
 
 	ctrl->ChangeOutputDeviceConfig(L"sm", L"filter:level>100");
-	RunPerformanceTest(L"共享内存日志, 全部过滤", 0.1);
+	RunPerformanceTest(L"share memory log, all filtered", 0.1);
 
 	ctrl->ChangeOutputDeviceConfig(L"sm", L"filter:");
-	RunPerformanceTest(L"共享内存日志", 1);
-	
+	RunPerformanceTest(L"share memory log", 1);
+
 	ctrl->ChangeOutputDeviceConfig(L"pipe", L"enable:true");
-	RunPerformanceTest(L"共享内存+管道未连接", 1);
+	RunPerformanceTest(L"share memory + unconnected pipe", 1);
 
 	ctrl->ChangeOutputDeviceConfig(L"pipe", L"enable:false");
 
 	ctrl->ChangeOutputDeviceConfig(L"file", L"enable:true path:test_perf_sm_fsb.log");
-	RunPerformanceTest(L"共享内存+文件同步缓存", 2);
+	RunPerformanceTest(L"share memory + sync file cached", 2);
 
 	ctrl->ChangeOutputDeviceConfig(L"sm", L"enable:false");
 
 	ctrl->ChangeOutputDeviceConfig(L"file", L"async:false path:test_perf_fsb.log");
-	RunPerformanceTest(L"文件同步缓存", 2);
+	RunPerformanceTest(L"sync file cached", 2);
 
 	ctrl->ChangeOutputDeviceConfig(L"file", L"async:true path:test_perf_fab.log");
-	RunPerformanceTest(L"文件异步缓存", 2);
+	RunPerformanceTest(L"async file cached", 2);
 
 	ctrl->ChangeOutputDeviceConfig(L"file", L"buffer_size:0 async:false path:test_perf_fs.log");
-	RunPerformanceTest(L"文件同步", 10);
+	RunPerformanceTest(L"sync file", 10);
 
 	ctrl->ChangeOutputDeviceConfig(L"file", L"buffer_size:0 async:true path:test_perf_fa.log");
-	RunPerformanceTest(L"文件异步", 10);
+	RunPerformanceTest(L"async file", 10);
 
 	ctrl->ChangeOutputDeviceConfig(L"file", L"async:false buffer_size:1000000 share_read:false path:test_perf_fsbe.log");
-	RunPerformanceTest(L"文件同步缓存, 独占模式", 3);
+	RunPerformanceTest(L"sync file cached exclusive", 3);
 }
