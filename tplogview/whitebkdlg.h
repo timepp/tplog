@@ -3,8 +3,6 @@
 #include <map>
 #include "uipublic.h"
 
-// 让对话框和文本有白色背景（在XP下对话框稍好看一些）
-
 class CColoredDlgImpl
 {
 public:

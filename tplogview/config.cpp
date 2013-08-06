@@ -71,7 +71,7 @@ bool CConfig::Load(LPCWSTR pszFileName)
 
 	m_strConfigFilePath = strPath;
 
-	// 不是绝对路径的话，变成绝对路径
+	// convert to abs path
 	if (m_strConfigFilePath.GetLength() > 1 && m_strConfigFilePath[1] != L':')
 	{
 		WCHAR szPath[MAX_PATH];
@@ -81,7 +81,7 @@ bool CConfig::Load(LPCWSTR pszFileName)
 
 	if (_waccess_s(m_strConfigFilePath, 0) != 0)
 	{
-		// 配置文件不存在，赋缺省值
+		// config file not exist, use default
 		SetEmptyValueDefaults();
 		Save();
 		m_cfg.first_time_run = true;
@@ -114,7 +114,7 @@ bool CConfig::Load(LPCWSTR pszFileName)
 		m_cfg.log_quickfilter.tags = helper::XML_GetAttributeAsString(pNode, L"tags", L"");
 		m_cfg.log_quickfilter.text = helper::XML_GetAttributeAsString(pNode, L"text", L"");
 	}
-	
+
 	CComPtr<IXMLDOMNodeList> pList;
 	pDoc->selectNodes(CComBSTR(L"/config/hilighters/hilight"), &pList);
 	if (pList)
@@ -316,22 +316,22 @@ bool CConfig::Save()
 
 void CConfig::SetEmptyValueDefaults()
 {
-	// 高亮
+	// highlights
 	if (m_cfg.hls.size() == 0)
 	{
 		hilighter h;
 
-		h.name = L"调试级别";
+		h.name = IDS(IDS_LL_DEBUG);
 		h.f = new logclass_filter(16, 16);
 		h.d.color = RGB(192, 192, 192);
 		m_cfg.hls.push_back(h);
 
-		h.name = L"警告级别";
+		h.name = IDS(IDS_LL_WARNING);
 		h.f = new logclass_filter(48, 48);
 		h.d.color = RGB(0, 64, 255);
 		m_cfg.hls.push_back(h);
 
-		h.name = L"错误级别";
+		h.name = IDS(IDS_LL_ERROR);
 		h.f = new logclass_filter(64, 0);
 		h.d.color = RGB(255, 0, 0);
 		m_cfg.hls.push_back(h);

@@ -13,7 +13,6 @@ static int TimeIntervalToPixel(INT64 us, int usec_per_pixel)
 
 CVisLogicDlg::CVisLogicDlg()
 {
-
 }
 
 CVisLogicDlg::~CVisLogicDlg()
@@ -74,7 +73,7 @@ void CVisLogicDlg::Refresh()
 {
 	if (!m_process) return;
 
-	// 如果日志源信息里没有此PID，或者当前未在监视状态，说明进程已经退出，不使用当前时间做为T2，否则使用当前时间做为T2
+	// if PID doesn't exist in log source, or isn't monitoring, this means that process is exit, don't use current time as T2, otherwise, use current time as T2
 	bool use_current_time_as_end_time = false;
 	if (ServiceHelper::GetLogCenter()->MonitoringPipe())
 	{
@@ -116,8 +115,8 @@ void CVisLogicDlg::Refresh()
 
 	CRect rcClient;
 	GetClientRect(&rcClient);
-	
-	
+
+
 	DrawThreads(range, usec_per_pixel, &mdc, rc);
 }
 
@@ -147,7 +146,7 @@ void CVisLogicDlg::UpdateCombo()
 
 void CVisLogicDlg::SetThreadStyle(const thread_info* ti, WTL::CDC* pDC)
 {
-	if (ti->name == L"主线程")
+	if (ti->name == (LPCWSTR)IDS(IDS_MAIN_THREAD))
 	{
 		pDC->SelectPen(m_pen[0]);
 		pDC->SetDCPenColor(RGB(0, 0, 255));
@@ -165,7 +164,7 @@ void CVisLogicDlg::SetThreadStyle(const thread_info* ti, WTL::CDC* pDC)
 
 void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, CRect rc)
 {
-	// 缩放因子使用usec/pixel，即微秒每像素表示
+	// zoom factor: usec/pixel
 	memset(&m_channel, 0, sizeof(m_channel));
 
 	pDC->FillSolidRect(&rc, RGB(255, 255, 255));
@@ -175,11 +174,10 @@ void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, C
 		const thread_info* ti = *it;
 		time_range r = ti->life;
 
-		// 如果不在绘制区域内，直接返回
 		// if (r.t1 > range.t2) continue;
 		// if (r.t2.sec != 0 && r.t2 < range.t1) continue;
 
-		// 首先找到一条空闲的通道
+		// find an idle line first
 		int i = 0;
 		for (; i < _countof(m_channel); i++)
 		{
@@ -192,8 +190,8 @@ void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, C
 		}
 
 		m_channel[i] = ti->tid;
-		
-		// 计算thread life和range重叠的部分
+
+		// calc overlap between thread life and range
 		if (r.t1 < range.t1)
 		{
 			r.t1 = range.t1;
@@ -203,10 +201,9 @@ void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, C
 			r.t2 = range.t2;
 		}
 
-		// 没有重叠部分，忽略
+		// no overlap part, ignore
 		if (r.t1 > r.t2) continue;
 
-		// 若有重叠部分，绘制
 		SetThreadStyle(ti, pDC);
 		int line_start = TimeIntervalToPixel(r.t1 - range.t1, usec_per_pixel);
 		int line_end = TimeIntervalToPixel(r.t2 - range.t1, usec_per_pixel);
@@ -214,7 +211,7 @@ void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, C
 		pDC->MoveTo(line_start + rc.left, y);
 		pDC->LineTo(line_end + rc.left, y);
 
-		// 绘制向parent tid的连接线
+		// draw line link to parent tid
 		if (ti->parent_tid != 0)
 		{
 			for (int j = 0; j < _countof(m_channel); j++)
@@ -232,7 +229,7 @@ void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, C
 			}
 		}
 
-		// 绘制tasks
+		// draw tasks
 		pDC->SelectPen(m_pen[3]);
 		for (task_infos_t::const_iterator it = ti->m_tasks.begin(); it != ti->m_tasks.end(); ++it)
 		{
@@ -266,7 +263,7 @@ LRESULT CVisLogicDlg::OnRButtonUp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lPara
 
 		info.Format(L"%u:%s", ti->tid, ti->name.c_str());
 		mu.AppendMenuW(MF_BYCOMMAND, (UINT_PTR)0, info);
-		
+
 		ClientToScreen(&pt);
 		mu.TrackPopupMenu(0, pt.x, pt.y, m_hWnd);
 	}

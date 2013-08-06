@@ -77,12 +77,12 @@ public:
 	{
 		switch (level)
 		{
-		case 0x05: return L"诊断";
-		case 0x10: return L"调试";
-		case 0x20: return L"信息";
-		case 0x25: return L"事件";
-		case 0x30: return L"警告";
-		case 0x40: return L"错误";
+		case 0x05: return IDS(IDS_LL_DIAGNOSE);
+		case 0x10: return IDS(IDS_LL_DEBUG);
+		case 0x20: return IDS(IDS_LL_INFORMATION);
+		case 0x25: return IDS(IDS_LL_EVENT);
+		case 0x30: return IDS(IDS_LL_WARNING);
+		case 0x40: return IDS(IDS_LL_ERROR);
 		default: break;
 		}
 		return NULL;
@@ -122,7 +122,7 @@ public:
 	{
 		Clear();
 	}
-	
+
 	virtual void OnDisconnect()
 	{
 	}
@@ -136,4 +136,4 @@ private:
 	int m_lvlVersion;
 };
 
-TP_DEFINE_GLOBAL_SERVICE(CLogPropertyDB, L"日志属性管理器");
+TP_DEFINE_GLOBAL_SERVICE(CLogPropertyDB, L"Log Property Manager");

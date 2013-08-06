@@ -2,8 +2,6 @@
 #include "hilightermanagedlg.h"
 #include "hilightereditdlg.h"
 
-#define LOG_SAMPLE_TEXT L"日志样例 Sample Log"
-
 LRESULT CHilighterManageDlg::OnInitDialog(HWND, LPARAM)
 {
 	CDialogResize<CHilighterManageDlg>::DlgResize_Init();
@@ -12,26 +10,26 @@ LRESULT CHilighterManageDlg::OnInitDialog(HWND, LPARAM)
 
 	struct ColumnInfo
 	{
-		LPCWSTR name;
+		UINT strid;
 		int width;
 	} ci[] =
 	{
-		{L"高亮名", 100},
-		{L"预览", 300}
+		{IDS_HILIGHT_NAME, 100},
+		{IDS_PREVIEW, 300}
 	};
 	for (int i = 0; i < _countof(ci); i++)
 	{
-		m_list.AddColumn(ci[i].name, i);
+		m_list.AddColumn(IDS(ci[i].strid), i);
 		m_list.SetColumnWidth(i, ci[i].width);
 	}
 
 	const hilighters_t& hls = CConfig::Instance()->GetConfig().hls;
-	
+
 	int index = 0;
 	for (hilighters_t::const_iterator it = hls.begin(); it != hls.end(); ++it, ++index)
 	{
 		m_list.InsertItem(index, it->name.c_str());
-		m_list.SetItemText(index, 1, LOG_SAMPLE_TEXT);
+		m_list.SetItemText(index, 1, IDS(IDS_LOG_SAMPLE_TEXT));
 	}
 	if (m_list.GetItemCount() > 0)
 	{
@@ -101,10 +99,10 @@ LRESULT CHilighterManageDlg::OnBnClickedButtonAddHl(WORD /*wNotifyCode*/, WORD /
 		int index = m_list.GetSelectedIndex() + 1;
 		hls.insert(hls.begin() + index, hl);
 		m_list.InsertItem(index, hl.name.c_str());
-		m_list.SetItemText(index, 1, LOG_SAMPLE_TEXT);
+		m_list.SetItemText(index, 1, IDS(IDS_LOG_SAMPLE_TEXT));
 		SyncControls();
 	}
-	
+
 	return 0;
 }
 

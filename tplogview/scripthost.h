@@ -19,4 +19,4 @@ private:
 	CComPtr<IActiveScriptSite> m_scriptSite;
 };
 
-TP_DEFINE_GLOBAL_SERVICE(CScriptHost, L"脚本运行支持");
+TP_DEFINE_GLOBAL_SERVICE(CScriptHost, L"ScriptSupport");

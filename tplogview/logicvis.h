@@ -72,4 +72,4 @@ private:
 	LONGLONG m_pf;
 };
 
-TP_DEFINE_GLOBAL_SERVICE(CVisualLogic, L"逻辑可视化信息中心");
+TP_DEFINE_GLOBAL_SERVICE(CVisualLogic, L"VisualLogicController");

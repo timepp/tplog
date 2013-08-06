@@ -6,7 +6,7 @@
 
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
-#endif						
+#endif
 
 #ifndef _WIN32_WINDOWS
 #define _WIN32_WINDOWS 0x0410
@@ -57,6 +57,18 @@ BD_NO_WARNING_AREA_BEGIN()
 
 BD_NO_WARNING_AREA_END()
 BD_TUNE_WARNINGS
+
+// resolve C4365
+#undef END_MSG_MAP
+#define END_MSG_MAP() \
+    break; \
+		default: \
+        ATLTRACE((int)(unsigned int)ATL::atlTraceWindowing, 0U, _T("Invalid message map ID (%i)\n"), dwMsgMapID); \
+        ATLASSERT(FALSE); \
+        break; \
+        } \
+        return FALSE; \
+    }
 
 #pragma warning(disable: 4100)
 

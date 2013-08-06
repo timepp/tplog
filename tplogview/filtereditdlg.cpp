@@ -40,14 +40,14 @@ LRESULT CFilterEditDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 	m_toolbar.SetButtonSize(CSize(16, 16));
 	m_toolbar.SetImageList(m_tbImg);
 
-	m_toolbar.AddButton(ID_PAGE_BEGIN + 0, BTNS_CHECKGROUP, TBSTATE_ENABLED, 0, L"基本视图", NULL);
-	m_toolbar.AddButton(ID_PAGE_BEGIN + 1, BTNS_CHECKGROUP, TBSTATE_ENABLED, 1, L"树形视图 (在视图中点右键以添加或修改过滤规则)", NULL);
-	m_toolbar.AddButton(ID_PAGE_BEGIN + 2, BTNS_CHECKGROUP, TBSTATE_ENABLED, 2, L"高级视图", NULL);
+	m_toolbar.AddButton(ID_PAGE_BEGIN + 0, BTNS_CHECKGROUP, TBSTATE_ENABLED, 0, IDS(IDS_FILTEREDIT_BASIC_VIEW), NULL);
+	m_toolbar.AddButton(ID_PAGE_BEGIN + 1, BTNS_CHECKGROUP, TBSTATE_ENABLED, 1, IDS(IDS_FILTEREDIT_TREE_VIEW), NULL);
+	m_toolbar.AddButton(ID_PAGE_BEGIN + 2, BTNS_CHECKGROUP, TBSTATE_ENABLED, 2, IDS(IDS_FILTEREDIT_ADVANCE_VIEW), NULL);
 	m_toolbar.AddButton(0, BTNS_SEP, 0, 0, NULL, NULL);
-	m_toolbar.AddButton(ID_SIMPLIFY, BTNS_BUTTON, TBSTATE_ENABLED, 5, L"化简", NULL);
+	m_toolbar.AddButton(ID_SIMPLIFY, BTNS_BUTTON, TBSTATE_ENABLED, 5, IDS(IDS_SIMPLIFY), NULL);
 	m_toolbar.AddButton(0, BTNS_SEP, 0, 0, NULL, NULL);
-	m_toolbar.AddButton(ID_IMPORT_FILTER, BTNS_BUTTON, TBSTATE_ENABLED, 3, L"导入", NULL);
-	m_toolbar.AddButton(ID_EXPORT_FILTER, BTNS_BUTTON, TBSTATE_ENABLED, 4, L"导出", NULL);
+	m_toolbar.AddButton(ID_IMPORT_FILTER, BTNS_BUTTON, TBSTATE_ENABLED, 3, IDS(IDS_IMPORT), NULL);
+	m_toolbar.AddButton(ID_EXPORT_FILTER, BTNS_BUTTON, TBSTATE_ENABLED, 4, IDS(IDS_EXPORT), NULL);
 
 	m_toolbar.SetMaxTextRows(0);
 
@@ -136,7 +136,7 @@ LRESULT CFilterEditDlg::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
 LRESULT CFilterEditDlg::OnImport(WORD , WORD , HWND , BOOL& )
 {
-	COpenFileDialog dlg(m_defaultFilterDir.c_str(), L"日志过滤配置文件(*.xml)\0*.xml\0所有文件(*.*)\0*.*\0\0");
+	COpenFileDialog dlg(m_defaultFilterDir.c_str(), IDS(IDS_FILTER_CONFIG_FILE) + L"(*.xml)\0*.xml\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
 		m_defaultFilterDir = helper::GetDir(dlg.m_szFileName);
@@ -152,7 +152,7 @@ LRESULT CFilterEditDlg::OnImport(WORD , WORD , HWND , BOOL& )
 
 LRESULT CFilterEditDlg::OnExport(WORD , WORD , HWND , BOOL& )
 {
-	CSaveFileDialog dlg(m_defaultFilterDir.c_str(), L"xml", L"filter.xml", L"日志过滤配置文件(*.xml)\0*.xml\0所有文件(*.*)\0*.*\0\0");
+	CSaveFileDialog dlg(m_defaultFilterDir.c_str(), L"xml", L"filter.xml", IDS(IDS_FILTER_CONFIG_FILE) + L"(*.xml)\0*.xml\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
 		m_defaultFilterDir = helper::GetDir(dlg.m_szFileName);

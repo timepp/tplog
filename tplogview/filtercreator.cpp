@@ -11,7 +11,7 @@ filter_creator::filter_creator()
 	m_pts.push_back(component_prototype(new logical_or_filter, NULL));
 	m_pts.push_back(component_prototype(new logical_not_filter, NULL));
 	m_pts.push_back(component_prototype(new logclass_filter(0, 0), new CLogClassFilterEditDlg));
-	m_pts.push_back(component_prototype(new logcontent_filter(L"开始", true, false), new CLogContentFilterEditDlg));
+	m_pts.push_back(component_prototype(new logcontent_filter((LPCWSTR)IDS(IDS_START), true, false), new CLogContentFilterEditDlg));
 	m_pts.push_back(component_prototype(new logtag_filter(L""), new CLogTagFilterEditDlg));
 	m_pts.push_back(component_prototype(new logprocessname_filter(L""), new CLogProcessNameFilterEditDlg));
 	m_pts.push_back(component_prototype(new logpid_filter(0), new CLogPIDFilterEditDlg));
@@ -58,7 +58,6 @@ bool filter_creator::configure( component* c )
 				return it->cmd->Do(c);
 			}
 
-			// 没有配置函数，视为配置成功
 			return true;
 		}
 	}
@@ -116,7 +115,7 @@ filter* filter_creator::load(LPCWSTR pszFileName)
 
 	hr = pNode->get_firstChild(&pFilterNode);
 	if (FAILED(hr) || !pFilterNode) return NULL;
-	
+
 	return load(pFilterNode);
 }
 

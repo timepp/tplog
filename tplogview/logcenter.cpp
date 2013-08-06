@@ -183,7 +183,7 @@ void CLogCenter::MergeBuffer()
 
 		newrange.idmax = m_logID;
 
-		// 更新occupytime
+		// update occupytime
 		for (UINT64 i = newrange.idmin; i < newrange.idmax; i++)
 		{
 			LogInfo* li = GetLog(i);
@@ -276,7 +276,7 @@ bool CLogCenter::EnablePipeDeviceReg(bool bEnable)
 	::RegCreateKeyExW(HKEY_CURRENT_USER, m_cfgPathReg, 0, NULL, 0, KEY_QUERY_VALUE|KEY_SET_VALUE, NULL, &hKey, NULL);
 	if (!hKey)
 	{
-		helper::GUIReportError(L"从注册表修改pipe设备的配置失败");
+		helper::GUIReportError(IDS(IDS_MODIFY_LOG_DEVICE_CONFIG_FROM_REGISTRY));
 		return false;
 	}
 

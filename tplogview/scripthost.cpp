@@ -100,7 +100,7 @@ public:
 	STDMETHOD(GetLogCount)(long* pCount)
 	{
 		LogRange r = SERVICE(CLogCenter)->GetLogRange();
-		*pCount = r.idmax - r.idmin;
+		*pCount = static_cast<long>(r.idmax - r.idmin);
 		return S_OK;
 	}
 
@@ -142,7 +142,7 @@ public:
 
 	STDMETHOD(MessageBox)(BSTR text, VARIANT title)
 	{
-		if (title.vt != VT_BSTR) title.bstrVal = L"tplogview½Å±¾";
+		if (title.vt != VT_BSTR) title.bstrVal = L"tplogview script";
 		::MessageBoxW(NULL, text, title.bstrVal, MB_OK);
 		return S_OK;
 	}

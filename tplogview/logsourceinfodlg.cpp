@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "logsourceinfodlg.h"
+#include "helper.h"
 
 LRESULT CLogSourceInfoDlg::OnOK(WORD , WORD , HWND , BOOL&)
 {
@@ -26,17 +27,17 @@ LRESULT CLogSourceInfoDlg::OnInitDialog(HWND , LPARAM)
 
 	struct
 	{
-		LPCWSTR name;
+		UINT strid;
 		int width;
 	}columnInfo[] =
 	{
-		L"进程", 160,
-		L"连接时间", 120, 
-		L"进程路径", 400,
+		IDS_PROCESS, 160,
+		IDS_CONNECTION_TIME, 120,
+		IDS_PROCESS_PATH, 400,
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
 	{
-		m_list.AddColumn(columnInfo[i].name, i);
+		m_list.AddColumn(IDS(columnInfo[i].strid), i);
 		m_list.SetColumnWidth(i, columnInfo[i].width);
 	}
 

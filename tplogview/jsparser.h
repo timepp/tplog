@@ -52,7 +52,7 @@ public:
 
 	bool parse(const wchar_t* code, segments_t& segs);
 
-	// t必须大于ctMax
+	// t must greater than ctMax
 	bool add_user_keyword(const wchar_t* name, int t);
 	bool add_user_keyword(const wchar_t** name, size_t len, int t);
 
@@ -229,7 +229,7 @@ inline bool jsparser::parse(const wchar_t* code, segments_t& segs)
 {
 	segs.clear();
 
-	// 当前的scope
+	// current scope
 	// enum {scopeNormal, scopeBlockComment, scopeLineComment, scopeFunctionParamDecl, scopeFunctionBody} scope = scopeNormal;
 	const wchar_t* start = code;
 	const wchar_t* p = code;
@@ -257,7 +257,7 @@ inline bool jsparser::parse(const wchar_t* code, segments_t& segs)
 		}
 		else if (ch == L'\"' || ch == L'\'')
 		{
-			// TODO 解析字符串中的转义符
+			// TODO parse escape character
 			p = lookup_string(p);
 			add_segment(segs, code, start, p, ctStringLiteral);
 			start = p;

@@ -9,6 +9,26 @@
 
 GlobalData GD;
 
+CStringW helper::LoadStringFromResource(UINT id)
+{
+	wchar_t buffer[1024];
+	AtlLoadString(id, buffer, _countof(buffer));
+	return buffer;
+}
+
+CStringW helper::LoadStringFromResourceFmt(UINT id, ...)
+{
+	wchar_t buffer[1024] = L"";
+	AtlLoadString(id, buffer, _countof(buffer));
+
+	CStringW ret;
+	va_list args;
+	va_start(args, id);
+	ret.FormatV(buffer, args);
+	va_end(args);
+	return ret;
+}
+
 void helper::SplitString(const CStringW& str, LPCWSTR pszSpliter, std::set<CStringW>& ss)
 {
 	ss.clear();
@@ -215,7 +235,6 @@ size_t helper::str_distance(const std::wstring& source, const std::wstring& targ
 		//step 4
 		for(size_t j=1;j<=m;j++)
 		{
-
 			const wchar_t dj=target[j-1];
 			//step 5
 			int cost;
@@ -230,7 +249,6 @@ size_t helper::str_distance(const std::wstring& source, const std::wstring& targ
 			const size_t left=matrix[i][j-1]+1;
 			const size_t diag=matrix[i-1][j-1]+cost;
 			matrix[i][j]=min(above,min(left,diag));
-
 		}
 	}//step7
 	return matrix[n][m];
@@ -349,7 +367,7 @@ void helper::GUIReportError(LPCWSTR pszError, HRESULT hr)
 	CStringW strInfo = pszError;
 	strInfo += L"\n";
 	strInfo.AppendFormat(L"LASTERROR: %u\n%s", hr, (LPCWSTR)GetErrorDesc((DWORD)hr));
-	::MessageBoxW(NULL, strInfo, L"日志查看器", MB_OK|MB_ICONERROR);
+	::MessageBoxW(NULL, strInfo, IDS(IDS_TPLOGVIEW), MB_OK|MB_ICONERROR);
 }
 
 void helper::RunOffline(LPCWSTR pszFilePath)
@@ -587,7 +605,7 @@ CStringW helper::GetLogLevelDescription(UINT level)
 	const wchar_t* desc = ServiceHelper::GetLogPropertyDB()->GetLevelDesc(level);
 	if (desc) return desc;
 
-	if (level == 0) return L"最低";
+	if (level == 0) return IDS(IDS_LOWEST);
 
 	return (LPCWSTR)formatstr(L"%u", level);
 }
@@ -749,7 +767,7 @@ COLORREF helper::GetGradientColor(COLORREF c1, COLORREF c2, double ratio)
 	int r2 = GetRValue(c2);
 	int b2 = GetBValue(c2);
 	int g2 = GetGValue(c2);
-	
+
 	if (ratio > 1) ratio = 1;
 
 	int r = r1 + static_cast<int>((r2 - r1) * ratio);

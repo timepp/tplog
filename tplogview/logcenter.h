@@ -46,7 +46,7 @@ public:
 	void UnlockLog();
 
 	void ClearAllLog();
-	// 清除logid之前的日志
+	// clear log before logid
 	void ClearOldLog(UINT64 logid);
 
 	void AddListener(CLogCenterListener* pListener);
@@ -105,7 +105,6 @@ private:
 
 	UINT m_timerID;
 
-	// 收到log provider的notify后，在TIMER中显示
 	UINT m_notifyTimerID;
 	int m_notifyID;
 
@@ -113,4 +112,4 @@ private:
 	CStringW m_cfgPathReg;
 };
 
-TP_DEFINE_GLOBAL_SERVICE(CLogCenter, L"日志内容管理中心");
+TP_DEFINE_GLOBAL_SERVICE(CLogCenter, L"LogCenter");

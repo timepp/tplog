@@ -7,9 +7,8 @@
 
 #define SAVE_UNSTABLE_FILTER
 
-namespace 
+namespace
 {
-
 	template <typename T> int value_compare(const T& v1, const T& v2)
 	{
 		if (v1 < v2) return -1;
@@ -49,33 +48,31 @@ namespace
 
 std::wstring logclass_filter::name() const
 {
-	return L"日志级别过滤规则";
+	return (LPCWSTR)IDS(IDS_FILTER_RULE_LOG_LEVEL);
 }
 std::wstring logclass_filter::desc() const
 {
 	if (m_class_low == 0 && m_class_high == 0)
 	{
-		return L"所有日志级别";
+        return IDS2(IDS_ALL_LOG_LEVEL);
 	}
 	else if (m_class_low == m_class_high)
 	{
-		return L"日志级别为" + quote(helper::GetLogLevelDescription(m_class_high));
+		return std::wstring(IDS2(IDS_LOG_LEVEL)) + L" = " + quote(helper::GetLogLevelDescription(m_class_high));
 	}
 	else if (m_class_low == 0)
 	{
-		return L"日志级别不高于" + quote(helper::GetLogLevelDescription(m_class_high));
+		return std::wstring(IDS2(IDS_LOG_LEVEL)) + L" <= " + quote(helper::GetLogLevelDescription(m_class_high));
 	}
 	else if (m_class_high == 0)
 	{
-		return L"日志级别不低于" + quote(helper::GetLogLevelDescription(m_class_low));
+		return std::wstring(IDS(IDS_LOG_LEVEL)) + L" >= " + quote(helper::GetLogLevelDescription(m_class_low));
 	}
 	else
 	{
-		return std::wstring(L"日志级别在")
-			+  quote(helper::GetLogLevelDescription(m_class_low))
-			+  L"和"
-			+  quote(helper::GetLogLevelDescription(m_class_high))
-			+  L"之间";
+		return
+			std::wstring(IDS2(IDS_LOG_LEVEL)) +
+            IDSFMT2(IDS_BETWEEN_s_AND_s, quote(helper::GetLogLevelDescription(m_class_low)).c_str(), quote(helper::GetLogLevelDescription(m_class_high)).c_str());
 	}
 }
 component* logclass_filter::clone(bool) const
@@ -123,21 +120,21 @@ logclass_filter::logclass_filter(UINT low, UINT high) : m_class_high(high), m_cl
 
 std::wstring logcontent_filter::name() const
 {
-	return L"日志内容过滤规则";
-}	
+	return IDS2(IDS_FILTER_RULE_LOG_CONTENT);
+}
 std::wstring logcontent_filter::desc() const
 {
 	std::wstring str;
 	if (m_use_regex)
 	{
-		str = L"日志内容匹配正则表达式" + quote(m_matcher);
+		str = IDSFMT(IDS_LOG_CONTENT_MATCH_REGEX_s, m_matcher.c_str());
 	}
 	else
 	{
-		str = L"日志内容包含" + quote(m_matcher);
+		str = IDSFMT(IDS_LOG_CONTENT_CONTAIN_s, m_matcher.c_str());
 	}
 
-	if (m_ignore_case) str += L"  (忽略大小写)";
+	if (m_ignore_case) str += L"  (" + IDS(IDS_IGNORE_CASE) + L")";
 	return str;
 }
 component* logcontent_filter::clone(bool) const
@@ -215,7 +212,7 @@ bool logcontent_filter::setfilter(const std::wstring& matcher, bool ignore_case,
 	return true;
 }
 
-logcontent_filter::logcontent_filter(const std::wstring& matcher, bool ignore_case, bool use_regex) 
+logcontent_filter::logcontent_filter(const std::wstring& matcher, bool ignore_case, bool use_regex)
 : m_matcher(matcher), m_ignore_case(ignore_case), m_use_regex(use_regex)
 {
 	if (m_use_regex)
@@ -231,11 +228,11 @@ logtag_filter::logtag_filter(const std::wstring& tag)
 }
 std::wstring logtag_filter::name() const
 {
-	return L"日志标签过滤规则";
+	return IDS2(IDS_FILTER_RULE_LOG_TAG);
 }
 std::wstring logtag_filter::desc() const
 {
-	return std::wstring(L"日志标签匹配") + quote(m_tag); 
+	return (LPCWSTR)IDSFMT(IDS_LOG_TAG_MATCH_s, m_tag.c_str());
 }
 component* logtag_filter::clone(bool) const
 {
@@ -283,11 +280,11 @@ logpid_filter::logpid_filter(unsigned int pid)
 }
 std::wstring logpid_filter::name() const
 {
-	return L"进程ID过滤规则";
+	return IDS2(IDS_FILTER_RULE_PROCESS_ID);
 }
 std::wstring logpid_filter::desc() const
 {
-	return (const wchar_t *)tp::cz(L"进程ID为%u", m_pid);
+	return IDSFMT2(IDS_PROCESS_ID_IS_u, m_pid);
 }
 component* logpid_filter::clone(bool) const
 {
@@ -338,11 +335,11 @@ logtid_filter::logtid_filter(unsigned int tid)
 }
 std::wstring logtid_filter::name() const
 {
-	return L"线程ID过滤规则";
+	return IDS2(IDS_FILTER_RULE_THREAD_ID);
 }
 std::wstring logtid_filter::desc() const
 {
-	return (const wchar_t *)tp::cz(L"线程ID为%u", m_tid);
+	return IDSFMT2(IDS_THREAD_ID_IS_u, m_tid);
 }
 component* logtid_filter::clone(bool) const
 {
@@ -393,11 +390,11 @@ logprocessname_filter::logprocessname_filter(const std::wstring& process_name)
 }
 std::wstring logprocessname_filter::name() const
 {
-	return L"进程过滤规则";
+	return IDS2(IDS_FILTER_RULE_PROCESSNAME);
 }
 std::wstring logprocessname_filter::desc() const
 {
-	return std::wstring(L"进程为") + quote(m_process_name); 
+	return IDSFMT2(IDS_PROCESS_IS_s, m_process_name.c_str());
 }
 component* logprocessname_filter::clone(bool) const
 {

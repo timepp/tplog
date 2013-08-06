@@ -59,7 +59,7 @@ UINT CLogClassFilterEditDlg::GetLogClass(int comboID)
 	{
 		return combo.GetItemData(index);
 	}
-	
+
 	CStringW text;
 	combo.GetWindowText(text);
 	return wcstoul(text, NULL, 10);
@@ -89,10 +89,10 @@ LRESULT CLogContentFilterEditDlg::OnOK(WORD , WORD , HWND , BOOL& )
 	bool ics = (btn.GetCheck() == 1);
 	CButton btn2((HWND)GetDlgItem(IDC_CHECK_REGEX));
 	bool use_regex = (btn2.GetCheck() == 1);
-	
+
 	if (!m_filter->setfilter((LPCWSTR)text, ics, use_regex))
 	{
-		::MessageBoxW(m_hWnd, L"正则表达式解析错误，请检查。", L"错误", MB_ICONWARNING|MB_OK);
+		::MessageBoxW(m_hWnd, IDS(IDS_REGEX_PARSE_ERROR), IDS(IDS_ERROR), MB_ICONWARNING|MB_OK);
 		return 0;
 	}
 
@@ -118,7 +118,7 @@ LRESULT CLogContentFilterEditDlg::OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/
 		GetDlgItem(IDC_CHECK_REGEX).SendMessageW(BM_SETCHECK, 1);
 	}
 	CenterWindow();
-	
+
 	return 0;
 }
 

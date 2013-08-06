@@ -171,9 +171,7 @@ private:
 	void UpdateUI();
 	void UpdateFunctionPos(int index, int lookuplimit);
 
-	// 判断是否是一条函数日志
 	bool IsFunctionLog(const tplog::logitem& item);
-	// 取某一条日志在当前视图的索引
 	int GetLogIndex(UINT64 logid);
 
 	void UpdateMRU();
@@ -239,16 +237,16 @@ private:
 	CImageList m_listImageList;
 	CFont m_listFont;
 
-	CIcon m_filterIndicator; // 右下角显示的漏斗ICON，提示现在是否有过滤情况
+	CIcon m_filterIndicator; 
 
 	CTagSelectWnd m_tagSelector;
 
-	// 过滤
+	// filter
 	typedef std::vector<UINT64> FilterMap;
 	FilterMap m_lvs;
 	CFilterSetDlg m_filterDlg;
 
-	// 查找
+	// search
 	CStringW m_searchText;
 	size_t m_searchPos;
 	CSearchDlg m_searchDlg;
@@ -256,7 +254,7 @@ private:
 	int m_functionBegin;
 	int m_functionEnd;
 
-	// 书签
+	// bookmark
 	std::set<UINT64> m_bookmarks;
 
 	// MRU

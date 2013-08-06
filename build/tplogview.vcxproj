@@ -59,6 +59,7 @@
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(tplogroot)\thirdparty\wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;psapi.lib;rpcns4.lib;rpcrt4.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -82,6 +83,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>EnableAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>$(tplogroot)\thirdparty\wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;psapi.lib;rpcns4.lib;rpcrt4.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>

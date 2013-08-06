@@ -21,15 +21,15 @@ LRESULT COptionDlg::OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/)
 
 	if (m_wizzardMode)
 	{
-		CTreeItem itemSys = AddOptionPage(NULL, L"系统", &m_optSystem);
-		SetWindowText(L"设置向导");
+		CTreeItem itemSys = AddOptionPage(NULL, IDS(IDS_SYSTEM), &m_optSystem);
+		SetWindowText(IDS(IDS_SETTING_WIZZARD));
 		itemSys.Select();
 	}
 	else
 	{
-		CTreeItem itemView = AddOptionPage(NULL, L"显示", NULL);
-		AddOptionPage(itemView, L"性能标记", &m_optPerfMark);
-		CTreeItem itemSys = AddOptionPage(NULL, L"系统", &m_optSystem);
+		CTreeItem itemView = AddOptionPage(NULL, IDS(IDS_SHOW), NULL);
+		AddOptionPage(itemView, IDS(IDS_PREFMARK), &m_optPerfMark);
+		CTreeItem itemSys = AddOptionPage(NULL, IDS(IDS_SYSTEM), &m_optSystem);
 		ExpandAllChildItem(m_tree.GetRootItem());
 		itemView.Select();
 	}
@@ -78,8 +78,6 @@ void COptionDlg::CreateOptionPages()
 
 	m_pages.push_back(&m_optPerfMark);
 	m_pages.push_back(&m_optSystem);
-
-	// 调整子窗口的位置
 
 	CWindow wnd = GetDlgItem(IDC_STATIC_OPTION_CLIENT);
 	CRect rc;

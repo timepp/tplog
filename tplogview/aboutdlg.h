@@ -4,13 +4,6 @@
 #include "config.h"
 #include "helper.h"
 
-const LPCWSTR g_tips[] =
-{
-	L"可以用ctrl+f在过滤结果中进行搜索哦",
-	L"日志信息对话框可以选择自动换行",
-	L"可以配置高亮规则，把符合条件的日志突出显示",
-};
-
 class CAboutDlg
 	: public CDialogImpl<CAboutDlg>
 	, public CColoredDlgImpl

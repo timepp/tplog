@@ -9,7 +9,7 @@ LRESULT COptPage_PerfMark::OnInitDialog(HWND, LPARAM)
 
 	CDlgItem(m_hWnd, IDC_CHECK_ENABLE_PERFMARK).SetCheck(CFG.ui.perfmark.enable);
 	m_cs.SetColor(CFG.ui.perfmark.mark_color);
-	SetDlgItemInt(IDC_EDIT_MAX_OCCUPYTIME, CFG.ui.perfmark.maxinterval);
+	SetDlgItemInt(IDC_EDIT_MAX_OCCUPYTIME, (UINT)CFG.ui.perfmark.maxinterval);
 	
 	return TRUE;
 }
@@ -17,7 +17,7 @@ LRESULT COptPage_PerfMark::OnInitDialog(HWND, LPARAM)
 void COptPage_PerfMark::Save()
 {
 	CFG.ui.perfmark.mark_color = m_cs.GetColor();
-	CFG.ui.perfmark.maxinterval = GetDlgItemInt(IDC_EDIT_MAX_OCCUPYTIME);
+	CFG.ui.perfmark.maxinterval = (int)GetDlgItemInt(IDC_EDIT_MAX_OCCUPYTIME);
 	CFG.ui.perfmark.enable = CDlgItem(m_hWnd, IDC_CHECK_ENABLE_PERFMARK).GetCheck();
 }
 

@@ -64,4 +64,4 @@ public:
 	LRESULT OnEnUpdateEditScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 };
 
-TP_DEFINE_GLOBAL_SERVICE(CRunScriptDlg, L"‘À––Script");
+TP_DEFINE_GLOBAL_SERVICE(CRunScriptDlg, L"RunScript");

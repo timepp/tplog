@@ -15,7 +15,7 @@ LRESULT CTagSelectWnd::OnInitDialog(UINT msg, WPARAM wp, LPARAM lp, BOOL& handle
 	m_list.AddColumn(L"", 0);
 	m_list.SetColumnWidth(0, rc.Width()-20);
 	m_list.InsertItem(0, L"");
-	m_list.SetItemText(0, 0, L"全部");
+	m_list.SetItemText(0, 0, IDS(IDS_ALL));
 
 	return TRUE;
 }
@@ -38,7 +38,6 @@ void CTagSelectWnd::AddTag(LPCWSTR pszTags)
 	for (std::set<CStringW>::const_iterator it = ss.begin(); it != ss.end(); ++it)
 	{
 		CStringW strTag = *it;
-		// 查找是否有,没有就加上
 		int i = 0;
 		for (i = 0; i < m_list.GetItemCount(); i++)
 		{

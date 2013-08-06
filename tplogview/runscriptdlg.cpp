@@ -87,7 +87,7 @@ LRESULT CRunScriptDlg::OnCancel(WORD , WORD , HWND , BOOL& )
 LRESULT CRunScriptDlg::OnSaveScript(WORD , WORD , HWND , BOOL& )
 {
 	std::wstring& path = CConfig::Instance()->GetConfig().ui.savedpath.script;
-	CSaveFileDialog dlg(path.c_str(), L"js", L"script.js", L"日志查看器脚本(*.js)\0*.js\0所有文件(*.*)\0*.*\0\0");
+	CSaveFileDialog dlg(path.c_str(), L"js", L"script.js", IDS(IDS_SCRIPT_FILE) + L"(*.js)\0*.js\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
 		CStringW content;
@@ -101,7 +101,7 @@ LRESULT CRunScriptDlg::OnSaveScript(WORD , WORD , HWND , BOOL& )
 LRESULT CRunScriptDlg::OnLoadScript(WORD , WORD , HWND , BOOL& )
 {
 	std::wstring& path = CConfig::Instance()->GetConfig().ui.savedpath.script;
-	COpenFileDialog dlg(path.c_str(), L"日志查看器脚本(*.js)\0*.js\0所有文件(*.*)\0*.*\0\0");
+	COpenFileDialog dlg(path.c_str(), IDS(IDS_SCRIPT_FILE) + L"(*.js)\0*.js\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
 		CStringW content = helper::GetTextFileContent(dlg.m_szFileName);
@@ -117,17 +117,17 @@ void CRunScriptDlg::ReColorize()
 {
 	CStringW strCode;
 	m_edit.GetWindowTextW(strCode);
-	// FIXME 为什么richedit返出来的text包含有\r???
+	// FIXME why richedit returned text contains \r???
 	strCode.Remove(L'\r');
 
 	if (strCode == m_code)
 	{
-		// 文本没有变化
+		// no change
 		return;
 	}
 	else
 	{
-		// 根据文本变化调整m_segments
+		// adjust m_segments according to text change
 		CHARRANGE cr;
 		m_edit.GetSel(cr);
 		int delta = m_code.GetLength() - strCode.GetLength();
@@ -137,7 +137,6 @@ void CRunScriptDlg::ReColorize()
 			{
 				it->range.begin -= delta;
 				it->range.end -= delta;
-				// 如果偏移后， 落到插入点左边， 则删除区段
 				if (it->range.begin < cr.cpMin)
 				{
 					it = m_segments.erase(it);

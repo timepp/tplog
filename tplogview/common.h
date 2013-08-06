@@ -9,15 +9,13 @@
 typedef std::set<CStringW> StrSet;
 typedef std::list<std::wstring> strlist_t;
 
-// 日志信息
 struct LogInfo
 {
-	UINT64 logid;                      // 全局唯一的日志ID
-	tplog::logitem* item;              // 通过管道接收到的日志信息
-	INT64 occupytime;                  // 日志占用时间（本条日志到同一线程的下一条日志的时间间隔）
+	UINT64 logid;                      // globally unique
+	tplog::logitem* item;              // log format received from pipe
+	INT64 occupytime;                  // time interval between current log and next log in same thread
 };
 
-// 列表项的定制
 struct disp_info
 {
 	COLORREF color;

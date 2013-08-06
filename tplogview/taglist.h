@@ -35,7 +35,7 @@ private:
 				SelectItem(item);
 				SetCheckState(item, !GetCheckState(item));
 
-				if (item == 0) // 0是全选的意思
+				if (item == 0) // 0 means select all
 				{
 					for (int i = 1; i < GetItemCount(); i++)
 					{

@@ -66,7 +66,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR lps
 
 	::LoadLibrary(L"Riched20.dll");
 
-	// 兼容旧版本的配置文件
 	CConfig* cfg = CConfig::Instance();
 	cfg->Load(L"");
 

@@ -2,6 +2,8 @@
 
 #include <tplib/include/composite.h>
 #include "common.h"
+#include "helper.h"
+#include "Resource.h"
 
 /// helper
 static std::wstring quote(const wchar_t* str, const std::wstring border = L"\'")
@@ -29,7 +31,7 @@ class logical_and_filter : public filter, public composite
 public:
 	virtual std::wstring name() const
 	{
-		return L"逻辑与";
+		return (LPCWSTR)IDS(IDS_LOGICAL_AND);
 	}
 	virtual std::wstring desc() const
 	{
@@ -46,7 +48,7 @@ public:
 				component* child = get_child(i);
 				std::wstring child_desc = child->desc();
 				if (child_desc.empty()) continue;
-				if (!str.empty()) str += L" 并且 ";
+				if (!str.empty()) str += L" " + IDS(IDS_AND) + L" ";
 				if (child->child_count() > 1) str += L"( ";
 				str += child_desc;
 				if (child->child_count() > 1) str += L" )";
@@ -116,12 +118,12 @@ public:
 				i++;
 			}
 		}
-		
+
 		// sort&uniq
 		c->sort();
 		c->uniq();
 
-		// 
+		//
 		if (compare(c) != 0)
 		{
 			component* ret = c->simplify();
@@ -140,7 +142,7 @@ class logical_or_filter : public filter, public composite
 public:
 	virtual std::wstring name() const
 	{
-		return L"逻辑或";
+		return (LPCWSTR)IDS(IDS_LOGICAL_OR);
 	}
 	virtual std::wstring desc() const
 	{
@@ -157,7 +159,7 @@ public:
 				component* child = get_child(i);
 				std::wstring child_desc = child->desc();
 				if (child_desc.empty()) continue;
-				if (!str.empty()) str += L" 或者 ";
+				if (!str.empty()) str += L" " + IDS(IDS_OR) + L" ";
 				if (child->child_count() > 1) str += L"( ";
 				str += child_desc;
 				if (child->child_count() > 1) str += L" )";
@@ -232,7 +234,7 @@ public:
 		c->sort();
 		c->uniq();
 
-		// 
+		//
 		if (compare(c) != 0)
 		{
 			component* ret = c->simplify();
@@ -251,7 +253,7 @@ class logical_not_filter : public filter, public composite
 public:
 	virtual std::wstring name() const
 	{
-		return L"逻辑非";
+		return (LPCWSTR)IDS(IDS_LOGICAL_NOT);
 	}
 	virtual std::wstring desc() const
 	{
@@ -263,7 +265,7 @@ public:
 			std::wstring child_desc = child->desc();
 			if (!child_desc.empty())
 			{
-				str += L"非_";
+				str += IDS(IDS_NOT);
 				if (child->child_count() > 1) str += L"( ";
 				str += child_desc;
 				if (child->child_count() > 1) str += L" )";

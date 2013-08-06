@@ -97,7 +97,7 @@ void CMainFrame::CreateReBar()
 	SetMenu(NULL);
 
 //	m_edit.Create(m_hWnd, CRect(0, 0, 150, 20), 0, WS_CHILD|WS_VISIBLE|WS_BORDER|WS_CLIPSIBLINGS|WS_CLIPCHILDREN);
-//	m_editFont.CreateFontW(-16, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"宋体");
+//	m_editFont.CreateFontW(-16, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"瀹嬩綋");
 //	m_edit.SetFont(m_editFont);
 //	m_edit.SetDlgCtrlID(IDC_SEARCH_EDIT);
 
@@ -118,9 +118,9 @@ void CMainFrame::CreateStatusBar()
 	int panes[] = {ID_DEFAULT_PANE, ID_PANE_LOGCOUNT, ID_PANE_FILTERED_LOGCOUNT, ID_PANE_WORKTHREAD_COUNT};
 	m_wndStatusbar.Create(m_hWnd);
 	m_wndStatusbar.SetPanes(panes, _countof(panes), true);
-	m_wndStatusbar.SetPaneText(ID_PANE_LOGCOUNT, L"总数:0");
-	m_wndStatusbar.SetPaneText(ID_PANE_FILTERED_LOGCOUNT, L"显示:0");
-	m_wndStatusbar.SetPaneText(ID_PANE_WORKTHREAD_COUNT, L"日志源:0");
+	m_wndStatusbar.SetPaneText(ID_PANE_LOGCOUNT, IDS(IDS_TOTAL) + L":0");
+	m_wndStatusbar.SetPaneText(ID_PANE_FILTERED_LOGCOUNT, IDS(IDS_SHOW) + L":0");
+	m_wndStatusbar.SetPaneText(ID_PANE_WORKTHREAD_COUNT, IDS(IDS_LOG_SOURCE) + L":0");
 
 	m_filterIcon = AtlLoadIconImage(IDI_FILTER, LR_DEFAULTCOLOR, 16, 16);
 
@@ -138,30 +138,30 @@ void CMainFrame::CreateList()
 	m_list.Create(m_hWnd, rcDefault, NULL, WS_CHILD|WS_BORDER|WS_VISIBLE|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|dwStyle, WS_EX_ACCEPTFILES);
 	m_list.SetExtendedListViewStyle(dwExStyle);
 	m_list.SetDlgCtrlID(IDC_LIST);
-	m_listFont.CreateFontW(-12, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"宋体");
-	m_list.SetFont(m_listFont);
+	//m_listFont.CreateFontW(-12, 0, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"瀹嬩綋");
+	//m_list.SetFont(m_listFont);
 	m_listImageList.Create(16, 16, ILC_COLOR32|ILC_MASK, 2, 2);
 	m_listImageList.AddIcon(::LoadIconW(ModuleHelper::GetResourceInstance(), MAKEINTRESOURCEW(IDI_STAR)));
 	m_list.SetImageList(m_listImageList, LVSIL_SMALL);
 
 	struct
 	{
-		LPCWSTR name;
+		UINT strid;
 		int width;
 	}columnInfo[] =
 	{
-		L"", 20,
-		L"序号", 60, 
-		L"时间", 110,
-		L"间隔(us)", 60,
-		L"级别", 40,
-		L"进程", 150,
-		L"线程", 50,
-		L"内容", 600,
+		IDS_NULL, 20,
+		IDS_SEQ, 60,
+		IDS_TIME, 110,
+		IDS_INTERVAL_US, 60,
+		IDS_LEVEL, 40,
+		IDS_PROCESS, 150,
+		IDS_THREAD, 50,
+		IDS_LOG_CONTENT, 600,
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
 	{
-		m_list.AddColumn(columnInfo[i].name, i);
+		m_list.AddColumn(IDS(columnInfo[i].strid), i);
 		m_list.SetColumnWidth(i, columnInfo[i].width);
 	}
 
@@ -189,7 +189,7 @@ LRESULT CMainFrame::OnCreate( LPCREATESTRUCTW /*cs*/ )
 
 	CMenuHandle mu = GetSystemMenu(FALSE);
 	mu.InsertMenu(0, MF_BYPOSITION|MF_SEPARATOR, 0U, L"");
-	mu.InsertMenu(0, MF_BYPOSITION|MF_STRING, ID_VIEW_MENUBAR, L"显示/隐藏菜单\tF9");
+	mu.InsertMenu(0, MF_BYPOSITION|MF_STRING, ID_VIEW_MENUBAR, IDS(IDS_SHOW_OR_HIDE_MENU) + L"\tF9");
 
 	CMenuHandle mainMenu = m_cmdbar.GetMenu();
 	CMenuHandle fileMenu = mainMenu.GetSubMenu(0);
@@ -316,15 +316,15 @@ void CMainFrame::Export(BOOL bFilter)
 		{
 			WCHAR rtpos[256];
 			CTime tm(pLog->item->log_time_sec);
-			_snwprintf_s(rtpos, _TRUNCATE, L"[%s:%x:%x:%d]", 
-				pLog->item->log_process_name.c_str(), 
-				pLog->item->log_pid, 
-				pLog->item->log_tid, 
+			_snwprintf_s(rtpos, _TRUNCATE, L"[%s:%x:%x:%d]",
+				pLog->item->log_process_name.c_str(),
+				pLog->item->log_pid,
+				pLog->item->log_tid,
 				pLog->item->log_depth);
-			fwprintf_s(fp, L"%s.%03d %02d %32s {%-16s} %s\n", 
-				(LPCWSTR)tm.Format(L"%Y-%m-%d %H:%M:%S"), 
-				pLog->item->log_time_msec, 
-				pLog->item->log_class, 
+			fwprintf_s(fp, L"%s.%03d %02d %32s {%-16s} %s\n",
+				(LPCWSTR)tm.Format(L"%Y-%m-%d %H:%M:%S"),
+				pLog->item->log_time_msec,
+				pLog->item->log_class,
 				rtpos,
 				pLog->item->log_tags.c_str(),
 				pLog->item->log_content.c_str());
@@ -332,9 +332,9 @@ void CMainFrame::Export(BOOL bFilter)
 	};
 	CSaveFileDialog dlg(
 		m_cfg.ui.savedpath.logfile.c_str(),
-		L"xlog", 
+		L"xlog",
 		CTime::GetCurrentTime().Format(L"%Y%m%d%H%M%S"),
-		L"日志文件(*.xlog)\0*.xlog\0文本文件(*.txt)\0*.txt\0所有文件(*.*)\0*.*\0\0",
+		IDS(IDS_LOG_FILE) + L"(*.xlog)\0*.xlog\0" + IDS(IDS_TEXT_FILE) + L"(*.txt)\0*.txt\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0",
 		m_hWnd);
 	if (dlg.DoModal() == IDOK)
 	{
@@ -344,7 +344,7 @@ void CMainFrame::Export(BOOL bFilter)
 		_wfopen_s(&fp, dlg.m_szFileName, L"wt,ccs=UNICODE");
 		if (!fp)
 		{
-			// TODO 提示
+			// TODO notify
 			return;
 		}
 
@@ -378,8 +378,8 @@ void CMainFrame::Export(BOOL bFilter)
 LRESULT CMainFrame::OnOpenXLog(WORD, WORD, HWND, BOOL&)
 {
 	COpenFileDialog dlg(
-		m_cfg.ui.savedpath.logfile.c_str(), 
-		L"日志(*.log,*.txt,*.xlog,*.tplog)\0*.log;*.txt;*.xlog;*.tplog\0所有文件(*.*)\0*.*\0\0");
+		m_cfg.ui.savedpath.logfile.c_str(),
+		IDS(IDS_LOG_FILE) + L"(*.log,*.txt,*.xlog,*.tplog)\0*.log;*.txt;*.xlog;*.tplog\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
 		GD.strXLogFile = dlg.m_szFileName;
@@ -435,11 +435,12 @@ void CMainFrame::OnUserCommand(UINT /*uCode*/, int nID, HWND /*hWnd*/)
 
 void CMainFrame::UpdateWindowTitle(LPCWSTR pszFileName)
 {
-	CStringW strTitle = L"日志查看器";
+	CStringW strTitle = IDS(IDS_TPLOGVIEW);
 
 	if (ServiceHelper::GetLogCenter()->MonitoringPipe())
 	{
-		strTitle += L" - 正在监控";
+		strTitle += L" - ";
+		strTitle += IDS(IDS_MONITORING);
 	}
 	else if (pszFileName)
 	{
@@ -476,7 +477,7 @@ void CMainFrame::OnNewLog(const LogRange& range)
 		if (bAutoScroll)
 		{
 			m_list.SelectItem(m_list.GetItemCount() - 1);
-		}		
+		}
 	}
 }
 
@@ -515,7 +516,7 @@ void CMainFrame::OpenXLog(LPCWSTR pszFileName)
 	ClearAllLog();
 	UpdateWindowTitle(pszFileName);
 
-	// 加入MRU
+	// add to MRU
 	strlist_t& files = CConfig::Instance()->GetConfig().ui.recent_files;
 	strlist_t::iterator it = std::find(files.begin(), files.end(), pszFileName);
 	if (it != files.end())
@@ -635,7 +636,6 @@ LRESULT CMainFrame::OnNMCustomdrawList(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*b
 	}
 	if (pNMCD->nmcd.dwDrawStage == (CDDS_ITEMPREPAINT|CDDS_ITEM|CDDS_SUBITEM))
 	{
-		// 因为第四列需要使用特殊的背景色，所以先把第一列的背景色记录下来，在画第五列的时候再恢复
 		static COLORREF rowcolor = 0;
 		if (pNMCD->iSubItem == 0)
 		{
@@ -706,7 +706,7 @@ LRESULT CMainFrame::OnNMCustomdrawList(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*b
 						}
 						rect.left = rc.right;
 					}
-					
+
 					rc = rect;
 					if (rc.Width() > 0)
 					{
@@ -747,9 +747,9 @@ LRESULT CMainFrame::OnNMRclickList(int /*idCtrl*/, LPNMHDR /*pNMHDR*/, BOOL& /*b
 	CMenu menu;
 	menu.CreatePopupMenu();
 
-	menu.AppendMenu(MF_STRING, ID_CLEAR_BEFORE_THIS, L"清除此条之前的所有日志(&D)");
-	menu.AppendMenu(MF_STRING, ID_TOGGLE_BOOKMARK, L"设置/取消书签(&M)");
-	
+	menu.AppendMenu(MF_STRING, ID_CLEAR_BEFORE_THIS);
+	menu.AppendMenu(MF_STRING, ID_TOGGLE_BOOKMARK);
+
 
 	menu.TrackPopupMenu(0, pt.x, pt.y, m_hWnd);
 
@@ -774,7 +774,6 @@ BOOL CMainFrame::PreTranslateMessage( MSG* pMsg )
 		return TRUE;
 	}
 
-	// list中的快捷键
 	if (pMsg->message == WM_CHAR)
 	{
 		if (GetFocus() == m_list.m_hWnd)
@@ -791,8 +790,7 @@ BOOL CMainFrame::PreTranslateMessage( MSG* pMsg )
 					return TRUE;
 				}
 
-				// TODO: f 下一屏 b 上一屏 
-
+				// TODO: f pagedown b pageup
 			}
 		}
 	}
@@ -833,9 +831,9 @@ void CMainFrame::UpdateStatusInfo()
 	if (info != m_status)
 	{
 		m_status = info;
-		m_wndStatusbar.SetPaneText(ID_PANE_LOGCOUNT, tp::cz(L"总数:%u", info.log_count));
-		m_wndStatusbar.SetPaneText(ID_PANE_FILTERED_LOGCOUNT, tp::cz(L"显示:%u", info.filtered_log_count));
-		m_wndStatusbar.SetPaneText(ID_PANE_WORKTHREAD_COUNT, tp::cz(L"日志源:%u", info.thread_count));
+		m_wndStatusbar.SetPaneText(ID_PANE_LOGCOUNT, IDS(IDS_TOTAL) + formatstr(L":%u", info.log_count));
+		m_wndStatusbar.SetPaneText(ID_PANE_FILTERED_LOGCOUNT, IDS(IDS_SHOW) + formatstr(L":%u", info.filtered_log_count));
+		m_wndStatusbar.SetPaneText(ID_PANE_WORKTHREAD_COUNT, IDS(IDS_LOG_SOURCE) + formatstr(L":%u", info.thread_count));
 		HICON icon = info.has_filter? (HICON)m_filterIndicator : NULL;
 		m_wndStatusbar.SetPaneIcon(ID_PANE_FILTERED_LOGCOUNT, icon);
 	}
@@ -889,7 +887,7 @@ LRESULT CMainFrame::OnEditFilter(WORD , WORD , HWND , BOOL& )
 	m_filterDlg.CenterWindow(m_hWnd);
 	m_filterDlg.Show();
 	m_filterDlg.SetActiveWindow();
-	
+
 	return 0;
 }
 
@@ -967,8 +965,6 @@ LRESULT CMainFrame::OnListStateChanged(int, LPNMHDR pNMHDR, BOOL&)
 
 LRESULT CMainFrame::OnListGetDispInfo(int /**/, LPNMHDR pNMHDR, BOOL& /**/)
 {
-	static const LPCWSTR cname[] = {L"", L"调试", L"信息", L"警告", L"错误", L"严重"};
-
 	NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 	LV_ITEM* pItem = &(pDispInfo)->item;
 
@@ -1028,9 +1024,9 @@ LRESULT CMainFrame::OnListGetDispInfo(int /**/, LPNMHDR pNMHDR, BOOL& /**/)
 				else
 				{
 					StringCchPrintf(pItem->pszText, textlen, L"%s(x%X)", li->item->log_process_name.c_str(), li->item->log_pid);
-				}				
+				}
 			}
-			
+
 			break;
 		case 6:
 			{
@@ -1042,7 +1038,7 @@ LRESULT CMainFrame::OnListGetDispInfo(int /**/, LPNMHDR pNMHDR, BOOL& /**/)
 				{
 					StringCchPrintf(pItem->pszText, textlen, L"x%X", li->item->log_tid);
 				}
-			}			
+			}
 			break;
 		case 7:
 			{
@@ -1082,7 +1078,7 @@ LRESULT CMainFrame::OnToggleBookmark(WORD, WORD, HWND, BOOL&)
 	if (index < 0) return 0;
 
 	LogInfo* li = GetLogInfo(index);
-	
+
 	if (li)
 	{
 		if (m_bookmarks.find(li->logid) == m_bookmarks.end())
@@ -1116,11 +1112,11 @@ LRESULT CMainFrame::OnFunctionJump(WORD, WORD, HWND, BOOL&)
 		LogInfo* li = GetSelectedLog();
 		if (!li || !IsFunctionLog(*li->item))
 		{
-			MessageBox(L"无法定位到函数头/尾，因为当前日志不是函数日志(标签中不包含function)", L"提示", MB_OK|MB_ICONINFORMATION);
+			MessageBox(IDS(IDS_ERRORMSG_NOT_FUNCTION_LOG), IDS(IDS_INFORMATION), MB_OK|MB_ICONINFORMATION);
 		}
 		else
 		{
-			MessageBox(L"未找到函数头/尾，可能是当前的过滤规则隐藏的对应的日志记录，或者对应的日志记录已被删除", L"提示", MB_OK|MB_ICONINFORMATION);
+			MessageBox(IDS(IDS_ERRORMSG_FUNCTION_LOG_MISSING), IDS(IDS_INFORMATION), MB_OK | MB_ICONINFORMATION);
 		}
 	}
 
@@ -1135,7 +1131,7 @@ LRESULT CMainFrame::OnNextBookmark(WORD, WORD, HWND, BOOL&)
 	std::set<UINT64>::const_iterator it1, it2;
 	it1 = it2 = m_bookmarks.upper_bound(li->logid);
 
-	// 用it1保存当前书签点, 处理回绕
+	// use it1 to save current bookmark, deal with rewind
 
 	while (it2 != m_bookmarks.end())
 	{
@@ -1177,7 +1173,7 @@ LRESULT CMainFrame::OnPrevBookmark(WORD, WORD, HWND, BOOL&)
 	std::set<UINT64>::const_iterator it1, it2;
 	it1 = it2 = --m_bookmarks.lower_bound(li->logid);
 
-	// 用it1保存当前书签点, 处理回绕
+	// use it1 to save current bookmark, deal with rewind
 
 	for (;;)
 	{
@@ -1219,13 +1215,13 @@ LRESULT CMainFrame::OnClearBeforeThisLog(WORD, WORD, HWND, BOOL&)
 {
 	int index = m_list.GetSelectedIndex();
 	if (index < 0) return 0;
-	
+
 	LogInfo* li = GetLogInfo(index);
 	UINT64 logIndex = li->logid;
 	m_lvs.erase(m_lvs.begin(), m_lvs.begin() + index);
 
 	ServiceHelper::GetLogCenter()->ClearOldLog(logIndex);
-	
+
 	m_list.SetItemCount(static_cast<int>(m_lvs.size()));
 	m_list.SelectItem(0);
 
@@ -1307,53 +1303,45 @@ void CMainFrame::OnContextMenu(HWND hWnd, CPoint pt)
 			UINT i = ID_QUICKFILTER_INCLUDE_BEGIN;
 			if (m_isHex)
 			{
-				m1.AppendMenu(MF_STRING, i++, formatstr(L"进程ID：%08X", li->item->log_pid));
-				m1.AppendMenu(MF_STRING, i++, formatstr(L"线程ID：%08X", li->item->log_tid));
+				m1.AppendMenu(MF_STRING, i++, IDS(IDS_PROCESS) + formatstr(L" ID: %08X", li->item->log_pid));
+				m1.AppendMenu(MF_STRING, i++, IDS(IDS_THREAD) + formatstr(L" ID: %08X", li->item->log_tid));
 			}
 			else
 			{
-				m1.AppendMenu(MF_STRING, i++, formatstr(L"进程ID：%u", li->item->log_pid));
-				m1.AppendMenu(MF_STRING, i++, formatstr(L"线程ID：%u", li->item->log_tid));
-			}			
-			m1.AppendMenu(MF_STRING, i++, formatstr(L"进程名：%s", li->item->log_process_name.c_str()));
-			m1.AppendMenu(MF_STRING, i++, formatstr(L"日志级别：%u", li->item->log_class));
-			m1.AppendMenu(MF_STRING, i++, formatstr(L"日志标签：%s", li->item->log_tags.c_str()));
-			m1.AppendMenu(MF_STRING, i++, formatstr(L"日志内容：%.*s", 30, li->item->log_content.c_str()));
+				m1.AppendMenu(MF_STRING, i++, IDS(IDS_PROCESS) + formatstr(L" ID: %u", li->item->log_pid));
+				m1.AppendMenu(MF_STRING, i++, IDS(IDS_THREAD) + formatstr(L" ID: %u", li->item->log_tid));
+			}
+			m1.AppendMenu(MF_STRING, i++, IDS(IDS_PROCESS_NAME) + formatstr(L": %s", li->item->log_process_name.c_str()));
+			m1.AppendMenu(MF_STRING, i++, IDS(IDS_LOG_LEVEL) + formatstr(L": %u", li->item->log_class));
+			m1.AppendMenu(MF_STRING, i++, IDS(IDS_LOG_TAG) + formatstr(L": %s", li->item->log_tags.c_str()));
+			m1.AppendMenu(MF_STRING, i++, IDS(IDS_LOG_CONTENT) + formatstr(L": %.*s", 30, li->item->log_content.c_str()));
 
 			CMenu m2;
 			m2.CreatePopupMenu();
 			i = ID_QUICKFILTER_EXCLUDE_BEGIN;
 			if (m_isHex)
 			{
-				m2.AppendMenu(MF_STRING, i++, formatstr(L"进程ID：x%08X", li->item->log_pid));
-				m2.AppendMenu(MF_STRING, i++, formatstr(L"线程ID：x%08X", li->item->log_tid));
+				m2.AppendMenu(MF_STRING, i++, IDS(IDS_PROCESS) + formatstr(L" ID: x%08X", li->item->log_pid));
+				m2.AppendMenu(MF_STRING, i++, IDS(IDS_THREAD) + formatstr(L" ID: x%08X", li->item->log_tid));
 			}
 			else
 			{
-				m2.AppendMenu(MF_STRING, i++, formatstr(L"进程ID：%u", li->item->log_pid));
-				m2.AppendMenu(MF_STRING, i++, formatstr(L"线程ID：%u", li->item->log_tid));
-			}			
-			m2.AppendMenu(MF_STRING, i++, formatstr(L"进程名：%s", li->item->log_process_name.c_str()));
-			m2.AppendMenu(MF_STRING, i++, formatstr(L"日志级别：%u", li->item->log_class));
-			m2.AppendMenu(MF_STRING, i++, formatstr(L"日志标签：%s", li->item->log_tags.c_str()));
-			m2.AppendMenu(MF_STRING, i++, formatstr(L"日志内容：%.*s", 30, li->item->log_content.c_str()));
+				m2.AppendMenu(MF_STRING, i++, IDS(IDS_PROCESS) + formatstr(L" ID: %u", li->item->log_pid));
+				m2.AppendMenu(MF_STRING, i++, IDS(IDS_THREAD) + formatstr(L" ID: %u", li->item->log_tid));
+			}
+			m2.AppendMenu(MF_STRING, i++, IDS(IDS_PROCESS_NAME) + formatstr(L": %s", li->item->log_process_name.c_str()));
+			m2.AppendMenu(MF_STRING, i++, IDS(IDS_LOG_LEVEL) + formatstr(L": %u", li->item->log_class));
+			m2.AppendMenu(MF_STRING, i++, IDS(IDS_LOG_TAG) + formatstr(L": %s", li->item->log_tags.c_str()));
+			m2.AppendMenu(MF_STRING, i++, IDS(IDS_LOG_CONTENT) + formatstr(L": %.*s", 30, li->item->log_content.c_str()));
 
 			CMenu menu;
-			menu.CreatePopupMenu();
+            menu.LoadMenuW(IDR_CONTEXTMENU);
+            CMenu popupMenu = (HMENU)menu.GetSubMenu(2);
+            popupMenu.InsertMenuW(ID_CONTEXT_FILTER_PLACEHOLDER, MF_BYCOMMAND | MF_POPUP, m1, IDS(IDS_CONTEXT_FILTER_INCLUDE));
+            popupMenu.InsertMenuW(ID_CONTEXT_FILTER_PLACEHOLDER, MF_BYCOMMAND | MF_POPUP, m1, IDS(IDS_CONTEXT_FILTER_EXCLUDE));
+            popupMenu.DeleteMenu(ID_CONTEXT_FILTER_PLACEHOLDER, MF_BYCOMMAND);
 
-			menu.AppendMenu(MF_STRING, ID_TOGGLE_BOOKMARK, L"设置/取消书签(&M)\tCtrl+F2");
-			menu.AppendMenu(MF_STRING, ID_FUNCTION_JUMP, L"跳到函数头/尾(&F)");
-			menu.AppendMenu(MF_STRING, ID_SET_TIME_BASE, L"显示相对时间(&T)(以此条日志为时间原点)");
-			menu.AppendMenu(MF_SEPARATOR, 0U, L"");
-			menu.AppendMenu(MF_POPUP, (UINT_PTR)m1.m_hMenu, L"上下文过滤：包含(&I)");
-			// TODO: menu.AppendMenu(MF_POPUP, (UINT_PTR)m1.m_hMenu, L"上下文过滤：解除包含(&U)");
-			menu.AppendMenu(MF_POPUP, (UINT_PTR)m2.m_hMenu, L"上下文过滤：排除(&E)");
-			menu.AppendMenu(MF_SEPARATOR, 0U, L"");
-			menu.AppendMenu(MF_STRING, ID_CLEAR_BEFORE_THIS, L"清除此条之前的所有日志(&C)");
-			menu.AppendMenu(MF_SEPARATOR, 0U, L"");
-			menu.AppendMenu(MF_STRING, ID_VIEW_DETAIL, L"详细信息(&D)");
-
-			menu.TrackPopupMenu(0, pt.x, pt.y, m_hWnd);
+			popupMenu.TrackPopupMenu(0, pt.x, pt.y, m_hWnd);
 		}
 	}
 }
@@ -1571,14 +1559,14 @@ LRESULT CMainFrame::OnForceScrollDown( WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
 	if (nCount > 0)
 	{
 		m_list.SelectItem(nCount - 1);
-	}		
+	}
 	m_list.EnsureVisible(m_list.GetItemCount() - 1, FALSE);
 	return ERROR_SUCCESS;
 }
 
 
 LRESULT CMainFrame::OnHex(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{	
+{
 	m_isHex = !m_isHex;
 	UISetCheck(ID_HEX, m_isHex);
 	m_list.InvalidateRect(NULL, TRUE);
@@ -1586,7 +1574,7 @@ LRESULT CMainFrame::OnHex(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, 
 }
 
 LRESULT CMainFrame::OnShowAbsTime(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{	
+{
 	m_showAbsTime = true;
 	m_list.InvalidateRect(NULL, TRUE);
 	return 0;
@@ -1723,7 +1711,7 @@ LRESULT CMainFrame::OnCheckUpdate(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
 
 LRESULT CMainFrame::OnOpenShareMemoryLog(WORD, WORD, HWND, BOOL&)
 {
-	CSimpleInputDlg dlg(L"输入", L"请输入共享内存名字：");
+	CSimpleInputDlg dlg(IDS(IDS_INPUT), IDS(IDS_PROMPT_INPUT_SHAREMEMORY_NAME));
 	if (dlg.DoModal() == IDOK)
 	{
 		SendMessage(m_hWnd, WM_COMMAND, ID_STOP_MONITOR, 0);

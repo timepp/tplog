@@ -40,7 +40,9 @@ struct helper
 	static CStringW GetSpecialDir(int csidl, LPCWSTR subdir);
 	static CStringW GetFileName(LPCWSTR pszFilePath);
 	static CStringW GetErrorDesc(DWORD dwErr);
-	
+	static CStringW LoadStringFromResource(UINT id);
+	static CStringW LoadStringFromResourceFmt(UINT id, ...);
+
 	static CStringW XML_GetAttributeAsString(IXMLDOMNode* pNode, LPCWSTR pszAttr, LPCWSTR pszDefault);
 	static COLORREF XML_GetAttributeAsColor(IXMLDOMNode* pNode, LPCWSTR pszAttr, COLORREF crDefault);
 	static UINT XML_GetAttributeAsUint(IXMLDOMNode* pNode, LPCWSTR pszAttr, UINT uDefault);
@@ -135,8 +137,12 @@ struct GlobalData
 
 	GlobalData() : module(NULL)
 	{
-
 	}
 };
 
 extern GlobalData GD;
+
+#define IDS helper::LoadStringFromResource
+#define IDSFMT helper::LoadStringFromResourceFmt
+#define IDS2(...) (LPCWSTR)IDS(__VA_ARGS__)
+#define IDSFMT2(...) (LPCWSTR)IDSFMT(__VA_ARGS__)

@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "updater.h"
 #include "helper.h"
+#include "Resource.h"
 
 unsigned int Updater::CheckAndUpdateWorker(void* param)
 {
 	helper::DownloadUrlToFile(
-		L"http://db-win-dump00.db01.baidu.com:8180/help/tplogview_ver.txt",
+		L"http://localhost:8180/help/tplogview_ver.txt",
 		Updater::GetVersionInfoFilePath()
 		);
 
@@ -17,10 +18,10 @@ unsigned int Updater::CheckAndUpdateWorker(void* param)
 		CStringW strOldPath = Updater::GetOldExePath();
 
 		helper::DownloadUrlToFile(
-			L"http://db-win-dump00.db01.baidu.com:8180/help/tplogview.exe",
+			L"http://localhost:8180/help/tplogview.exe",
 			strTmpPath
 			);
-		
+
 		::MoveFileExW(strExePath, strOldPath, MOVEFILE_COPY_ALLOWED|MOVEFILE_REPLACE_EXISTING);
 		::MoveFileExW(strTmpPath, strExePath, MOVEFILE_COPY_ALLOWED|MOVEFILE_REPLACE_EXISTING);
 	}
@@ -77,8 +78,8 @@ CString Updater::GetVersionInfoFilePath()
 	return helper::GetConfigDir() + L"\\tplogview_version.txt";
 }
 
-// bBackend为TRUE时，静默，无论有无更新，都不提示用户
-// bBackend为FALSE时，如果没有更新，提示用户；如果有更新，更新完毕后再提示用户需要重启后生效
+// \param bBackend: TRUE, silent mode, doesn't notify user even there is update
+//                  FALSE, if no update then notify user; if has update then notify user only when update complete
 void Updater::CheckAndUpdate(BOOL bBackend)
 {
 	if (bBackend)
@@ -91,11 +92,11 @@ void Updater::CheckAndUpdate(BOOL bBackend)
 		CheckAndUpdateWorker(NULL);
 		if (helper::FileExists(GetOldExePath()))
 		{
-			::MessageBoxW(NULL, L"已经完成更新，重启后生效。", L"更新提示", MB_OK|MB_ICONINFORMATION);
+			::MessageBoxW(NULL, IDS(IDS_MSG_UPDATE_COMPLETE), IDS(IDS_UPDATE_MSG), MB_OK|MB_ICONINFORMATION);
 		}
 		else
 		{
-			::MessageBoxW(NULL, L"您使用的是最新版本。", L"提示", MB_OK|MB_ICONINFORMATION);
+			::MessageBoxW(NULL, IDS(IDS_MSG_NO_UPDATE), IDS(IDS_MSG), MB_OK|MB_ICONINFORMATION);
 		}
 	}
 }
@@ -105,11 +106,10 @@ void Updater::NotifyNewVersion()
 	CStringW strPath = GetOldExePath();
 	if (helper::FileExists(strPath))
 	{
-		// 说明有更新
 		UINT64 oldver = helper::GetFileVersion(strPath);
 		::DeleteFileW(strPath);
 
-		CStringW info = L"tplogview已升级，细节如下：\n\n";
+		CStringW info = IDS(IDS_MSG_UPDATE_DETAIL);
 		Versions v = Updater::ParseVersionInfoFile();
 		for (Versions::const_iterator it = v.begin(); it != v.end(); ++it)
 		{
@@ -120,9 +120,6 @@ void Updater::NotifyNewVersion()
 			info += L"\n";
 		}
 
-		::MessageBoxW(NULL, info, L"tplogview升级提示", MB_OK|MB_ICONINFORMATION);
+		::MessageBoxW(NULL, info, IDS(IDS_UPDATE_MSG), MB_OK|MB_ICONINFORMATION);
 	}
 }
-
-
-

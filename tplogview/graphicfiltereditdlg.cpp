@@ -4,8 +4,25 @@
 #include "filter.h"
 #include "filtercreator.h"
 
+std::wstring CGraphicFilterEditDlg::Translate(int id)
+{
+    switch (id)
+    {
+    case tp::CCompositeTreeCtrl::MENUID_COPY: return IDS2(IDS_COPY);
+    case tp::CCompositeTreeCtrl::MENUID_PASTE: return IDS2(IDS_PASTE);
+    case tp::CCompositeTreeCtrl::MENUID_PASTE_AS_CHILD: return IDS2(IDS_PASTE_AS_CHILD_NODE);
+    case tp::CCompositeTreeCtrl::MENUID_CUT: return IDS2(IDS_CUT);
+    case tp::CCompositeTreeCtrl::MENUID_DELETE: return IDS2(IDS_DELETE);
+    case tp::CCompositeTreeCtrl::MENUID_ADD_COMP_BEGIN: return IDS2(IDS_ADD);
+    case tp::CCompositeTreeCtrl::MENUID_CVT_COMP_BEGIN: return IDS2(IDS_CONVERT_TO);
+    case tp::CCompositeTreeCtrl::MENUID_ADD_COMP_AS_PARENT_BEGIN: return IDS2(IDS_ADD_AS_PARENT_NODE);
+    }
+    return L"TRANSLATE ERROR";
+}
+
 LRESULT CGraphicFilterEditDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
+    m_tree.SetTranslater(this);
 	m_tree.SetComponentCreator(filter_creator::instance());
 	m_imgList.Create(16, 16, ILC_COLOR32, 10, 10);
 
@@ -31,8 +48,8 @@ LRESULT CGraphicFilterEditDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LP
 	m_imgList.AddIcon(AtlLoadIcon(IDI_PID));
 	m_tree.AddComponentName(L"logtid_filter");
 	m_imgList.AddIcon(AtlLoadIcon(IDI_TID));
-	
-	
+
+
 	//m_tree.SubclassWindow(GetDlgItem(IDC_TREE));
 	m_tree.Create(m_hWnd, m_imgList);
 	m_tree.SetFont(GetFont());

@@ -15,7 +15,7 @@ public:
 	virtual ~CFilterEditor() {}
 };
 
-class CSimpleFilterEditDlg 
+class CSimpleFilterEditDlg
 	: public CDialogImpl<CSimpleFilterEditDlg>
 	, public CDialogResize<CSimpleFilterEditDlg>
 	, public CFilterEditor
@@ -60,6 +60,7 @@ private:
 class CGraphicFilterEditDlg
 	: public CDialogImpl<CGraphicFilterEditDlg>
 	, public CFilterEditor
+    , public tp::LocaleTranslater
 {
 public:
 	enum {IDD = IDD_FILTER_TREE};
@@ -74,8 +75,10 @@ public:
 	virtual void Show() { ShowWindow(SW_SHOW); }
 	virtual void Hide() { ShowWindow(SW_HIDE); }
 
+    virtual std::wstring Translate(int id);
+
 private:
-	CCompositeTreeCtrl m_tree;
+	tp::CCompositeTreeCtrl m_tree;
 	CImageList m_imgList;
 
 private:
@@ -110,7 +113,7 @@ private:
 #define ID_EXPORT_FILTER 1102
 #define ID_SIMPLIFY 1103
 
-class CFilterEditDlg 
+class CFilterEditDlg
 	: public CDialogImpl<CFilterEditDlg>
 	, public CDialogResize<CFilterEditDlg>
 {
@@ -122,7 +125,7 @@ public:
 		MESSAGE_HANDLER(WM_SIZE, OnSize)
 
 		COMMAND_RANGE_HANDLER(ID_PAGE_BEGIN, ID_PAGE_END, OnPage)
-		
+
 		COMMAND_ID_HANDLER(ID_IMPORT_FILTER, OnImport)
 		COMMAND_ID_HANDLER(ID_EXPORT_FILTER, OnExport)
 		COMMAND_ID_HANDLER(ID_SIMPLIFY, OnSimplify)

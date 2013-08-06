@@ -48,7 +48,7 @@ LRESULT CHilighterEditDlg::OnOK(WORD , WORD , HWND , BOOL& )
 	filter* f = m_dlg.GetFilter();
 	if (!f)
 	{
-		MessageBox(L"过滤规则不能为空", L"错误", MB_OK|MB_ICONWARNING);
+		MessageBox(IDS(IDS_ERRORMSG_FILTER_RULE_EMPTY), IDS(IDS_ERROR), MB_OK|MB_ICONWARNING);
 		return 0;
 	}
 
@@ -56,7 +56,7 @@ LRESULT CHilighterEditDlg::OnOK(WORD , WORD , HWND , BOOL& )
 	GetDlgItemText(IDC_EDIT_HILIGHTER_NAME, strName);
 	if (strName.IsEmpty())
 	{
-		MessageBox(L"必须指定过滤规则名字", L"错误", MB_OK|MB_ICONWARNING);
+		MessageBox(IDS(IDS_ERRORMSG_FILTER_RULE_OMIT), IDS(IDS_ERROR), MB_OK|MB_ICONWARNING);
 		return 0;
 	}
 

@@ -81,7 +81,7 @@ public:
 
 	config& GetConfig();
 
-	// TODO 使用serializer
+	// TODO using serializer
 	bool Load(LPCWSTR pszFileName);
 	bool Save();
 
@@ -92,9 +92,8 @@ private:
 	CConfig();
 	~CConfig();
 
-	// 为没有设置的值赋缺省值
-	// 这个动作需要在load完后做，而不是在构造函数中做
-	// 因为旧版本已经把一些变量存成了空值
+	// setting default for values doesn't appear in config
+	// this should be done after load config file, but not be done in constructor
 	void SetEmptyValueDefaults();
 
 	config m_cfg;
