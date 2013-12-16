@@ -261,7 +261,7 @@ inline void LogV(LogLevel level, const wchar_t* tag, const wchar_t* fmt, va_list
 #endif
 
 #if (_MSC_VER >= 1500)
-inline void Log(LogLevel level, LogTag tag, __in_z _Printf_format_string_ const wchar_t* fmt, ...)
+inline void Log(LogLevel level, LogTag tag, __in_z __format_string const wchar_t* fmt, ...)
 {
 	TPLOG_ARGV(level, tag, fmt);
 }
