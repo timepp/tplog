@@ -4,9 +4,9 @@ highly extensible c++ log library on windows system
 
 tplog include: 
 
- - tplog library; 
- - tplogview, a GUI tool for viewing tplog pipe device output;
- - testtplog, for tplog functional testing.
+- tplog library; 
+- tplogview, a GUI tool for viewing tplog pipe device output;
+- testtplog, for tplog functional testing.
 
 #License
   This software is provided 'as-is', without any express or implied
@@ -26,45 +26,19 @@ tplog include:
 
 #dir structure
 
-<table>
-	<tr>
-		<td>[tplog]</td>
-		<td></td>
-		<td>files for wrapping log functionality into DLL</td>
-	</tr>
-	<tr>
-		<td>[tplogview]</td>
-		<td></td>
-		<td>tplogview source</td>
-	</tr>
-	<tr>
-		<td>[build]</td>
-		<td></td>
-		<td>vcprojs for building</td>
-	</tr>
-	<tr>
-		<td>[include]</td>
-		<td></td>
-		<td>tplog main</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>[detail]</td>
-		<td>tplog detail implementation</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>tplog.h</td>
-		<td>tplog interface</td>
-	</tr>
-	<tr>
-		<td>[testlog]</td>
-		<td></td>
-		<td>functional test</td>
-	</tr>
-	<tr>
-		<td>tools</td>
-		<td></td>
-		<td>misc tool</td>
-	</tr>
-</table>
+* [tplog]: tplog DLL wrapper [todo][1]
+* [tplogview]: The GUI log viewer
+* [build]: build related files
+* [include]: tplog implementations [todo][2]
+    - [detail]: implementation detail
+	- tplog.h: main interface of writing log
+	- tplog_util.h: other handy facility to help writing log
+	- tplog_impl.h: file to make tplog singleton [todo][3]
+	- tplog_reader.h: implementation for reading log from varies sources such as pipe/file etc
+	- tplog_synctime.h: interface to get tplog's process-level synced time
+* [testlog]: unit testing
+* [doc]: documentations
+
+[1]: rename to dll
+[2]: rename to tplog
+[3]: rename to tplog_singleton.h
