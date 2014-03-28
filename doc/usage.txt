@@ -1,53 +1,141 @@
-bdlog can be used in two ways.
-1. use bdlog.dll.
-2. include bdlog sources directly.
+* Integrate tplog to your project
 
-; 本文件为bdlog的日志输出控制文件
-; 本文件路径：%ALLUSERSPROFILE%\Application Data\Baidu\<产品名>\bdlog.ini
-; 产品名如BaiduBrowser, BaiduPinyin等
+Tplog can be included in your project in two ways:
+
+1. As header sources.  Typically used in single-module product which consists of to only one exe file.
+2. As separate DLL.  Typically used in multi-module product which consists of one or more exe/dll files.
+
+Though method 1 works well on multi-module products, method 2 is recommended for minimizing resources consumption.
+
+** Using tplog header directly
+
+1. Import all files in tplog\include to your source tree.  You can either import entire tplog to one sub-directory into your project, or just copy tplog\include\*.* to somewhere in your project. Following sections will suppose that your project is in C:\rainbow and tplog header files are placed to C:\rainbow\thirdparty\tplog\include\*.*.
+2. Implement tplog singleton.  You must select one (and only one) cpp file to include =tplog_singleton.h= which implements a singleton =CLogController=.
+
+#+begin_src c
+    #include <tplog_singleton.h>
+#+end_src
+
+Note again that this file can only be included in only one cpp file.
+
+** Using tplog as a separate DLL
+
+1. Build tplib.
+   Open solution file, select desired configuration and platform, then run build. "tplog.dll" and "tplog.lib" are generated in the following dir:
+   =output\$(Configuration)\$(Platfrom)=
+2. Select how to use tplog.dll: static load or dynamic load
+   a) if you want to static load tplog.dll, you must define macro TPLOG_USE_AS_DLL, then link tplog.lib in your project.
+   b) if you want to dynamic load tplog.dll, you must define macro TPLOG_USE_AS_DLL_DYNAMIC_LOAD, you do not need to do the real works like "LoadLibrary" etc, tplog.h will do it for you
+3. Distrubute tplog.dll as one of your product modules
+
+** About tplog.h
+The only header files for configuration and writing log is =tplog.h=. 
+Typically it's included in one common used header file, such as =stdafx.h=. 
+So that different cpp files which need to write log doesn't have to include =tplog.h= separately.
+All code fragments below will assume that you have already include =tplog.h= somewhere.
+
+* Tplog initialization and cleanup
+
+You must initialize the /log controller/ and add one or more /output devices/ before do logging. 
+The initialization code is like following:
+#+begin_src c
+ILogController *pController = GetLogController();
+pController->Init(NULL);
+pController->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:true");
+#+end_src
+
+You must cleanup the /log controller/ before your program exit.
+The cleanup code is like following:
+#+begin_src c
+ILogController *pController = GetLogController();
+pController->UnInit();
+#+end_src
+
+All log statements before tplog initialization or after tplog cleanup has no effect.
+
+The Recommended initialization and cleanup occasions are:
+
+| module type | initialization                       | cleanup                        |
+|-------------+--------------------------------------+--------------------------------|
+| exe         | at the beginning of main()/WinMain() | at the end of main()/WinMain() |
+| dll         | in DllMain, on process attach        | in DllMain, on process detach  |
+
+* Write logs
+
+Use "Log" whenever you want to log something:
+
+#+begin_src c
+Log(LL_EVENT, L"flow;main", L"Program started.");
+Log(LL_DEBUG, L"perf;", L"start time: %u", time(NULL));
+#+end_src
+
+The first parameter is log-class, there are 4 predefined log-classes:
+
+- =LOG_DIAGNOSE=, for very detailed information, such as function enter/exit
+- =LOG_DEBUG=, for information which may help debug, such as "The current user name is '%s'"
+- =LOG_EVENT=, for events which may affect control flow, such as "Received new connection from client"
+- =LOG_ERROR=, for unexpected conditions, such as "Create database failed!"
+
+The second parameter is log-tag, which is useful for classifying/filtering large amount of logs. 
+Multiple tags are spearated with ";".
+following are examples of tags: 
+- =perf;startup=  
+- =network;common;sip;=
+In most cases, one developer only cares about one or two specific tag(s) which is related to the problem he meet. 
+Since tags are several strings, the freeform makes tags very flexiable and filtering logs very easy.
+
+The third parameter is the printf-style format string and all following parameters are format parameters. See /printf/ for help.
+
+* Customize tplog
+
+# TODO
+
+; 卤戮脦脛录镁脦陋bdlog碌脛脠脮脰戮脢盲鲁枚驴脴脰脝脦脛录镁
+; 卤戮脦脛录镁脗路戮露拢潞%ALLUSERSPROFILE%\Application Data\Baidu\<虏煤脝路脙没>\bdlog.ini
+; 虏煤脝路脙没脠莽BaiduBrowser, BaiduPinyin碌脠
 
 [LOG_CONFIG]
 
-; 是否监视配置文件变化，若为0, 日志系统不监视本文件的变化。
-; 此设置只在日志系统初始化时读一次，运行过程修改此值对日志系统无影响
+; 脢脟路帽录脿脢脫脜盲脰脙脦脛录镁卤盲禄炉拢卢脠么脦陋0, 脠脮脰戮脧碌脥鲁虏禄录脿脢脫卤戮脦脛录镁碌脛卤盲禄炉隆拢
+; 麓脣脡猫脰脙脰禄脭脷脠脮脰戮脧碌脥鲁鲁玫脢录禄炉脢卤露脕脪禄麓脦拢卢脭脣脨脨鹿媒鲁脤脨脼赂脛麓脣脰碌露脭脠脮脰戮脧碌脥鲁脦脼脫掳脧矛
 monitor_config_change=1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; 以下以ld_开头的项是各个日志输出设备的配置，配置格式是一个或多个key:value对（空格分隔）
-; 以下通用配置对任何日志输出设备均有效：
-; 1. enable 指定此日志输出设备是否启用，取值false/true
-; 2. filter 过滤设置，支持对tag和level进行过滤。例如:
-;    filter:tag=perf         表示所有tag中包含perf的日志都会输出
-;    filter:!(tag=perf)      表示所有tag中不包含perf的日志都会输出
-;    filter:level>16         表示所有级别大于调试级别的日志
+; 脪脭脧脗脪脭ld_驴陋脥路碌脛脧卯脢脟赂梅赂枚脠脮脰戮脢盲鲁枚脡猫卤赂碌脛脜盲脰脙拢卢脜盲脰脙赂帽脢陆脢脟脪禄赂枚禄貌露脿赂枚key:value露脭拢篓驴脮赂帽路脰赂么拢漏
+; 脪脭脧脗脥篓脫脙脜盲脰脙露脭脠脦潞脦脠脮脰戮脢盲鲁枚脡猫卤赂戮霉脫脨脨搂拢潞
+; 1. enable 脰赂露篓麓脣脠脮脰戮脢盲鲁枚脡猫卤赂脢脟路帽脝么脫脙拢卢脠隆脰碌false/true
+; 2. filter 鹿媒脗脣脡猫脰脙拢卢脰搂鲁脰露脭tag潞脥level陆酶脨脨鹿媒脗脣隆拢脌媒脠莽:
+;    filter:tag=perf         卤铆脢戮脣霉脫脨tag脰脨掳眉潞卢perf碌脛脠脮脰戮露录禄谩脢盲鲁枚
+;    filter:!(tag=perf)      卤铆脢戮脣霉脫脨tag脰脨虏禄掳眉潞卢perf碌脛脠脮脰戮露录禄谩脢盲鲁枚
+;    filter:level>16         卤铆脢戮脣霉脫脨录露卤冒麓贸脫脷碌梅脢脭录露卤冒碌脛脠脮脰戮
 ;    filter:tag=perf&&level>16
 ;    filter:!(tag=perf)||level>16
 
 
-; 管道日志（日志查看器）配置
+; 鹿脺碌脌脠脮脰戮拢篓脠脮脰戮虏茅驴麓脝梅拢漏脜盲脰脙
 ; 	
-; 缺省配置：enable:false
-; 这里的值会叠加到缺省配置，若属性一样，则覆盖缺省配置中的值
+; 脠卤脢隆脜盲脰脙拢潞enable:false
+; 脮芒脌茂碌脛脰碌禄谩碌镁录脫碌陆脠卤脢隆脜盲脰脙拢卢脠么脢么脨脭脪禄脩霉拢卢脭貌赂虏赂脟脠卤脢隆脜盲脰脙脰脨碌脛脰碌
 ld_pipe=enable:false
 
 
-; 文件日志配置
-; 	share_read  以共享读模式打开 0/1 缺省1
-;       async       异步写模式 0/1 缺省0
-;       buffer_size 文件缓存，单位字节，缺省1000000
-; 	path        日志文件路径，支持以下特殊元素
-; 	            ${PID} 当前进程ID
-; 	            ${T}, ${DATE}, ${TIME} 当前时间 格式分别为：yyyymmddHHMMSS, yyyymmdd, HHMMSS
-; 缺省配置: enable:false path:`%temp%\\Baidu\\BaiduProduct\\log\\ime_${T}_${PF}.xlog`
-; 这里的值会叠加到缺省配置，若属性一样，则覆盖缺省配置中的值
+; 脦脛录镁脠脮脰戮脜盲脰脙
+; 	share_read  脪脭鹿虏脧铆露脕脛拢脢陆麓貌驴陋 0/1 脠卤脢隆1
+;       async       脪矛虏陆脨麓脛拢脢陆 0/1 脠卤脢隆0
+;       buffer_size 脦脛录镁禄潞麓忙拢卢碌楼脦禄脳脰陆脷拢卢脠卤脢隆1000000
+; 	path        脠脮脰戮脦脛录镁脗路戮露拢卢脰搂鲁脰脪脭脧脗脤脴脢芒脭陋脣脴
+; 	            ${PID} 碌卤脟掳陆酶鲁脤ID
+; 	            ${T}, ${DATE}, ${TIME} 碌卤脟掳脢卤录盲 赂帽脢陆路脰卤冒脦陋拢潞yyyymmddHHMMSS, yyyymmdd, HHMMSS
+; 脠卤脢隆脜盲脰脙: enable:false path:`%temp%\\Baidu\\BaiduProduct\\log\\ime_${T}_${PF}.xlog`
+; 脮芒脌茂碌脛脰碌禄谩碌镁录脫碌陆脠卤脢隆脜盲脰脙拢卢脠么脢么脨脭脪禄脩霉拢卢脭貌赂虏赂脟脠卤脢隆脜盲脰脙脰脨碌脛脰碌
 ld_file=enable:false
 
 
-; 共享内存配置
-; 缺省配置: enable:true filter:!(tag=perf)
+; 鹿虏脧铆脛脷麓忙脜盲脰脙
+; 脠卤脢隆脜盲脰脙: enable:true filter:!(tag=perf)
 ld_sharememory=enable:true
 
 
 ; debugoutput
-; 缺省配置: enalbe:false
+; 脠卤脢隆脜盲脰脙: enalbe:false
 ld_debugoutput=enable:false
