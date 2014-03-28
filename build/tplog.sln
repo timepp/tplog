@@ -20,7 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tplog", "tplog", "{7BE5D684-238E-4EEE-9680-D67ADE49D0A0}"
 	ProjectSection(SolutionItems) = preProject
 		..\tplog\tplog.h = ..\tplog\tplog.h
-		..\tplog\tplog_impl.h = ..\tplog\tplog_impl.h
+		..\tplog\tplog_singleton.h = ..\tplog\tplog_singleton.h
 		..\tplog\tplog_reader.h = ..\tplog\tplog_reader.h
 		..\tplog\tplog_synctime.h = ..\tplog\tplog_synctime.h
 		..\tplog\tplog_util.h = ..\tplog\tplog_util.h

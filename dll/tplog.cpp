@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include <tplog_impl.h>
+#include <tplog_singleton.h>
 
 void * operator new (unsigned int /*size*/, void * p)
 { 
