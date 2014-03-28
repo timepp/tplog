@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.20827.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll", "dll.vcxproj", "{6235A976-3901-4B3B-AACF-5F3E9BFA11CC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testlog", "testlog.vcxproj", "{8A5ABA52-4791-4F9E-BE94-78213C3A2181}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest.vcxproj", "{8A5ABA52-4791-4F9E-BE94-78213C3A2181}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tplogview", "tplogview.vcxproj", "{BD966C3A-5865-4EAC-A013-C59FAAB2D23D}"
 EndProject
