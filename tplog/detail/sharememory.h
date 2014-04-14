@@ -31,7 +31,7 @@ public:
 		HRESULT ret = S_OK;
 		Close();
 
-		m_hFileMapping = CreateFileMapping(INVALID_HANDLE_VALUE, sa, PAGE_READWRITE, 0, len, name);
+		m_hFileMapping = CreateFileMappingW(INVALID_HANDLE_VALUE, sa, PAGE_READWRITE, 0, len, name);
 		if(!m_hFileMapping)
 		{
 			return GetLastErrorAsHRESULT();

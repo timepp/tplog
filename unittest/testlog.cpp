@@ -9,7 +9,7 @@
 #include <tplib/include/cmdlineparser.h>
 #include <map>
 #include <string>
-#include <tplog_impl.h>
+#include <tplog_singleton.h>
 
 CAppModule _Module;
 

@@ -1,13 +1,47 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tplog", "tplog.vcxproj", "{6235A976-3901-4B3B-AACF-5F3E9BFA11CC}"
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll", "dll.vcxproj", "{6235A976-3901-4B3B-AACF-5F3E9BFA11CC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testlog", "testlog.vcxproj", "{8A5ABA52-4791-4F9E-BE94-78213C3A2181}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest.vcxproj", "{8A5ABA52-4791-4F9E-BE94-78213C3A2181}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tplogview", "tplogview.vcxproj", "{BD966C3A-5865-4EAC-A013-C59FAAB2D23D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1361528F-F0E4-4CA9-B947-F5C5F6BAEDBA}"
+	ProjectSection(SolutionItems) = preProject
+		..\doc\design.txt = ..\doc\design.txt
+		..\doc\purpose.txt = ..\doc\purpose.txt
+		..\doc\todo.txt = ..\doc\todo.txt
+		..\doc\usage.txt = ..\doc\usage.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tplog", "tplog", "{7BE5D684-238E-4EEE-9680-D67ADE49D0A0}"
+	ProjectSection(SolutionItems) = preProject
+		..\tplog\tplog.h = ..\tplog\tplog.h
+		..\tplog\tplog_singleton.h = ..\tplog\tplog_singleton.h
+		..\tplog\tplog_reader.h = ..\tplog\tplog_reader.h
+		..\tplog\tplog_synctime.h = ..\tplog\tplog_synctime.h
+		..\tplog\tplog_util.h = ..\tplog\tplog_util.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "detail", "detail", "{199DC3BA-0A56-4893-8A72-E29FEED01905}"
+	ProjectSection(SolutionItems) = preProject
+		..\tplog\detail\lock.h = ..\tplog\detail\lock.h
+		..\tplog\detail\logcontroller.h = ..\tplog\detail\logcontroller.h
+		..\tplog\detail\logfilter.h = ..\tplog\detail\logfilter.h
+		..\tplog\detail\logoption.h = ..\tplog\detail\logoption.h
+		..\tplog\detail\logutil.h = ..\tplog\detail\logutil.h
+		..\tplog\detail\outputdevice_common.h = ..\tplog\detail\outputdevice_common.h
+		..\tplog\detail\outputdevice_debugoutput.h = ..\tplog\detail\outputdevice_debugoutput.h
+		..\tplog\detail\outputdevice_file.h = ..\tplog\detail\outputdevice_file.h
+		..\tplog\detail\outputdevice_pipe.h = ..\tplog\detail\outputdevice_pipe.h
+		..\tplog\detail\outputdevice_sharememory.h = ..\tplog\detail\outputdevice_sharememory.h
+		..\tplog\detail\security.h = ..\tplog\detail\security.h
+		..\tplog\detail\sharememory.h = ..\tplog\detail\sharememory.h
+		..\tplog\detail\stream.h = ..\tplog\detail\stream.h
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,5 +74,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7BE5D684-238E-4EEE-9680-D67ADE49D0A0} = {1361528F-F0E4-4CA9-B947-F5C5F6BAEDBA}
+		{199DC3BA-0A56-4893-8A72-E29FEED01905} = {7BE5D684-238E-4EEE-9680-D67ADE49D0A0}
 	EndGlobalSection
 EndGlobal

@@ -1,53 +1,141 @@
-bdlog can be used in two ways.
-1. use bdlog.dll.
-2. include bdlog sources directly.
+* Integrate tplog to your project
 
-; ±¾ÎÄ¼şÎªbdlogµÄÈÕÖ¾Êä³ö¿ØÖÆÎÄ¼ş
-; ±¾ÎÄ¼şÂ·¾¶£º%ALLUSERSPROFILE%\Application Data\Baidu\<²úÆ·Ãû>\bdlog.ini
-; ²úÆ·ÃûÈçBaiduBrowser, BaiduPinyinµÈ
+Tplog can be included in your project in two ways:
+
+1. As header sources.  Typically used in single-module product which consists of to only one exe file.
+2. As separate DLL.  Typically used in multi-module product which consists of one or more exe/dll files.
+
+Though method 1 works well on multi-module products, method 2 is recommended for minimizing resources consumption.
+
+** Using tplog header directly
+
+1. Import all files in tplog\include to your source tree.  You can either import entire tplog to one sub-directory into your project, or just copy tplog\include\*.* to somewhere in your project. Following sections will suppose that your project is in C:\rainbow and tplog header files are placed to C:\rainbow\thirdparty\tplog\include\*.*.
+2. Implement tplog singleton.  You must select one (and only one) cpp file to include =tplog_singleton.h= which implements a singleton =CLogController=.
+
+#+begin_src c
+    #include <tplog_singleton.h>
+#+end_src
+
+Note again that this file can only be included in only one cpp file.
+
+** Using tplog as a separate DLL
+
+1. Build tplib.
+   Open solution file, select desired configuration and platform, then run build. "tplog.dll" and "tplog.lib" are generated in the following dir:
+   =output\$(Configuration)\$(Platfrom)=
+2. Select how to use tplog.dll: static load or dynamic load
+   a) if you want to static load tplog.dll, you must define macro TPLOG_USE_AS_DLL, then link tplog.lib in your project.
+   b) if you want to dynamic load tplog.dll, you must define macro TPLOG_USE_AS_DLL_DYNAMIC_LOAD, you do not need to do the real works like "LoadLibrary" etc, tplog.h will do it for you
+3. Distrubute tplog.dll as one of your product modules
+
+** About tplog.h
+The only header files for configuration and writing log is =tplog.h=. 
+Typically it's included in one common used header file, such as =stdafx.h=. 
+So that different cpp files which need to write log doesn't have to include =tplog.h= separately.
+All code fragments below will assume that you have already include =tplog.h= somewhere.
+
+* Tplog initialization and cleanup
+
+You must initialize the /log controller/ and add one or more /output devices/ before do logging. 
+The initialization code is like following:
+#+begin_src c
+ILogController *pController = GetLogController();
+pController->Init(NULL);
+pController->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:true");
+#+end_src
+
+You must cleanup the /log controller/ before your program exit.
+The cleanup code is like following:
+#+begin_src c
+ILogController *pController = GetLogController();
+pController->UnInit();
+#+end_src
+
+All log statements before tplog initialization or after tplog cleanup has no effect.
+
+The Recommended initialization and cleanup occasions are:
+
+| module type | initialization                       | cleanup                        |
+|-------------+--------------------------------------+--------------------------------|
+| exe         | at the beginning of main()/WinMain() | at the end of main()/WinMain() |
+| dll         | in DllMain, on process attach        | in DllMain, on process detach  |
+
+* Write logs
+
+Use "Log" whenever you want to log something:
+
+#+begin_src c
+Log(LL_EVENT, L"flow;main", L"Program started.");
+Log(LL_DEBUG, L"perf;", L"start time: %u", time(NULL));
+#+end_src
+
+The first parameter is log-class, there are 4 predefined log-classes:
+
+- =LOG_DIAGNOSE=, for very detailed information, such as function enter/exit
+- =LOG_DEBUG=, for information which may help debug, such as "The current user name is '%s'"
+- =LOG_EVENT=, for events which may affect control flow, such as "Received new connection from client"
+- =LOG_ERROR=, for unexpected conditions, such as "Create database failed!"
+
+The second parameter is log-tag, which is useful for classifying/filtering large amount of logs. 
+Multiple tags are spearated with ";".
+following are examples of tags: 
+- =perf;startup=  
+- =network;common;sip;=
+In most cases, one developer only cares about one or two specific tag(s) which is related to the problem he meet. 
+Since tags are several strings, the freeform makes tags very flexiable and filtering logs very easy.
+
+The third parameter is the printf-style format string and all following parameters are format parameters. See /printf/ for help.
+
+* Customize tplog
+
+# TODO
+
+; æœ¬æ–‡ä»¶ä¸ºbdlogçš„æ—¥å¿—è¾“å‡ºæ§åˆ¶æ–‡ä»¶
+; æœ¬æ–‡ä»¶è·¯å¾„ï¼š%ALLUSERSPROFILE%\Application Data\Baidu\<äº§å“å>\bdlog.ini
+; äº§å“åå¦‚BaiduBrowser, BaiduPinyinç­‰
 
 [LOG_CONFIG]
 
-; ÊÇ·ñ¼àÊÓÅäÖÃÎÄ¼ş±ä»¯£¬ÈôÎª0, ÈÕÖ¾ÏµÍ³²»¼àÊÓ±¾ÎÄ¼şµÄ±ä»¯¡£
-; ´ËÉèÖÃÖ»ÔÚÈÕÖ¾ÏµÍ³³õÊ¼»¯Ê±¶ÁÒ»´Î£¬ÔËĞĞ¹ı³ÌĞŞ¸Ä´ËÖµ¶ÔÈÕÖ¾ÏµÍ³ÎŞÓ°Ïì
+; æ˜¯å¦ç›‘è§†é…ç½®æ–‡ä»¶å˜åŒ–ï¼Œè‹¥ä¸º0, æ—¥å¿—ç³»ç»Ÿä¸ç›‘è§†æœ¬æ–‡ä»¶çš„å˜åŒ–ã€‚
+; æ­¤è®¾ç½®åªåœ¨æ—¥å¿—ç³»ç»Ÿåˆå§‹åŒ–æ—¶è¯»ä¸€æ¬¡ï¼Œè¿è¡Œè¿‡ç¨‹ä¿®æ”¹æ­¤å€¼å¯¹æ—¥å¿—ç³»ç»Ÿæ— å½±å“
 monitor_config_change=1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; ÒÔÏÂÒÔld_¿ªÍ·µÄÏîÊÇ¸÷¸öÈÕÖ¾Êä³öÉè±¸µÄÅäÖÃ£¬ÅäÖÃ¸ñÊ½ÊÇÒ»¸ö»ò¶à¸ökey:value¶Ô£¨¿Õ¸ñ·Ö¸ô£©
-; ÒÔÏÂÍ¨ÓÃÅäÖÃ¶ÔÈÎºÎÈÕÖ¾Êä³öÉè±¸¾ùÓĞĞ§£º
-; 1. enable Ö¸¶¨´ËÈÕÖ¾Êä³öÉè±¸ÊÇ·ñÆôÓÃ£¬È¡Öµfalse/true
-; 2. filter ¹ıÂËÉèÖÃ£¬Ö§³Ö¶ÔtagºÍlevel½øĞĞ¹ıÂË¡£ÀıÈç:
-;    filter:tag=perf         ±íÊ¾ËùÓĞtagÖĞ°üº¬perfµÄÈÕÖ¾¶¼»áÊä³ö
-;    filter:!(tag=perf)      ±íÊ¾ËùÓĞtagÖĞ²»°üº¬perfµÄÈÕÖ¾¶¼»áÊä³ö
-;    filter:level>16         ±íÊ¾ËùÓĞ¼¶±ğ´óÓÚµ÷ÊÔ¼¶±ğµÄÈÕÖ¾
+; ä»¥ä¸‹ä»¥ld_å¼€å¤´çš„é¡¹æ˜¯å„ä¸ªæ—¥å¿—è¾“å‡ºè®¾å¤‡çš„é…ç½®ï¼Œé…ç½®æ ¼å¼æ˜¯ä¸€ä¸ªæˆ–å¤šä¸ªkey:valueå¯¹ï¼ˆç©ºæ ¼åˆ†éš”ï¼‰
+; ä»¥ä¸‹é€šç”¨é…ç½®å¯¹ä»»ä½•æ—¥å¿—è¾“å‡ºè®¾å¤‡å‡æœ‰æ•ˆï¼š
+; 1. enable æŒ‡å®šæ­¤æ—¥å¿—è¾“å‡ºè®¾å¤‡æ˜¯å¦å¯ç”¨ï¼Œå–å€¼false/true
+; 2. filter è¿‡æ»¤è®¾ç½®ï¼Œæ”¯æŒå¯¹tagå’Œlevelè¿›è¡Œè¿‡æ»¤ã€‚ä¾‹å¦‚:
+;    filter:tag=perf         è¡¨ç¤ºæ‰€æœ‰tagä¸­åŒ…å«perfçš„æ—¥å¿—éƒ½ä¼šè¾“å‡º
+;    filter:!(tag=perf)      è¡¨ç¤ºæ‰€æœ‰tagä¸­ä¸åŒ…å«perfçš„æ—¥å¿—éƒ½ä¼šè¾“å‡º
+;    filter:level>16         è¡¨ç¤ºæ‰€æœ‰çº§åˆ«å¤§äºè°ƒè¯•çº§åˆ«çš„æ—¥å¿—
 ;    filter:tag=perf&&level>16
 ;    filter:!(tag=perf)||level>16
 
 
-; ¹ÜµÀÈÕÖ¾£¨ÈÕÖ¾²é¿´Æ÷£©ÅäÖÃ
+; ç®¡é“æ—¥å¿—ï¼ˆæ—¥å¿—æŸ¥çœ‹å™¨ï¼‰é…ç½®
 ; 	
-; È±Ê¡ÅäÖÃ£ºenable:false
-; ÕâÀïµÄÖµ»áµş¼Óµ½È±Ê¡ÅäÖÃ£¬ÈôÊôĞÔÒ»Ñù£¬Ôò¸²¸ÇÈ±Ê¡ÅäÖÃÖĞµÄÖµ
+; ç¼ºçœé…ç½®ï¼šenable:false
+; è¿™é‡Œçš„å€¼ä¼šå åŠ åˆ°ç¼ºçœé…ç½®ï¼Œè‹¥å±æ€§ä¸€æ ·ï¼Œåˆ™è¦†ç›–ç¼ºçœé…ç½®ä¸­çš„å€¼
 ld_pipe=enable:false
 
 
-; ÎÄ¼şÈÕÖ¾ÅäÖÃ
-; 	share_read  ÒÔ¹²Ïí¶ÁÄ£Ê½´ò¿ª 0/1 È±Ê¡1
-;       async       Òì²½Ğ´Ä£Ê½ 0/1 È±Ê¡0
-;       buffer_size ÎÄ¼ş»º´æ£¬µ¥Î»×Ö½Ú£¬È±Ê¡1000000
-; 	path        ÈÕÖ¾ÎÄ¼şÂ·¾¶£¬Ö§³ÖÒÔÏÂÌØÊâÔªËØ
-; 	            ${PID} µ±Ç°½ø³ÌID
-; 	            ${T}, ${DATE}, ${TIME} µ±Ç°Ê±¼ä ¸ñÊ½·Ö±ğÎª£ºyyyymmddHHMMSS, yyyymmdd, HHMMSS
-; È±Ê¡ÅäÖÃ: enable:false path:`%temp%\\Baidu\\BaiduProduct\\log\\ime_${T}_${PF}.xlog`
-; ÕâÀïµÄÖµ»áµş¼Óµ½È±Ê¡ÅäÖÃ£¬ÈôÊôĞÔÒ»Ñù£¬Ôò¸²¸ÇÈ±Ê¡ÅäÖÃÖĞµÄÖµ
+; æ–‡ä»¶æ—¥å¿—é…ç½®
+; 	share_read  ä»¥å…±äº«è¯»æ¨¡å¼æ‰“å¼€ 0/1 ç¼ºçœ1
+;       async       å¼‚æ­¥å†™æ¨¡å¼ 0/1 ç¼ºçœ0
+;       buffer_size æ–‡ä»¶ç¼“å­˜ï¼Œå•ä½å­—èŠ‚ï¼Œç¼ºçœ1000000
+; 	path        æ—¥å¿—æ–‡ä»¶è·¯å¾„ï¼Œæ”¯æŒä»¥ä¸‹ç‰¹æ®Šå…ƒç´ 
+; 	            ${PID} å½“å‰è¿›ç¨‹ID
+; 	            ${T}, ${DATE}, ${TIME} å½“å‰æ—¶é—´ æ ¼å¼åˆ†åˆ«ä¸ºï¼šyyyymmddHHMMSS, yyyymmdd, HHMMSS
+; ç¼ºçœé…ç½®: enable:false path:`%temp%\\Baidu\\BaiduProduct\\log\\ime_${T}_${PF}.xlog`
+; è¿™é‡Œçš„å€¼ä¼šå åŠ åˆ°ç¼ºçœé…ç½®ï¼Œè‹¥å±æ€§ä¸€æ ·ï¼Œåˆ™è¦†ç›–ç¼ºçœé…ç½®ä¸­çš„å€¼
 ld_file=enable:false
 
 
-; ¹²ÏíÄÚ´æÅäÖÃ
-; È±Ê¡ÅäÖÃ: enable:true filter:!(tag=perf)
+; å…±äº«å†…å­˜é…ç½®
+; ç¼ºçœé…ç½®: enable:true filter:!(tag=perf)
 ld_sharememory=enable:true
 
 
 ; debugoutput
-; È±Ê¡ÅäÖÃ: enalbe:false
+; ç¼ºçœé…ç½®: enalbe:false
 ld_debugoutput=enable:false

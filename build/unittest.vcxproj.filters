@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -15,41 +15,41 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\testlog\earlyinvoke.cpp">
+    <ClCompile Include="..\unittest\earlyinvoke.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\testlog\file2.cpp">
+    <ClCompile Include="..\unittest\file2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\testlog\perftest.cpp">
+    <ClCompile Include="..\unittest\perftest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\testlog\stdafx.cpp">
+    <ClCompile Include="..\unittest\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\testlog\testlog.cpp">
+    <ClCompile Include="..\unittest\testlog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\testlog\profiler.h">
+    <ClInclude Include="..\unittest\profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\testlog\stdafx.h">
+    <ClInclude Include="..\unittest\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\testlog\targetver.h">
+    <ClInclude Include="..\unittest\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\testlog\testlog.h">
+    <ClInclude Include="..\unittest\testlog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\testlog\resource.h">
+    <ClInclude Include="..\unittest\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\testlog\testlog.rc">
+    <ResourceCompile Include="..\unittest\testlog.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
