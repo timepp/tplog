@@ -6,6 +6,7 @@
 #include <tplib/include/auto_release.h>
 #include <tplib/include/unittest.h>
 #include <tplib/include/unittest_output.h>
+#include <tplib/include/cmdlineparser.h>
 #include <map>
 #include <string>
 #include <tplog_impl.h>
@@ -589,8 +590,33 @@ TPUT_DEFINE_BLOCK(L"LOD.File", L"")
 	}
 }
 
+void write_logs(int max_count)
+{
+    ILogController* ctrl = GetLogController();
+    ctrl->Init(NULL);
+    ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:true");
+
+    for (int i = 0; i < max_count; i++)
+    {
+        Log(LL_EVENT, TAG_DEFAULT, L"test log %d/%d", i, max_count);
+        ::Sleep(1000);
+    }
+}
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR lpstrCmdLine, int nCmdShow)
 {
+    bool as_server = false;
+    int max_count = 10;
+    tp::cmdline_parser parser;
+    parser.register_bool_option(L"s", L"server", &as_server);
+    parser.register_int_option(L"c", L"count", &max_count);
+    parser.parse(::GetCommandLineW());
+    if (as_server)
+    {
+        write_logs(max_count);
+        return 0;
+    }
+
     tp::unittest& ut = tp::unittest::instance();
     tp::ListTestOutput lto(L"TPLOG TEST");
     ut.set_test_output(&lto);
