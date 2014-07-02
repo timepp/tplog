@@ -5,8 +5,6 @@
 LARGE_INTEGER CProfiler::m_freq = {};
 BOOL CProfiler::m_avaliable = ::QueryPerformanceFrequency(&CProfiler::m_freq);
 
-// ²âÊÔtplogµÄÐÔÄÜ
-
 static int PerformanceTest(size_t times)
 {
 	CProfiler pf(true);

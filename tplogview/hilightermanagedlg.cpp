@@ -14,7 +14,7 @@ LRESULT CHilighterManageDlg::OnInitDialog(HWND, LPARAM)
 		int width;
 	} ci[] =
 	{
-		{IDS_HILIGHT_NAME, 100},
+		{IDS_HILIGHT_NAME, 200},
 		{IDS_PREVIEW, 300}
 	};
 	for (int i = 0; i < _countof(ci); i++)

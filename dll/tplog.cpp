@@ -25,11 +25,12 @@ BOOL APIENTRY DllMain( HMODULE /*hModule*/, DWORD ul_reason_for_call, LPVOID /*l
 #define WIDE_STR_(x) L##x
 #define WIDE_STR(x) WIDE_STR_(x)
 
-// 使用symview检查产出是否有“不该被链接”字样的符号出现，若有，说明不小心链接了相应的函数，应该检查并消灭掉
-#define SHOULD_NOT_LINK(reason)  LOG(L"不该被链接(" reason L"): " WIDE_STR(__FUNCTION__))
+// Use symview to check if "should not link" appears in binary's symbol table. 
+// If so, we have linked the wrong implementation, we must check it and remove it.
+#define SHOULD_NOT_LINK(reason)  LOG(L"should not link(" reason L"): " WIDE_STR(__FUNCTION__))
 
-/// 缺省实现的new/delete比较复杂，
-/// tplog中没有几处new/delete，用不到这么复杂的功能，直接使用HeapAlloc/HeapFree代替
+// Default implementation of net/delete is too complicated.
+// tplog uses little allocation work, so HeapAlloc/HeapFree is enough.
 void * operator new(unsigned int size)
 {
 	return ::HeapAlloc(::GetProcessHeap(), 0, size);
@@ -44,8 +45,7 @@ int _purecall()
 	return 0;
 }
 
-/// 缺省的wcschr比较复杂(占用170多个字节，见wcschr.c)
-/// tplog中的场景都是在一个比较短的字符串中进行查找，自己写一个wcschr就够了
+// Default 'wcschr' occupies 170 more bytes, we hand craft a simpler version.
 const wchar_t* wcschr(const wchar_t* src, wchar_t ch)
 {
 	while (*src)
@@ -56,36 +56,34 @@ const wchar_t* wcschr(const wchar_t* src, wchar_t ch)
 	return NULL;
 }
 
-/// 以下是不应该被链接进来的函数
 #ifndef _DEBUG
 int _itow_s(int /*val*/, wchar_t* /*buf*/, size_t /*buflen*/, int /*redix*/)
 {
-	SHOULD_NOT_LINK(L"缺省实现太大");
+	SHOULD_NOT_LINK(L"Large default implementation");
 	return 0;
 }
 
 int wcsncpy_s(wchar_t* /*dest*/, size_t /*destlen*/, const wchar_t* /*src*/, size_t /*copylen*/)
 {
-	SHOULD_NOT_LINK(L"缺省实现太大");
+	SHOULD_NOT_LINK(L"Large default implementation");
 	return 0;
 }
 
-// error LNK2005: __wtoi already defined in LIBCMT.lib(wtox.obj)
 int wcsncat_s(wchar_t* /*dest*/, size_t /*destlen*/, const wchar_t* /*src*/, size_t /*copylen*/)
 {
-	SHOULD_NOT_LINK(L"缺省实现太大");
+	SHOULD_NOT_LINK(L"Large default implementation");
 	return 0;
 }
 
 int _wtoi(const wchar_t* /*str*/)
 {
-	SHOULD_NOT_LINK(L"缺省实现太大");
+	SHOULD_NOT_LINK(L"Large default implementation");
 	return 0;
 }
 
 int atexit ( void ( * /*func*/ ) (void) )
 {
-	SHOULD_NOT_LINK(L"没有运行库的初始化，不支持atexit");
+	SHOULD_NOT_LINK(L"we do not support atexit");
 	return 0;
 }
 

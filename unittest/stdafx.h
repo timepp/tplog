@@ -11,7 +11,7 @@
 
 
 #include <compilerconf.h>
-BD_NO_WARNING_AREA_BEGIN()
+TP_NO_WARNING_AREA_BEGIN()
 
 #include <windows.h>
 #include <shellapi.h>
@@ -40,8 +40,8 @@ BD_NO_WARNING_AREA_BEGIN()
 #include <wtl/atlctrlw.h>
 #include <wtl/atldlgs.h>
 
-BD_NO_WARNING_AREA_END()
-BD_TUNE_WARNINGS
+TP_NO_WARNING_AREA_END()
+TP_TUNE_WARNINGS
 
 #include <tplog.h>
 #include <tplog_util.h>

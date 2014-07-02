@@ -602,12 +602,8 @@ CStringW helper::ExpandPath(LPCWSTR pszPath)
 
 CStringW helper::GetLogLevelDescription(UINT level)
 {
-	const wchar_t* desc = ServiceHelper::GetLogPropertyDB()->GetLevelDesc(level);
-	if (desc) return desc;
-
 	if (level == 0) return IDS(IDS_LOWEST);
-
-	return (LPCWSTR)formatstr(L"%u", level);
+	return ServiceHelper::GetLogPropertyDB()->GetLevelDesc(level);
 }
 
 void helper::bool_reverse(bool& val)
