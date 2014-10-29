@@ -6,6 +6,7 @@
 #include <map>
 #include <TlHelp32.h>
 #include "detail/security.h"                // for "lowest rights security attribute"
+#include "tplog_synctime.h"
 
 namespace tplog
 {
@@ -920,5 +921,128 @@ thread_exit:
 	}
 };
 
+// OutputDebugString:
+// 1. wait for event "DBWIN_BUFFER_READY", 
+// 2. write to share memory "DBWIN_BUFFER" with format [PID(4 bytes)][content]
+// 3. set event "DBWIN_DATA_READY"
+class debugoutput_reader : public log_reader, public log_source_support
+{
+private:
+    HANDLE m_worker_thread;
+    bool m_stop_flag;
+    tplog::log_listener* m_listener;
+    bool m_global;
+
+public:
+
+    debugoutput_reader(bool global) : m_global(global)
+    {
+
+    }
+
+    virtual void set_listener(log_listener* listener)
+    {
+        m_listener = listener;
+    }
+
+    virtual HRESULT start()
+    {
+        if (!m_stop_flag)
+        {
+            return S_FALSE;
+        }
+
+        m_stop_flag = false;
+        m_worker_thread = (HANDLE) _beginthreadex(NULL, 0, work_thread, this, 0, NULL);
+        return S_OK;
+    }
+
+    virtual HRESULT stop()
+    {
+        m_stop_flag = true;
+        if (m_worker_thread)
+        {
+            ::WaitForSingleObject(m_worker_thread, INFINITE);
+            ::CloseHandle(m_worker_thread);
+            m_worker_thread = NULL;
+        }
+        return S_OK;
+    }
+
+    virtual bool working() const
+    {
+        return !m_stop_flag;
+    }
+
+    virtual size_t source_count() const
+    {
+        if (!m_stop_flag) return 0;
+        return 1;
+    }
+
+    virtual lsi_vec_t get_sources() const
+    {
+        lsi_vec_t ret;
+        return ret;
+    }
+
+private:
+    static unsigned int __stdcall work_thread(void* param)
+    {
+        debugoutput_reader* thisptr = reinterpret_cast<debugoutput_reader*>(param);
+        thisptr->work_thread_internal();
+        thisptr->m_stop_flag = true;
+        return 0;
+    }
+
+    void work_thread_internal()
+    {
+        HANDLE hMapping = NULL;
+        LPVOID pData = NULL;
+        PCWSTR shareMemoryName = m_global ? L"Global\\DBWIN_BUFFER" : L"Local\\DBWIN_BUFFER";
+        PCWSTR bufferReadyEventName = m_global ? L"Global\\DBWIN_BUFFER_READY" : L"Local\\DBWIN_BUFFER_READY";
+        PCWSTR dataReadyEventName = m_global ? L"Global\\DBWIN_DATA_READY" : L"Local\\DBWIN_DATA_READY";
+
+        HANDLE hMapping = ::CreateFileMappingW(
+            INVALID_HANDLE_VALUE, 
+            CLowestRightsSecurityAttribute(), 
+            PAGE_READWRITE, 
+            0, 4096, 
+            shareMemoryName);
+
+        HANDLE hBufferReadyEvent = ::CreateEventW(CLowestRightsSecurityAttribute(), TRUE, FALSE, bufferReadyEventName);
+        HANDLE hDataReadyEvent = ::CreateEventW(CLowestRightsSecurityAttribute(), TRUE, FALSE, dataReadyEventName);
+
+        LPVOID pData = ::MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
+        if (!pData) goto thread_exit;
+
+        ::SetEvent(hBufferReadyEvent);
+        for (;;)
+        {
+            DWORD dwWaitResult = WaitForSingleObject(hDataReadyEvent, 1000);
+            if (m_stop_flag) break;
+            if (dwWaitResult == WAIT_TIMEOUT) continue;
+            if (dwWaitResult != WAIT_OBJECT_0) break;
+
+            logitem * li = new logitem;
+            li->log_class = 0x25;
+            li->log_depth = 0;
+            li->log_index = 0;
+            li->log_content = (LPCWSTR)pData + 2;
+            li->log_pid = *(DWORD*)pData;
+            li->log_tid = 0;
+            li->log_time_sec = tm_sec;
+            li->log_time_msec = tm_msec;
+        }
+
+
+    thread_exit:
+        if (hBufferReadyEvent) ::CloseHandle(hBufferReadyEvent);
+        if (hDataReadyEvent) ::CloseHandle(hDataReadyEvent);
+        if (pData) ::UnmapViewOfFile(pData);
+        if (hMapping) ::CloseHandle(hMapping);
+    }
+
+};
 
 } // namespace tplog

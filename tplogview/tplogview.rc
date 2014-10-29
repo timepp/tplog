@@ -132,7 +132,7 @@ BEGIN
     CONTROL         "Select ID range",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,18,53,234,10
 END
 
-IDD_OPTION DIALOGEX 0, 0, 420, 240
+IDD_OPTION DIALOGEX 0, 0, 498, 241
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Option"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -140,9 +140,9 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,255,219,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,309,219,50,14
     PUSHBUTTON      "Apply(&A)",IDC_BUTTON_APPLY,363,219,50,14
-    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_SHOWSELALWAYS | TVS_FULLROWSELECT | WS_BORDER | WS_TABSTOP,7,7,76,198
+    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_SHOWSELALWAYS | TVS_FULLROWSELECT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,7,88,198
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,211,406,2
-    CONTROL         "",IDC_STATIC_OPTION_CLIENT,"Static",SS_BLACKFRAME,89,7,324,198
+    CONTROL         "",IDC_STATIC_OPTION_CLIENT,"Static",SS_BLACKFRAME,96,7,395,198
 END
 
 IDD_FILTER_EDIT DIALOGEX 0, 0, 191, 72
@@ -393,6 +393,14 @@ BEGIN
     EDITTEXT        IDC_EDIT,7,99,305,14,ES_AUTOHSCROLL
 END
 
+IDD_OPT_LOG_SOURCE_DEBUG_OUTPUT DIALOGEX 0, 0, 319, 196
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Monitor global debug output",IDC_CHECK_MONITOR_GLOBAL_DEBUG_OUTPUT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,305,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -441,9 +449,9 @@ BEGIN
     IDD_OPTION, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 413
+        RIGHTMARGIN, 491
         TOPMARGIN, 7
-        BOTTOMMARGIN, 233
+        BOTTOMMARGIN, 234
         HORZGUIDE, 205
     END
 
@@ -582,6 +590,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 189
     END
+
+    IDD_OPT_LOG_SOURCE_DEBUG_OUTPUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -667,7 +683,9 @@ IDR_MAINFRAME MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Start monitor pipe",         ID_START_MONITOR
+        MENUITEM "Start monitor &pipe",         ID_START_MONITOR
+        MENUITEM "Start monitor &debug output", ID_FILE_OPENDEBUGOUTPUT
+        MENUITEM "Start monitor global &debug output", ID_FILE_STARTMONITORGLOBALDEBUGOUTPUT
         MENUITEM "&Stop monitor",               ID_STOP_MONITOR
         MENUITEM SEPARATOR
         MENUITEM "&Open file...\tCtrl+O",       ID_OPEN_XLOG
@@ -675,13 +693,13 @@ BEGIN
         BEGIN
             MENUITEM "aaa",                         ID_40171
         END
-        MENUITEM SEPARATOR
         MENUITEM "Open share &memory log...",   ID_OPEN_SM_LOG
         MENUITEM SEPARATOR
         MENUITEM "&Save...\tCtrl+S",            ID_EXPORT_ALL
         MENUITEM "&Save filtered results...",   ID_EXPORT_FILTERED
         MENUITEM SEPARATOR
-        MENUITEM "&Clear all logs\tCtrl+X",     ID_CLEARALL
+        MENUITEM "&Clear all logs",             ID_CLEARALL
+        MENUITEM "&Exit\tAlt+F4",               ID_EXIT
     END
     POPUP "&View"
     BEGIN
@@ -729,20 +747,19 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
-    "X",            ID_CLEARALL,            VIRTKEY, CONTROL, NOINVERT
     "F",            ID_EDIT_FILTER,         VIRTKEY, SHIFT, CONTROL, NOINVERT
     "H",            ID_EDIT_HLIGHT,         VIRTKEY, SHIFT, CONTROL, NOINVERT
     "S",            ID_EXPORT_ALL,          VIRTKEY, CONTROL, NOINVERT
     VK_F2,          ID_NEXT_BOOKMARK,       VIRTKEY, NOINVERT
     "O",            ID_OPEN_XLOG,           VIRTKEY, CONTROL, NOINVERT
     VK_F2,          ID_PREV_BOOKMARK,       VIRTKEY, SHIFT, NOINVERT
+    "R",            ID_RUN_SCRIPT,          VIRTKEY, CONTROL, NOINVERT
     "F",            ID_SEARCH,              VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_SEARCH_NEXT,         VIRTKEY, NOINVERT
     VK_F3,          ID_SEARCH_PREV,         VIRTKEY, SHIFT, NOINVERT
     VK_F2,          ID_TOGGLE_BOOKMARK,     VIRTKEY, CONTROL, NOINVERT
     VK_F9,          ID_VIEW_MENUBAR,        VIRTKEY, NOINVERT
     "D",            ID_VIEW_SPECIAL_PATH,   VIRTKEY, CONTROL, NOINVERT
-    "R",            ID_RUN_SCRIPT,          VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -940,6 +957,18 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_DETAIL          "Show detail"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_LOGSOURCE_PIPE      "Pipe"
+    IDS_LOGSOURCE_DEBUG_OUTPUT "Debug output"
+    IDS_LOGSOURCE_FILE      "File"
+    IDS_LOGSOURCE_SHARE_MEMORY "Share Memory"
+    IDS_LOG_SOURCE_PIPE     "Pipe"
+    IDS_LOG_SOURCE_FILE     "File"
+    IDS_LOG_SOURCE_DEBUG_OUTPUT "Debug output"
+    IDS_LOG_SOURCE_SHARE_MEMORY "Share memory"
 END
 
 #endif    // English (United States) resources
