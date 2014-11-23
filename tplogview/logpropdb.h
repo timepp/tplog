@@ -73,7 +73,7 @@ public:
 		return m_defaultlvlset;
 	}
 
-	static const wchar_t* GetLevelDesc(UINT level)
+	static CStringW GetLevelDesc(UINT level)
 	{
 		switch (level)
 		{
@@ -85,7 +85,9 @@ public:
 		case 0x40: return IDS(IDS_LL_ERROR);
 		default: break;
 		}
-		return NULL;
+        CStringW strDesc;
+        strDesc.Format(L"0x%x", level);
+		return strDesc;
 	}
 
 	CLogPropertyDB() : m_tagVersion(1), m_lvlVersion(1)

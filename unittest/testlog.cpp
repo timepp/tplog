@@ -124,11 +124,11 @@ void TEST_OutputDevice_File()
 	ctrl->RemoveOutputDevice(NULL);
 
 	ctrl->AddOutputDevice(L"file", LODT_FILE, L"enable:1 path:'%appdata%\\${PID}${}${$}_${T}_a${DATE}_b${TIME}_u${no}${u${.tplog'");
-	Log(LL_EVENT, NOTAG, L"日志来了");
+	Log(LL_EVENT, NOTAG, L"Log comes");
 
 	ctrl->RemoveOutputDevice(NULL);
 
-	// TODO 测试日志路径不存在的时候，文件日志设备是否会自动创建
+	// TODO test if we can create new file if log file does not exist yet
 }
 
 HRESULT TEST_TP_CHECK()
@@ -246,14 +246,14 @@ TPUT_DEFINE_BLOCK(L"Init", L"")
 	};
 
 	ctrl->UnInit();
-	TPUT_EXPECT(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(之前未初始化过)");
-	tp::unittest::expect(SUCCEEDED(ctrl->Init(NULL)), L"正常初始化成功");
-	tp::unittest::expect(SUCCEEDED(ctrl->UnInit()), L"正常注销成功");
-	tp::unittest::expect(inner::CheckInvokeResults(), L"未初始化时调用接口，返回错误(初始化后又注销)");
+	TPUT_EXPECT(inner::CheckInvokeResults(), L"Error on invoking uninitialized interface");
+	tp::unittest::expect(SUCCEEDED(ctrl->Init(NULL)), L"Normal initialize");
+	tp::unittest::expect(SUCCEEDED(ctrl->UnInit()), L"Normal uninitialize");
+	tp::unittest::expect(inner::CheckInvokeResults(), L"Error on invoking freed interface");
 
 	ctrl->UnInit();
 	ctrl->Init(L".");
-	TPUT_EXPECT(ctrl->Init(L".") == TPLOG_E_ALREADY_INITED, L"重复初始化时返回对应的错误码");
+	TPUT_EXPECT(ctrl->Init(L".") == TPLOG_E_ALREADY_INITED, L"Duplicate initialize");
 
 	HRESULT hr = S_OK;
 	for (size_t i = 0; i < 100; i++)
@@ -263,7 +263,7 @@ TPUT_DEFINE_BLOCK(L"Init", L"")
 		hr = ctrl->Init(L".");
 		if (FAILED(hr)) break;
 	}
-	TPUT_EXPECT(SUCCEEDED(hr), L"反复初始化/注销时不出错");
+	TPUT_EXPECT(SUCCEEDED(hr), L"Repeated init/uninit");
 }
 
 TPUT_DEFINE_BLOCK(L"LogOption", L"")
@@ -315,7 +315,7 @@ TPUT_DEFINE_BLOCK(L"LogOption", L"")
 		L"k8:'~!@#$%^&*()_+{}|:\"?><,./;[]\\=-`\n\r\t'";
 	TestLOD1* lod1 = new TestLOD1(opts);
 	ctrl->AddCustomOutputDevice(L"test", lod1, optstr);
-	TPUT_EXPECT(lod1->AllOptionIsAsExpect(), L"日志设备能正确收到配置");
+	TPUT_EXPECT(lod1->AllOptionIsAsExpect(), L"Log configuration successfully passed to devices");
 
 	ctrl->RemoveOutputDevice(L"test");
 }
@@ -368,7 +368,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:", 1, L"", TRUE,
 			L"filter:", LL_EVENT, L"tag", TRUE
 		};
-		inner::RunTest(cases, _countof(cases), L"空过滤规则(匹配全部)");
+		inner::RunTest(cases, _countof(cases), L"empty filter rule(match all)");
 	}
 
 	{
@@ -387,7 +387,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:level<25", 10, L"", TRUE,
 			L"filter:level<0",  0, L"", FALSE,
 		};
-		inner::RunTest(cases, _countof(cases), L"日志级别过滤规则");
+		inner::RunTest(cases, _countof(cases), L"Log level filter rule");
 	}
 
 	{
@@ -401,7 +401,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:tag=perf", 16,  L"abc;prf;xyz", FALSE,
 			L"filter:tag=perf", 16,  L"perfa", FALSE,
 		};
-		inner::RunTest(cases, _countof(cases), L"日志标签过滤规则");
+		inner::RunTest(cases, _countof(cases), L"Log tag filter rule");
 	}
 
 	{
@@ -411,7 +411,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:'tag=perf && level>16'", 17,  L"peef", FALSE,
 			L"filter:'tag=perf && level>16'", 15,  L"perf", FALSE,
 		};
-		inner::RunTest(cases, _countof(cases), L"复合过滤规则：与");
+		inner::RunTest(cases, _countof(cases), L"Composite filter rule：and");
 	}
 
 	{
@@ -421,7 +421,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:tag=perf||level>16", 17,  L"peef", TRUE,
 			L"filter:tag=perf||level>16", 15,  L"peef", FALSE,
 		};
-		inner::RunTest(cases, _countof(cases), L"复合过滤规则：或");
+		inner::RunTest(cases, _countof(cases), L"Composite filter rule：or");
 	}
 
 	{
@@ -432,7 +432,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:!(!(tag=perf))", 16,  L"peef", FALSE,
 			L"filter:!(!(tag=perf))", 16,  L"perf", TRUE,
 		};
-		inner::RunTest(cases, _countof(cases), L"复合过滤规则：非");
+		inner::RunTest(cases, _countof(cases), L"Composite filter rule：not");
 	}
 
 	{
@@ -442,7 +442,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:'tag=perf || level<32 && level>16'", 16,  L"perf", FALSE,
 			L"filter:'tag=perf || level<32 && !(level>16)'", 16,  L"perf", TRUE,
 		};
-		inner::RunTest(cases, _countof(cases), L"复杂过滤规则组合");
+		inner::RunTest(cases, _countof(cases), L"Complicate filter rules combination");
 	}
 
 	{
@@ -457,7 +457,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 			L"filter:======================", 16,  L"perfa", TRUE,
 			L"filter:()(((())))))))()())(()", 16,  L"perfa", TRUE,
 		};
-		inner::RunTest(cases, _countof(cases), L"错误的过滤串");
+		inner::RunTest(cases, _countof(cases), L"Wrong filter string");
 	}
 }
 
@@ -475,7 +475,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(1, 0, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(1, 0, 1, 0);
-	TPUT_EXPECT(ret, L"以启用方式添加设备能调用Open并且设备接收到日志");
+	TPUT_EXPECT(ret, L"Add device with initial enabled will call device.Open and device can receive logs");
 
 	ret = true;
 	lod->ResetCount();
@@ -483,7 +483,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(0, 1, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(0, 1, 0, 0);
-	TPUT_EXPECT(ret, L"更改日志设备为禁用时能调用Close并且设备不再接收日志");
+	TPUT_EXPECT(ret, L"Change device to disabled will call device.Close and device can no longer receive logs");
 	ctrl->RemoveOutputDevice(L"test");
 
 	ret = true;
@@ -492,7 +492,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(0, 0, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(0, 0, 0, 0);
-	TPUT_EXPECT(ret, L"以禁用方式添加设备不调用Open并且不接收日志");
+	TPUT_EXPECT(ret, L"Add device with initial disabled will not call device.Open and device can not receive logs");
 
 	ret = true;
 	lod->ResetCount();
@@ -500,7 +500,7 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 	ret = ret && lod->CompareCount(1, 0, 0, 0);
 	Log(LL_DEBUG, TAG_DEFAULT, L"%s", L"");
 	ret = ret && lod->CompareCount(1, 0, 1, 0);
-	TPUT_EXPECT(ret, L"更改日志设备为启用时能调用Open和接收日志");
+	TPUT_EXPECT(ret, L"Change device to enabled will call device.Open and device can receive logs from now on");
 }
 
 TPUT_DEFINE_BLOCK(L"#a3", L"")
@@ -511,7 +511,7 @@ TPUT_DEFINE_BLOCK(L"#a3", L"")
 	TPUT_EXPECT(ctrl->RemoveOutputDevice(L"aaa") == TPLOG_E_NOT_INITED, 0);
 }
 
-TPUT_DEFINE_BLOCK(L"#初始化日志系统", L"")
+TPUT_DEFINE_BLOCK(L"#Initialize log system", L"")
 {
 	ILogController* ctrl = GetLogController();
 	ctrl->Init(L".");
@@ -520,7 +520,7 @@ TPUT_DEFINE_BLOCK(L"#初始化日志系统", L"")
 TPUT_DEFINE_BLOCK(L"#OutputDevice.Pipe", L"")
 {
 	ILogController* ctrl = GetLogController();
-	TPUT_EXPECT(ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:1") == S_OK, L"添加管道日志设备");
+	TPUT_EXPECT(ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:1") == S_OK, L"Add pipe log device");
 
 	for (size_t i = 0; i < 100; i++)
 	{

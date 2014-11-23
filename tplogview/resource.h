@@ -4,7 +4,6 @@
 //
 #define IDC_BTN_SAVESCRIPT              3
 #define IDC_BTN_LOADSCRIPT              4
-#define IDD_MAINDLG                     101
 #define ID_PANE_LOGCOUNT                101
 #define IDD_TIP                         102
 #define ID_PANE_FILTERED_LOGCOUNT       102
@@ -69,7 +68,6 @@
 #define IDI_ICON4                       155
 #define IDI_CLEAR                       155
 #define IDD_QUICKFILTER                 156
-#define IDD_FIRSTTIME                   157
 #define IDI_CONTENT                     158
 #define IDI_LOGICAL_AND                 159
 #define IDI_LOGICAL_NOT                 160
@@ -88,6 +86,7 @@
 #define IDD_OPT_PERFMARK                171
 #define IDD_OPT_PERFMARK1               172
 #define IDD_OPT_SYSTEM                  172
+#define IDD_OPT_LOG_SOURCE_DEBUG_OUTPUT 173
 #define IDS_ALL                         200
 #define IDS_ALL_FILE                    201
 #define IDS_ALL_LOG_LEVEL               202
@@ -172,10 +171,16 @@
 #define IDS_TOTAL                       285
 #define IDS_TPLOGVIEW                   286
 #define IDS_UPDATE_MSG                  287
+#define IDS_LOGSOURCE_PIPE              288
+#define IDS_LOGSOURCE_DEBUG_OUTPUT      289
+#define IDS_LOGSOURCE_FILE              290
+#define IDS_LOGSOURCE_SHARE_MEMORY      291
+#define IDS_LOG_SOURCE_PIPE             292
+#define IDS_LOG_SOURCE_FILE             293
+#define IDS_LOG_SOURCE_DEBUG_OUTPUT     294
+#define IDS_LOG_SOURCE_SHARE_MEMORY     295
 #define IDC_LIST                        1001
 #define IDC_APPLY                       1002
-#define IDC_CB_SHOW_CLASS               1003
-#define IDC_EDIT_FILTER_TEXT            1004
 #define IDC_EDIT_TAG                    1005
 #define IDC_LIST1                       1007
 #define IDC_EDIT_ID                     1009
@@ -186,6 +191,7 @@
 #define IDC_CHECK_AUTO_MONITOR          1011
 #define IDC_CHECK_HILIGHT_ALL           1011
 #define IDC_CHECK_ENABLE_PERFMARK       1011
+#define IDC_CHECK_MONITOR_GLOBAL_DEBUG_OUTPUT 1011
 #define IDC_EDIT_CLASS                  1012
 #define IDC_CHECK2                      1012
 #define IDC_CHECK_IGNORECASE            1012
@@ -200,7 +206,6 @@
 #define IDC_BTN_PREVSEARCH              1018
 #define IDC_BTN_NEXTSEARCH              1019
 #define IDC_BTN_CLEARFILTER             1020
-#define IDC_BTN_MENU                    1020
 #define IDC_DOWNLOAD                    1022
 #define IDC_BTN_DOWNLOAD                1022
 #define IDC_EDIT_EXPIRE_TIME            1023
@@ -214,10 +219,8 @@
 #define IDC_STATIC_EXPIRE_DESC          1029
 #define IDC_RADIO1                      1029
 #define IDC_RADIO2                      1030
-#define IDC_STATIC_CLASS                1030
 #define IDC_EDIT_VERSION                1030
 #define IDC_RADIO3                      1031
-#define IDC_STATIC_OFFLINE_TIP          1031
 #define IDC_EDIT2                       1033
 #define IDC_COMBO_LOGCLASS              1034
 #define IDC_BUTTON_IMPORT               1034
@@ -272,7 +275,6 @@
 #define IDC_STATIC_TITLE                1068
 #define IDC_QF_TEXT                     1069
 #define IDC_QF_TAGS                     1070
-#define IDC_COMBO_PRODUCT               1072
 #define IDC_COMBO_TEXT                  1074
 #define IDC_COMBO_PID                   1075
 #define IDC_SCROLLBAR1                  1076
@@ -451,13 +453,17 @@
 #define ID_CONTEXT_FILTER_INCLUDE       40190
 #define ID_LIST40191                    40191
 #define ID_CONTEXT_FILTER_PLACEHOLDER   40192
+#define ID_FILE_EXIT                    40193
+#define ID_EXIT                         40195
+#define ID_FILE_OPENDEBUGOUTPUT         40196
+#define ID_FILE_STARTMONITORGLOBALDEBUGOUTPUT 40197
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        288
-#define _APS_NEXT_COMMAND_VALUE         40193
+#define _APS_NEXT_RESOURCE_VALUE        289
+#define _APS_NEXT_COMMAND_VALUE         40198
 #define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           107
 #endif

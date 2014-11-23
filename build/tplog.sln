@@ -20,8 +20,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tplog", "tplog", "{7BE5D684-238E-4EEE-9680-D67ADE49D0A0}"
 	ProjectSection(SolutionItems) = preProject
 		..\tplog\tplog.h = ..\tplog\tplog.h
-		..\tplog\tplog_singleton.h = ..\tplog\tplog_singleton.h
 		..\tplog\tplog_reader.h = ..\tplog\tplog_reader.h
+		..\tplog\tplog_singleton.h = ..\tplog\tplog_singleton.h
 		..\tplog\tplog_synctime.h = ..\tplog\tplog_synctime.h
 		..\tplog\tplog_util.h = ..\tplog\tplog_util.h
 	EndProjectSection
@@ -76,7 +76,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7BE5D684-238E-4EEE-9680-D67ADE49D0A0} = {1361528F-F0E4-4CA9-B947-F5C5F6BAEDBA}
 		{199DC3BA-0A56-4893-8A72-E29FEED01905} = {7BE5D684-238E-4EEE-9680-D67ADE49D0A0}
 	EndGlobalSection
 EndGlobal

@@ -29,8 +29,14 @@ LRESULT COptionDlg::OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/)
 	{
 		CTreeItem itemView = AddOptionPage(NULL, IDS(IDS_SHOW), NULL);
 		AddOptionPage(itemView, IDS(IDS_PREFMARK), &m_optPerfMark);
+        CTreeItem itemSource = AddOptionPage(NULL, IDS(IDS_LOG_SOURCE), NULL);
+        AddOptionPage(itemSource, IDS(IDS_LOG_SOURCE_PIPE), NULL);
+        AddOptionPage(itemSource, IDS(IDS_LOG_SOURCE_DEBUG_OUTPUT), NULL);
+        AddOptionPage(itemSource, IDS(IDS_LOG_SOURCE_FILE), NULL);
+        AddOptionPage(itemSource, IDS(IDS_LOG_SOURCE_SHARE_MEMORY), NULL);
 		CTreeItem itemSys = AddOptionPage(NULL, IDS(IDS_SYSTEM), &m_optSystem);
-		ExpandAllChildItem(m_tree.GetRootItem());
+	
+        ExpandAllChildItem(m_tree.GetRootItem());
 		itemView.Select();
 	}
 

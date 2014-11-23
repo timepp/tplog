@@ -121,6 +121,7 @@ void CMainFrame::CreateStatusBar()
 	m_wndStatusbar.SetPaneText(ID_PANE_LOGCOUNT, IDS(IDS_TOTAL) + L":0");
 	m_wndStatusbar.SetPaneText(ID_PANE_FILTERED_LOGCOUNT, IDS(IDS_SHOW) + L":0");
 	m_wndStatusbar.SetPaneText(ID_PANE_WORKTHREAD_COUNT, IDS(IDS_LOG_SOURCE) + L":0");
+    m_wndStatusbar.SetPaneWidth(ID_PANE_WORKTHREAD_COUNT, 120);
 
 	m_filterIcon = AtlLoadIconImage(IDI_FILTER, LR_DEFAULTCOLOR, 16, 16);
 
@@ -152,11 +153,11 @@ void CMainFrame::CreateList()
 	{
 		IDS_NULL, 20,
 		IDS_SEQ, 60,
-		IDS_TIME, 110,
-		IDS_INTERVAL_US, 60,
-		IDS_LEVEL, 40,
+		IDS_TIME, 120,
+		IDS_INTERVAL_US, 100,
+		IDS_LEVEL, 80,
 		IDS_PROCESS, 150,
-		IDS_THREAD, 50,
+		IDS_THREAD, 60,
 		IDS_LOG_CONTENT, 600,
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
@@ -1336,7 +1337,7 @@ void CMainFrame::OnContextMenu(HWND hWnd, CPoint pt)
 
 			CMenu menu;
             menu.LoadMenuW(IDR_CONTEXTMENU);
-            CMenu popupMenu = (HMENU)menu.GetSubMenu(2);
+            CMenu popupMenu = (HMENU)menu.GetSubMenu(1);
             popupMenu.InsertMenuW(ID_CONTEXT_FILTER_PLACEHOLDER, MF_BYCOMMAND | MF_POPUP, m1, IDS(IDS_CONTEXT_FILTER_INCLUDE));
             popupMenu.InsertMenuW(ID_CONTEXT_FILTER_PLACEHOLDER, MF_BYCOMMAND | MF_POPUP, m1, IDS(IDS_CONTEXT_FILTER_EXCLUDE));
             popupMenu.DeleteMenu(ID_CONTEXT_FILTER_PLACEHOLDER, MF_BYCOMMAND);

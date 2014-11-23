@@ -13,11 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (Simplified, PRC) resources
+// English (United States) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
-#pragma code_page(936)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -57,22 +57,6 @@ END
 // Dialog
 //
 
-IDD_MAINDLG DIALOGEX 0, 0, 511, 214
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "LOG_FGUI"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    CONTROL         "显示级别(&C)：",IDC_STATIC_CLASS,"Static",SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | WS_GROUP,67,4,43,12,WS_EX_TRANSPARENT
-    COMBOBOX        IDC_CB_SHOW_CLASS,115,4,59,89,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "显示标签(&T)：",IDC_STATIC,193,4,50,12,SS_CENTERIMAGE,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_EDIT_TAG,247,4,116,14,ES_AUTOHSCROLL
-    LTEXT           "文本(&S)：",IDC_STATIC,375,4,34,12,SS_CENTERIMAGE,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_EDIT_FILTER_TEXT,413,4,91,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "主菜单(&F)...",IDC_BTN_MENU,6,4,50,14,BS_TOP
-    LTEXT           "离线模式:\n\n已经有一个实时模式的日志查看器在运行了,不能同时开启多个实时模式的日志查看器。在离线模式下，您可以从主菜单打开历史日志文件(xlog文件)。",IDC_STATIC_OFFLINE_TIP,6,30,498,170
-    CONTROL         "",IDC_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,23,511,170
-END
-
 IDD_TIP DIALOGEX 0, 0, 117, 78
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP
 EXSTYLE WS_EX_TOOLWINDOW
@@ -83,82 +67,82 @@ END
 
 IDD_LOGINFO DIALOGEX 0, 0, 397, 127
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "日志信息"
+CAPTION "Log Detail"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_CONTENT,7,35,383,70,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL | WS_HSCROLL
-    CONTROL         "自动换行",IDC_CHECK_AUTOWRAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,110,44,10
-    LTEXT           "时间:",IDC_STATIC,7,7,28,14
+    CONTROL         "Auto Wrap",IDC_CHECK_AUTOWRAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,110,44,10
+    LTEXT           "Time:",IDC_STATIC,7,7,28,14
     EDITTEXT        IDC_EDIT_TIME,30,7,114,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "进程:",IDC_STATIC,7,21,29,14
+    LTEXT           "Process:",IDC_STATIC,7,21,29,14
     EDITTEXT        IDC_EDIT_PID,30,21,114,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "编号:",IDC_STATIC,146,7,22,14
+    LTEXT           "ID:",IDC_STATIC,146,7,22,14
     EDITTEXT        IDC_EDIT_ID,169,7,35,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "标签:",IDC_STATIC,274,7,24,14
+    LTEXT           "Tags:",IDC_STATIC,274,7,24,14
     EDITTEXT        IDC_EDIT_TAG,295,7,95,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "线程:",IDC_STATIC,145,21,29,14
+    LTEXT           "Thread:",IDC_STATIC,145,21,29,14
     EDITTEXT        IDC_EDIT_TID,168,21,37,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
-    LTEXT           "级别:",IDC_STATIC,209,7,22,14
+    LTEXT           "Level:",IDC_STATIC,209,7,22,14
     EDITTEXT        IDC_EDIT_CLASS,232,7,38,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
     EDITTEXT        IDC_EDIT_CONTENT_WRAP,7,35,383,70,ES_MULTILINE | ES_READONLY | NOT WS_VISIBLE | WS_VSCROLL
-    LTEXT           "调用深度:",IDC_STATIC,208,21,42,14
+    LTEXT           "Call Depth:",IDC_STATIC,208,21,42,14
     EDITTEXT        IDC_EDIT_CALLDEPTH,248,21,58,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
 END
 
 IDD_SEARCH_DLG DIALOGEX 0, 0, 283, 39
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_TOOLWINDOW
-CAPTION "查找日志内容"
+CAPTION "Search Log"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "上一个(Shift+F3)",IDC_BTN_PREVSEARCH,144,22,65,14
-    PUSHBUTTON      "下一个(F3)",IDC_BTN_NEXTSEARCH,215,22,65,14
+    PUSHBUTTON      "Next(Shift+F3)",IDC_BTN_PREVSEARCH,144,22,65,14
+    PUSHBUTTON      "Prev(F3)",IDC_BTN_NEXTSEARCH,215,22,65,14
     COMBOBOX        IDC_COMBO_TEXT,3,3,277,98,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "高亮所有匹配项",IDC_CHECK_HILIGHT_ALL,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,3,26,78,10
+    CONTROL         "Highlight All",IDC_CHECK_HILIGHT_ALL,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,3,26,78,10
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 312, 124
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "关于"
+CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "关闭",IDOK,255,103,50,14
-    PUSHBUTTON      "查看版本历史(&H)",IDC_BUTTON_SHOW_VERSIONINFO,7,103,83,14
-    LTEXT           "版本：",IDC_STATIC,53,49,56,12,SS_CENTERIMAGE
-    LTEXT           "产品名称：",IDC_STATIC,53,64,56,12,SS_CENTERIMAGE
-    LTEXT           "配置文件路径：",IDC_STATIC,53,79,56,12,SS_CENTERIMAGE
-    LTEXT           "日志查看器是配合TPLOG使用的工具。可以实时查看应用程序的管道日志(LODT_PIPE)的输出；可以查看应用应用程序的共享内存日志(LODT_SHAREMEMORY)的内容；也可以以离线模式打开计算机中的BDLOG日志文件。",IDC_STATIC,53,7,244,35
+    DEFPUSHBUTTON   "Close",IDOK,255,103,50,14
+    PUSHBUTTON      "View version &history",IDC_BUTTON_SHOW_VERSIONINFO,7,103,83,14
+    LTEXT           "Version:",IDC_STATIC,7,49,56,12,SS_CENTERIMAGE
+    LTEXT           "TPLOG config:",IDC_STATIC,7,60,56,12,SS_CENTERIMAGE
+    LTEXT           "TPLOGVIEW config:",IDC_STATIC,7,71,66,12,SS_CENTERIMAGE
+    LTEXT           "TPLOG Viewer can read realtime pipe log and share memory log issued by TPLOG. It can also monitor debug output or open text logging file with proper format.",IDC_STATIC,53,7,244,35
     ICON            IDR_MAINFRAME,IDC_STATIC,7,9,20,20,SS_REALSIZEIMAGE
-    LTEXT           "Static",IDC_STATIC_VERSION,111,49,60,12,SS_CENTERIMAGE
-    LTEXT           "Static",IDC_STATIC_LOG_CONFIG_PATH,111,64,194,12,SS_CENTERIMAGE
-    LTEXT           "Static",IDC_STATIC_CONF_PATH,111,80,194,10
+    LTEXT           "Static",IDC_STATIC_VERSION,73,49,232,12,SS_CENTERIMAGE
+    LTEXT           "Static",IDC_STATIC_LOG_CONFIG_PATH,73,60,232,12,SS_CENTERIMAGE
+    LTEXT           "Static",IDC_STATIC_CONF_PATH,73,73,232,12
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,97,298,1
 END
 
 IDD_EXPORT DIALOGEX 0, 0, 279, 130
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Dialog"
+CAPTION "Save Log"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "导出",IDOK,222,109,50,14
-    PUSHBUTTON      "取消",IDCANCEL,163,109,50,14
-    GROUPBOX        "日志范围",IDC_STATIC,7,7,265,74
-    CONTROL         "当前的过滤结果",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,18,23,234,10
-    CONTROL         "所有日志",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,18,38,234,10
-    CONTROL         "选择ID的范围",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,18,53,234,10
+    DEFPUSHBUTTON   "OK",IDOK,222,109,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,163,109,50,14
+    GROUPBOX        "Log range",IDC_STATIC,7,7,265,74
+    CONTROL         "Current filter result",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,18,23,234,10
+    CONTROL         "All logs",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,18,38,234,10
+    CONTROL         "Select ID range",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,18,53,234,10
 END
 
-IDD_OPTION DIALOGEX 0, 0, 420, 240
+IDD_OPTION DIALOGEX 0, 0, 498, 241
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "选项"
+CAPTION "Option"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,255,219,50,14
-    PUSHBUTTON      "取消",IDCANCEL,309,219,50,14
-    PUSHBUTTON      "应用(&A)",IDC_BUTTON_APPLY,363,219,50,14
-    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_SHOWSELALWAYS | TVS_FULLROWSELECT | WS_BORDER | WS_TABSTOP,7,7,76,198
+    DEFPUSHBUTTON   "OK",IDOK,255,219,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,309,219,50,14
+    PUSHBUTTON      "Apply(&A)",IDC_BUTTON_APPLY,363,219,50,14
+    CONTROL         "",IDC_TREE,"SysTreeView32",TVS_SHOWSELALWAYS | TVS_FULLROWSELECT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,7,88,198
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,211,406,2
-    CONTROL         "",IDC_STATIC_OPTION_CLIENT,"Static",SS_BLACKFRAME,89,7,324,198
+    CONTROL         "",IDC_STATIC_OPTION_CLIENT,"Static",SS_BLACKFRAME,96,7,395,198
 END
 
 IDD_FILTER_EDIT DIALOGEX 0, 0, 191, 72
@@ -178,13 +162,13 @@ BEGIN
     EDITTEXT        IDC_EDIT_PROCESSNAME,60,62,234,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PID,60,83,234,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_TID,60,104,255,14,ES_AUTOHSCROLL
-    LTEXT           "当前的过滤规则无法用简单视图表示，请切换到其他视图",IDC_STATIC_BADNODE,107,129,208,11,SS_CENTERIMAGE | NOT WS_VISIBLE
-    RTEXT           "日志内容包含：",IDC_STATIC,0,1,57,12,SS_CENTERIMAGE
-    RTEXT           "日志标签：",IDC_STATIC,0,22,57,12,SS_CENTERIMAGE
-    RTEXT           "日志输出级别：",IDC_STATIC,0,42,57,12,SS_CENTERIMAGE
-    RTEXT           "进程名：",IDC_STATIC,0,62,57,12,SS_CENTERIMAGE
-    RTEXT           "进程PID：",IDC_STATIC,0,84,57,12,SS_CENTERIMAGE
-    RTEXT           "线程ID：",IDC_STATIC,0,105,57,12,SS_CENTERIMAGE
+    LTEXT           "Current filter rules is too complicated to edit with simple view, please use other views instead",IDC_STATIC_BADNODE,107,129,208,11,SS_CENTERIMAGE | NOT WS_VISIBLE
+    RTEXT           "Content includes:",IDC_STATIC,0,1,57,12,SS_CENTERIMAGE
+    RTEXT           "Tag:",IDC_STATIC,0,22,57,12,SS_CENTERIMAGE
+    RTEXT           "Level:",IDC_STATIC,0,42,57,12,SS_CENTERIMAGE
+    RTEXT           "Process name:",IDC_STATIC,0,62,57,12,SS_CENTERIMAGE
+    RTEXT           "Process ID:",IDC_STATIC,0,84,57,12,SS_CENTERIMAGE
+    RTEXT           "Thread ID:",IDC_STATIC,0,105,57,12,SS_CENTERIMAGE
     PUSHBUTTON      ">",IDC_BTN_SELECT_TAG,294,21,20,14,BS_TOP
     PUSHBUTTON      ">",IDC_BTN_SELECT_PROCESS_NAME,294,62,20,14,BS_TOP
     PUSHBUTTON      ">",IDC_BTN_SELECT_PROCESS_ID,294,83,20,14,BS_TOP
@@ -199,119 +183,119 @@ END
 
 IDD_FILTER_EDIT_LOGCLASS DIALOGEX 0, 0, 292, 103
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "日志级别过滤编辑"
+CAPTION "Log level filter editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,181,82,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,82,50,14
-    COMBOBOX        IDC_COMBO_LOGCLASS_LOW,73,16,66,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_COMBO_LOGCLASS_HIGH,73,39,66,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "日志级别不低于：",IDC_STATIC,7,15,62,14,SS_CENTERIMAGE
-    LTEXT           "日志级别不高于：",IDC_STATIC,7,38,62,14,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,181,82,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,82,50,14
+    COMBOBOX        IDC_COMBO_LOGCLASS_LOW,91,16,66,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_LOGCLASS_HIGH,91,39,66,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Log level not less than:",IDC_STATIC,7,15,82,14,SS_CENTERIMAGE
+    LTEXT           "Log Level not great than:",IDC_STATIC,7,38,81,14,SS_CENTERIMAGE
 END
 
 IDD_FILTER_ADVANCED DIALOGEX 0, 0, 316, 183
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "将来，在高级视图中，可以使用类C的语法直接写出复杂的过滤规则。目前此功能不可用。",IDC_STATIC,41,37,201,38
+    LTEXT           "Under development",IDC_STATIC,41,37,201,38
 END
 
 IDD_FILTER_SET DIALOGEX 0, 0, 323, 180
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "过滤设置"
+CAPTION "Filter Setting"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     LTEXT           "",IDC_STATIC_SUBDLG,7,7,309,140,NOT WS_VISIBLE | WS_BORDER
     CONTROL         "",IDC_STATIC_SPLITTER,"Static",SS_ETCHEDHORZ,7,152,309,20
-    DEFPUSHBUTTON   "确定",IDOK,158,159,50,14
-    PUSHBUTTON      "取消",IDCANCEL,212,159,50,14
-    PUSHBUTTON      "应用(&A)",IDC_APPLY,266,159,50,14
+    DEFPUSHBUTTON   "OK",IDOK,158,159,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,212,159,50,14
+    PUSHBUTTON      "&Apply",IDC_APPLY,266,159,50,14
 END
 
 IDD_FILTER_EDIT_LOGCONTENT DIALOGEX 0, 0, 292, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "日志内容过滤编辑"
+CAPTION "Log content filter editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "日志内容包含(&C)：",IDC_STATIC,7,7,278,12
+    LTEXT           "Log &content includes:",IDC_STATIC,7,7,278,12
     EDITTEXT        IDC_EDIT_LOGCONTENT,7,19,278,40,ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL
-    CONTROL         "忽略大小写(&I)",IDC_CHECK_IGNORECASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,69,71,14
-    CONTROL         "正则表达式(&R)",IDC_CHECK_REGEX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,75,69,62,14
-    DEFPUSHBUTTON   "确定",IDOK,181,69,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,69,50,14
+    CONTROL         "&Ignore case",IDC_CHECK_IGNORECASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,69,71,14
+    CONTROL         "&Regex expression",IDC_CHECK_REGEX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,75,69,79,14
+    DEFPUSHBUTTON   "OK",IDOK,181,69,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,69,50,14
 END
 
 IDD_FILTER_EDIT_LOGTAG DIALOGEX 0, 0, 292, 112
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "日志标签过滤编辑"
+CAPTION "Log tag filter editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "输入日志标签：",IDC_STATIC,7,7,278,11,SS_CENTERIMAGE
+    LTEXT           "Log tag:",IDC_STATIC,7,7,278,11,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_LOGTAG,7,19,278,14,ES_AUTOHSCROLL
-    LTEXT           "db;perf",IDC_STATIC_INFO1,7,54,32,8
-    LTEXT           "db+perf",IDC_STATIC_INFO2,7,68,32,8
-    LTEXT           "使用;或+来分隔多个标签。;和+的区别见下。注意 ;和+不能混合使用。",IDC_STATIC,7,38,278,19
-    LTEXT           "匹配标签中同时包含db和perf的日志",IDC_STATIC,51,68,234,8
-    LTEXT           "既匹配标签中带db的日志，也匹配标签中带perf的日志",IDC_STATIC,51,54,234,8
-    DEFPUSHBUTTON   "确定",IDOK,181,91,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,91,50,14
+    LTEXT           "db;perf",IDC_STATIC_INFO1,7,57,32,8
+    LTEXT           "db+perf",IDC_STATIC_INFO2,7,71,32,8
+    LTEXT           "Use ; or + to seperate multiple tags. ; means 'or' and + means 'and'. Do not mix them.",IDC_STATIC,7,38,278,19
+    LTEXT           "Matches logs have both 'db' tag and 'perf' tag",IDC_STATIC,51,71,234,8
+    LTEXT           "Matches logs have 'db' tag or 'perf' tag",IDC_STATIC,51,57,234,8
+    DEFPUSHBUTTON   "OK",IDOK,181,91,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,91,50,14
 END
 
 IDD_FILTER_EDIT_PROCESSNAME DIALOGEX 0, 0, 292, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "进程名过滤编辑"
+CAPTION "Process name filter editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "输入进程名：",IDC_STATIC,7,19,278,11,SS_CENTERIMAGE
+    LTEXT           "Input Process name:",IDC_STATIC,7,19,278,11,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_LOG_PROCESSNAME,7,35,278,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "确定",IDOK,181,69,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,69,50,14
+    DEFPUSHBUTTON   "OK",IDOK,181,69,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,69,50,14
 END
 
 IDD_FILTER_EDIT_PID DIALOGEX 0, 0, 292, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "PID过滤编辑"
+CAPTION "PIDfilter editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "输入PID：",IDC_STATIC,7,19,278,11,SS_CENTERIMAGE
+    LTEXT           "Input PID:",IDC_STATIC,7,19,278,11,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_LOGPID,7,35,278,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "确定",IDOK,181,69,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,69,50,14
+    DEFPUSHBUTTON   "OK",IDOK,181,69,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,69,50,14
 END
 
 IDD_FILTER_EDIT_TID DIALOGEX 0, 0, 292, 90
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "TID过滤编辑"
+CAPTION "TIDfilter editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "输入TID：",IDC_STATIC,7,19,278,11,SS_CENTERIMAGE
+    LTEXT           "Input TID:",IDC_STATIC,7,19,278,11,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_LOGTID,7,35,278,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "确定",IDOK,181,69,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,69,50,14
+    DEFPUSHBUTTON   "OK",IDOK,181,69,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,69,50,14
 END
 
 IDD_HILIGHTER_EDIT DIALOGEX 0, 0, 399, 239
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "高亮规则编辑"
+CAPTION "Highlight rules editor"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,288,218,50,14
-    PUSHBUTTON      "取消",IDCANCEL,342,218,50,14
+    DEFPUSHBUTTON   "OK",IDOK,288,218,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,342,218,50,14
     EDITTEXT        IDC_EDIT_HILIGHTER_NAME,49,7,343,14,ES_AUTOHSCROLL
-    LTEXT           "高亮名字：",IDC_STATIC,7,7,41,14,SS_CENTERIMAGE
-    LTEXT           "过滤规则：",IDC_STATIC,7,43,56,14,SS_CENTERIMAGE
+    LTEXT           "Highlight name:",IDC_STATIC,7,7,41,14,SS_CENTERIMAGE
+    LTEXT           "Filter rules:",IDC_STATIC,7,43,56,14,SS_CENTERIMAGE
     CONTROL         "",IDC_STATIC_SUBDLG,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,7,55,385,154
     CONTROL         "",IDC_STATIC_SPLITTER2,"Static",SS_ETCHEDHORZ,7,213,385,1
-    LTEXT           "高亮预览：",IDC_STATIC,7,25,41,14,SS_CENTERIMAGE
-    LTEXT           " 日志样例 Sample Log @ IDC_STATC_SAMPLE_LOG",IDC_STATIC_SAMPLE_LOG,49,25,235,14,SS_CENTERIMAGE
-    PUSHBUTTON      "背景色",IDC_BUTTON_BG,342,25,50,14
-    PUSHBUTTON      "前景色",IDC_BUTTON_FG,290,25,50,14
+    LTEXT           "Highlight preview:",IDC_STATIC,7,25,41,14,SS_CENTERIMAGE
+    LTEXT           " Sample Log @ IDC_STATC_SAMPLE_LOG",IDC_STATIC_SAMPLE_LOG,49,25,235,14,SS_CENTERIMAGE
+    PUSHBUTTON      "Background color",IDC_BUTTON_BG,342,25,50,14
+    PUSHBUTTON      "Foreground color",IDC_BUTTON_FG,290,25,50,14
 END
 
 IDD_LOG_SOURCE DIALOGEX 0, 0, 475, 149
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "日志源信息"
+CAPTION "Log sources"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,461,135
@@ -319,58 +303,46 @@ END
 
 IDD_FIRST_TIME_RUN_TIP DIALOGEX 0, 0, 316, 136
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "提示"
+CAPTION "Need your action"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "是",IDOK,205,115,50,14
-    PUSHBUTTON      "否",IDCANCEL,259,115,50,14
+    DEFPUSHBUTTON   "Yes",IDOK,205,115,50,14
+    PUSHBUTTON      "No",IDCANCEL,259,115,50,14
 END
 
 IDD_HILIGHTER_MANAGE DIALOGEX 0, 0, 371, 162
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "高亮设置"
+CAPTION "Highlight setting"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,300,148
-    PUSHBUTTON      "添加(&A)",IDC_BUTTON_ADD_HL,314,7,50,14
-    PUSHBUTTON      "修改(&M)",IDC_BUTTON_MODIFY_HL,314,26,50,14
-    PUSHBUTTON      "删除(&D)",IDC_BUTTON_DELETE_HL,314,46,50,14
-    PUSHBUTTON      "上移(&U)",IDC_BUTTON_MOVE_UP,314,76,50,14
-    PUSHBUTTON      "下移(&N)",IDC_BUTTON_MOVE_DOWN,314,95,50,14
-    PUSHBUTTON      "确定",IDOK,314,141,50,14
+    PUSHBUTTON      "&Add",IDC_BUTTON_ADD_HL,314,7,50,14
+    PUSHBUTTON      "&Motify",IDC_BUTTON_MODIFY_HL,314,26,50,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE_HL,314,46,50,14
+    PUSHBUTTON      "Move &up",IDC_BUTTON_MOVE_UP,314,76,50,14
+    PUSHBUTTON      "Move dow&n",IDC_BUTTON_MOVE_DOWN,314,95,50,14
+    PUSHBUTTON      "OK",IDOK,314,141,50,14
 END
 
 IDD_QUICKFILTER DIALOGEX 0, 0, 458, 16
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    COMBOBOX        IDC_QF_LEVEL,69,1,53,152,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_QF_TEXT,299,1,116,13,ES_AUTOHSCROLL
-    LTEXT           "级别:",IDC_STATIC,49,1,20,13,SS_CENTERIMAGE
-    LTEXT           "标签:",IDC_STATIC,132,1,20,13,SS_CENTERIMAGE
-    LTEXT           "内容:",IDC_STATIC,277,1,21,13,SS_CENTERIMAGE
-    EDITTEXT        IDC_QF_TAGS,153,1,116,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "重置",IDC_QF_RESETFILTER,419,0,36,15
-    LTEXT           "快速过滤",IDC_STATIC_TITLE,1,1,34,13,SS_CENTERIMAGE
-END
-
-IDD_FIRSTTIME DIALOGEX 0, 0, 316, 137
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "初次运行设置"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,259,116,50,14
-    COMBOBOX        IDC_COMBO_PRODUCT,129,76,109,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "请选择使用日志查看器的产品：",IDC_STATIC,7,76,116,12,SS_CENTERIMAGE
-    LTEXT           "日志查看器在监视管道时，会通过修改日志配置，把管道日志设备设为启用。请在此输入日志配置的注册表路径(即传给ILogController::Init的路径)。",IDC_STATIC,7,18,305,52
+    COMBOBOX        IDC_QF_LEVEL,29,1,53,152,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_QF_TEXT,271,1,144,13,ES_AUTOHSCROLL
+    LTEXT           "Level:",IDC_STATIC,5,0,20,13,SS_CENTERIMAGE
+    LTEXT           "Tag:",IDC_STATIC,93,0,17,13,SS_CENTERIMAGE
+    LTEXT           "Content:",IDC_STATIC,240,0,30,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_QF_TAGS,113,1,116,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Reset",IDC_QF_RESETFILTER,419,0,36,15
 END
 
 IDD_VISLOGIC DIALOGEX 0, 0, 431, 159
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "逻辑可视化"
+CAPTION "Logic visualization"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "选择进程：",IDC_STATIC,7,7,47,14,SS_CENTERIMAGE
+    LTEXT           "Select process:",IDC_STATIC,7,7,47,14,SS_CENTERIMAGE
     COMBOBOX        IDC_COMBO_PID,62,7,218,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "",IDC_STATIC_SPLITTER,"Static",SS_ETCHEDFRAME,7,25,417,1
     CONTROL         "",IDC_STATIC_CANVAS,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,7,31,417,109
@@ -379,12 +351,12 @@ END
 
 IDD_RUNSCRIPT DIALOGEX 0, 0, 455, 176
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "日志查看器脚本管理器"
+CAPTION "Script manager"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "运行",IDOK,398,155,50,14
-    PUSHBUTTON      "保存脚本...(&S)",IDC_BTN_SAVESCRIPT,78,155,66,14
-    PUSHBUTTON      "加载脚本...(&L)",IDC_BTN_LOADSCRIPT,7,155,66,14
+    DEFPUSHBUTTON   "Run",IDOK,398,155,50,14
+    PUSHBUTTON      "&Save script...",IDC_BTN_SAVESCRIPT,78,155,66,14
+    PUSHBUTTON      "&Load script...",IDC_BTN_LOADSCRIPT,7,155,66,14
     CONTROL         "",IDC_EDIT_SCRIPT,"RichEdit20W",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP | 0x11c4,7,7,441,142
 END
 
@@ -393,32 +365,40 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Dialog"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "输入PID：",IDC_TIP,7,19,278,11,SS_CENTERIMAGE
+    LTEXT           "Input PID:",IDC_TIP,7,19,278,11,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT,7,35,278,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "确定",IDOK,181,69,50,14
-    PUSHBUTTON      "取消",IDCANCEL,235,69,50,14
+    DEFPUSHBUTTON   "OK",IDOK,181,69,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,69,50,14
 END
 
 IDD_OPT_PERFMARK DIALOGEX 0, 0, 319, 196
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "性能标记指的是“间隔”列的特殊背景颜色。开启性能标记显示时，这一列的背景颜色深浅会随着每条日志的间隔大小而变化。通过性能标记能更快的发现性能瓶颈。",IDC_STATIC,7,7,305,33
-    LTEXT           "最深标记颜色：",IDC_STATIC,7,63,61,14,SS_CENTERIMAGE
+    LTEXT           "Perfmark is the background color of 'time interval' column for quckly identifying performance bottlenecks. The background color is changed according to the time interval between current log and next log. ",IDC_STATIC,7,7,305,33
+    LTEXT           "Deepest color:",IDC_STATIC,7,63,61,14,SS_CENTERIMAGE
     LTEXT           "",IDC_STATIC_COLOR,75,63,68,14,SS_NOTIFY | SS_CENTERIMAGE
-    LTEXT           "最深标记颜色对应的间隔时间：",IDC_STATIC,7,83,115,14,SS_CENTERIMAGE
+    LTEXT           "The time interval that the deepest color represents:",IDC_STATIC,7,83,115,14,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_MAX_OCCUPYTIME,134,83,63,14,ES_AUTOHSCROLL
-    LTEXT           "毫秒",IDC_STATIC,203,83,24,14,SS_CENTERIMAGE
-    CONTROL         "开启性能标记",IDC_CHECK_ENABLE_PERFMARK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,44,305,10
+    LTEXT           "millisecond",IDC_STATIC,203,83,24,14,SS_CENTERIMAGE
+    CONTROL         "Enable perfmark",IDC_CHECK_ENABLE_PERFMARK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,44,305,10
 END
 
 IDD_OPT_SYSTEM DIALOGEX 0, 0, 319, 196
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "日志查看器在监视管道时，会通过修改日志配置，把管道日志设备设为启用。请在此输入日志配置的注册表路径(即传给ILogController::Init的路径)。\r\n\r\n例如: SOFTWARE\\Company\\Product\\Log",-1,7,7,305,48
-    LTEXT           "日志配置的注册表路径：",-1,7,83,305,14,SS_CENTERIMAGE
+    LTEXT           "TPLOG uses registry (optional) to decide some of its behavior at runtime. The registry path is determined by products who use TPLOG. Please input the registry path of the interested protect below.\r\n\r\nFor example: SOFTWARE\\Company\\Product\\Log",-1,7,7,305,48
+    LTEXT           "Registry path for TPLOG configuration:",-1,7,83,305,14,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT,7,99,305,14,ES_AUTOHSCROLL
+END
+
+IDD_OPT_LOG_SOURCE_DEBUG_OUTPUT DIALOGEX 0, 0, 319, 196
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Monitor global debug output",IDC_CHECK_MONITOR_GLOBAL_DEBUG_OUTPUT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,305,10
 END
 
 
@@ -430,12 +410,6 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO
 BEGIN
-    IDD_MAINDLG, DIALOG
-    BEGIN
-        VERTGUIDE, 504
-        TOPMARGIN, 4
-    END
-
     IDD_LOGINFO, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -475,9 +449,9 @@ BEGIN
     IDD_OPTION, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 413
+        RIGHTMARGIN, 491
         TOPMARGIN, 7
-        BOTTOMMARGIN, 233
+        BOTTOMMARGIN, 234
         HORZGUIDE, 205
     END
 
@@ -577,14 +551,6 @@ BEGIN
         BOTTOMMARGIN, 14
     END
 
-    IDD_FIRSTTIME, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 309
-        TOPMARGIN, 18
-        BOTTOMMARGIN, 130
-    END
-
     IDD_VISLOGIC, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -618,6 +584,14 @@ BEGIN
     END
 
     IDD_OPT_SYSTEM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
+
+    IDD_OPT_LOG_SOURCE_DEBUG_OUTPUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 312
@@ -674,107 +648,94 @@ END
 
 IDR_CONTEXTMENU MENU
 BEGIN
-    POPUP "主菜单"
+    POPUP "misc"
     BEGIN
-        MENUITEM "重置过滤规则(&R)\tCtrl+R",          ID_CLEAR_FILTER
-        MENUITEM "清空日志(&Q)",                    ID_CLEAR_LOG_HISTORY
-        MENUITEM "性能分析(&S)...",                 ID_SPEED_ANALYZE
-        MENUITEM SEPARATOR
-        MENUITEM "打开历史日志文件(&O)...\tCtrl+O",     ID_OPEN_XLOG
-        MENUITEM "导出全部日志(%u) (&T)",             ID_EXPORT_ALL
-        MENUITEM "导出当前的过滤结果(%u) (&D)",          ID_EXPORT_FILTERED
-        MENUITEM SEPARATOR
-        MENUITEM "编辑日志输出配置文件(&X)...",           ID_EDIT_XLOG_INI
-        MENUITEM SEPARATOR
-        MENUITEM "改变配色(&C)...",                 ID_CHANGE_THEME_COLOR
-        MENUITEM "关于(&A)...",                   ID_ABOUT
-    END
-    POPUP "main"
-    BEGIN
-        MENUITEM "查看详细信息",                      ID_VIEW_DETAIL
+        MENUITEM "View detail",                 ID_VIEW_DETAIL
         MENUITEM "About",                       ID_ABOUT
-        MENUITEM "隐藏搜索条",                       ID_HIDE_SEARCHBAR
-        MENUITEM "搜索词变化",                       ID_SEARCHTEXT_CHANGE
-        MENUITEM "上一个搜索",                       ID_SEARCH_PREV
-        MENUITEM "下一个搜索",                       ID_SEARCH_NEXT
-        MENUITEM "清除日志历史",                      ID_CLEAR_LOG_HISTORY
-        MENUITEM "加载日志历史",                      ID_LOAD_LOG_HISTORY
-        MENUITEM "高亮",                          ID_HILIGHT_ITEM
-        MENUITEM "取消高亮",                        ID_CANCEL_HILIGHT_ITEM
-        MENUITEM "切换高亮状态",                      ID_MAIN_40051
-        MENUITEM "改变配色(&C)...",                 ID_CHANGE_THEME_COLOR
-        MENUITEM "用户第一次运行",                     ID_USER_FIRST_TIME_RUN
-        MENUITEM "清除搜索",                        ID_CLEAR_SEARCH
+        MENUITEM "Hide search bar",             ID_HIDE_SEARCHBAR
+        MENUITEM "ID_SEARCHTEXT_CHANGE",        ID_SEARCHTEXT_CHANGE
+        MENUITEM "ID_SEARCH_PREV",              ID_SEARCH_PREV
+        MENUITEM "ID_SEARCH_NEXT",              ID_SEARCH_NEXT
+        MENUITEM "ID_CLEAR_LOG_HISTORY",        ID_CLEAR_LOG_HISTORY
+        MENUITEM "ID_LOAD_LOG_HISTORY",         ID_LOAD_LOG_HISTORY
+        MENUITEM "Highlight ",                  ID_HILIGHT_ITEM
+        MENUITEM "ID_CANCEL_HILIGHT_ITEM",      ID_CANCEL_HILIGHT_ITEM
+        MENUITEM "ID_MAIN_40051",               ID_MAIN_40051
+        MENUITEM "ID_CHANGE_THEME_COLOR",       ID_CHANGE_THEME_COLOR
+        MENUITEM "ID_USER_FIRST_TIME_RUN",      ID_USER_FIRST_TIME_RUN
+        MENUITEM "ID_CLEAR_SEARCH",             ID_CLEAR_SEARCH
     END
-    POPUP "LIST右键菜单"
+    POPUP "LIST context menu"
     BEGIN
-        MENUITEM "设置/取消书签(&M)",                 ID_TOGGLE_BOOKMARK
-        MENUITEM "跳到函数头/尾(&F)",                 ID_FUNCTION_JUMP
-        MENUITEM "设置为时间原点(&T)",                 ID_SET_TIME_BASE
+        MENUITEM "Toggle book&mark",            ID_TOGGLE_BOOKMARK
+        MENUITEM "Toggle &function begin/end",  ID_FUNCTION_JUMP
+        MENUITEM "Set as time &0",              ID_SET_TIME_BASE
         MENUITEM SEPARATOR
-        MENUITEM "上下文过滤占位",                     ID_CONTEXT_FILTER_PLACEHOLDER
+        MENUITEM "Context filter placeholder",  ID_CONTEXT_FILTER_PLACEHOLDER
         MENUITEM SEPARATOR
-        MENUITEM "清除之前日志(&D)",                  ID_CLEAR_BEFORE_THIS
+        MENUITEM "Delete before this log",      ID_CLEAR_BEFORE_THIS
         MENUITEM SEPARATOR
-        MENUITEM "查看详细信息(&V)",                  ID_VIEW_DETAIL
+        MENUITEM "View detail",                 ID_VIEW_DETAIL
     END
 END
 
 IDR_MAINFRAME MENU
 BEGIN
-    POPUP "文件(&F)"
+    POPUP "&File"
     BEGIN
-        MENUITEM "开始监视管道日志(&M)",                ID_START_MONITOR
-        MENUITEM "停止监视(&P)",                    ID_STOP_MONITOR
+        MENUITEM "Start monitor &pipe",         ID_START_MONITOR
+        MENUITEM "Start monitor &debug output", ID_FILE_OPENDEBUGOUTPUT
+        MENUITEM "Start monitor global &debug output", ID_FILE_STARTMONITORGLOBALDEBUGOUTPUT
+        MENUITEM "&Stop monitor",               ID_STOP_MONITOR
         MENUITEM SEPARATOR
-        MENUITEM "打开文件(&O)...\tCtrl+O",         ID_OPEN_XLOG
-        POPUP "打开最近的文件(&L)"
+        MENUITEM "&Open file...\tCtrl+O",       ID_OPEN_XLOG
+        POPUP "Open &Recent files"
         BEGIN
             MENUITEM "aaa",                         ID_40171
         END
+        MENUITEM "Open share &memory log...",   ID_OPEN_SM_LOG
         MENUITEM SEPARATOR
-        MENUITEM "打开共享内存日志(&A)...",             ID_OPEN_SM_LOG
+        MENUITEM "&Save...\tCtrl+S",            ID_EXPORT_ALL
+        MENUITEM "&Save filtered results...",   ID_EXPORT_FILTERED
         MENUITEM SEPARATOR
-        MENUITEM "保存所有日志(&S)...\tCtrl+S",       ID_EXPORT_ALL
-        MENUITEM "保存当前过滤结果(&F)...",             ID_EXPORT_FILTERED
-        MENUITEM SEPARATOR
-        MENUITEM "清除所有日志(&D)\tCtrl+X",          ID_CLEARALL
+        MENUITEM "&Clear all logs",             ID_CLEARALL
+        MENUITEM "&Exit\tAlt+F4",               ID_EXIT
     END
-    POPUP "查看(&V)"
+    POPUP "&View"
     BEGIN
-        MENUITEM "菜单栏(&1)\tF9",                 ID_VIEW_MENUBAR
-        MENUITEM "工具栏(&2)",                     ID_TOGGLE_TOOLBAR
-        MENUITEM "快速过滤(&3)",                    ID_VIEW_SEARCHBAR
-        MENUITEM "状态栏(&4)",                     ID_TOGGLE_STATUSBAR
+        MENUITEM "Menu bar(&1)\tF9",            ID_VIEW_MENUBAR
+        MENUITEM "Tool bar(&2)",                ID_TOGGLE_TOOLBAR
+        MENUITEM "Instant filter bar(&3)",      ID_VIEW_SEARCHBAR
+        MENUITEM "Status bar(&4)",              ID_TOGGLE_STATUSBAR
         MENUITEM SEPARATOR
-        MENUITEM "显示网格线(&G)",                   ID_SHOW_GRIDLINE
-        MENUITEM "以十六进制显示进程和线程ID(&H)",          ID_HEX
-        MENUITEM "显示绝对时间(&T)",                  ID_SHOW_ABS_TIME
+        MENUITEM "Show &gridline",              ID_SHOW_GRIDLINE
+        MENUITEM "Show process/thread ID in &HEX", ID_HEX
+        MENUITEM "Show absolute &time",         ID_SHOW_ABS_TIME
         MENUITEM SEPARATOR
-        MENUITEM "设置/取消书签(&M)\tCtrl+F2",        ID_TOGGLE_BOOKMARK
-        MENUITEM "跳到下一个书签(&N)\tF2",             ID_NEXT_BOOKMARK
-        MENUITEM "跳到上一个书签(&P)\tShift+F2",       ID_PREV_BOOKMARK
+        MENUITEM "Toggle &bookmark\tCtrl+F2",   ID_TOGGLE_BOOKMARK
+        MENUITEM "&Jump to next bookmark\tF2",  ID_NEXT_BOOKMARK
+        MENUITEM "&Jump to prev bookmark\tShift+F2", ID_PREV_BOOKMARK
         MENUITEM SEPARATOR
-        MENUITEM "查找...(&F)\tCtrl+F",           ID_SEARCH
-        MENUITEM "查找下一个(&<)\tF3",               ID_SEARCH_NEXT
-        MENUITEM "查找上一个(&>)\tShift+F3",         ID_SEARCH_PREV
+        MENUITEM "&Find...\tCtrl+F",            ID_SEARCH
+        MENUITEM "Find &Next\tF3",              ID_SEARCH_NEXT
+        MENUITEM "Find &Prev\tShift+F3",        ID_SEARCH_PREV
     END
-    POPUP "过滤(&M)"
+    POPUP "F&ilter"
     BEGIN
-        MENUITEM "编辑过滤规则...(&F)\tCtrl+Shift+F", ID_EDIT_FILTER
-        MENUITEM "编辑高亮规则...(H)\tCtrl+Shift+H",  ID_EDIT_HLIGHT
+        MENUITEM "Edit &filter rules...\tCtrl+Shift+F", ID_EDIT_FILTER
+        MENUITEM "Edit &highlight rules...\tCtrl+Shift+H", ID_EDIT_HLIGHT
     END
-    POPUP "工具(&O)"
+    POPUP "&Tools"
     BEGIN
-        MENUITEM "选项(&O)...",                   ID_OPTION
-        MENUITEM "日志源信息(&S)...",                ID_LOG_SOURCE_INFO
-        MENUITEM "逻辑可视化(&L)",                   ID_SHOW_VISUAL_LOGIC
-        MENUITEM "执行脚本(E)...",                  ID_RUN_SCRIPT
+        MENUITEM "&Option...",                  ID_OPTION
+        MENUITEM "Log &source information...",  ID_LOG_SOURCE_INFO
+        MENUITEM "&Visualize logic",            ID_SHOW_VISUAL_LOGIC
+        MENUITEM "&Run script...",              ID_RUN_SCRIPT
     END
-    POPUP "帮助(&H)"
+    POPUP "&Help"
     BEGIN
-        MENUITEM "关于日志查看器(&A)",                 ID_ABOUT
-        MENUITEM "检查更新(&U)",                    ID_CHECK_UPDATE
+        MENUITEM "&About...",                   ID_ABOUT
+        MENUITEM "Check &update...",            ID_CHECK_UPDATE
     END
 END
 
@@ -786,20 +747,19 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
-    "X",            ID_CLEARALL,            VIRTKEY, CONTROL, NOINVERT
     "F",            ID_EDIT_FILTER,         VIRTKEY, SHIFT, CONTROL, NOINVERT
     "H",            ID_EDIT_HLIGHT,         VIRTKEY, SHIFT, CONTROL, NOINVERT
     "S",            ID_EXPORT_ALL,          VIRTKEY, CONTROL, NOINVERT
     VK_F2,          ID_NEXT_BOOKMARK,       VIRTKEY, NOINVERT
     "O",            ID_OPEN_XLOG,           VIRTKEY, CONTROL, NOINVERT
     VK_F2,          ID_PREV_BOOKMARK,       VIRTKEY, SHIFT, NOINVERT
+    "R",            ID_RUN_SCRIPT,          VIRTKEY, CONTROL, NOINVERT
     "F",            ID_SEARCH,              VIRTKEY, CONTROL, NOINVERT
     VK_F3,          ID_SEARCH_NEXT,         VIRTKEY, NOINVERT
     VK_F3,          ID_SEARCH_PREV,         VIRTKEY, SHIFT, NOINVERT
     VK_F2,          ID_TOGGLE_BOOKMARK,     VIRTKEY, CONTROL, NOINVERT
     VK_F9,          ID_VIEW_MENUBAR,        VIRTKEY, NOINVERT
     "D",            ID_VIEW_SPECIAL_PATH,   VIRTKEY, CONTROL, NOINVERT
-    "R",            ID_RUN_SCRIPT,          VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -847,157 +807,171 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME           "百度客户端日志查看器"
+    IDR_MAINFRAME           "TPLOG viewer"
 END
 
 STRINGTABLE
 BEGIN
-    ID_PANE_LOGCOUNT        "总数：10000000"
-    ID_PANE_FILTERED_LOGCOUNT "过滤：10000000"
-    ID_PANE_WORKTHREAD_COUNT "日志源：100"
-    IDS_COPY                "复制"
-    IDS_PASTE               "粘贴"
-    IDS_CUT                 "剪切"
-    IDS_PASTE_AS_CHILD_NODE "粘贴为子结点"
-    IDS_DELETE              "删除"
-    IDS_ADD                 "添加"
-    IDS_CONVERT_TO          "切换为"
-    IDS_ADD_AS_PARENT_NODE  "添加父结点"
+    ID_PANE_LOGCOUNT        "Total:10000000"
+    ID_PANE_FILTERED_LOGCOUNT "Filtered:10000000"
+    ID_PANE_WORKTHREAD_COUNT "Source:100"
+    IDS_COPY                "Copy"
+    IDS_PASTE               "Paste"
+    IDS_CUT                 "Cut"
+    IDS_PASTE_AS_CHILD_NODE "Paste as child"
+    IDS_DELETE              "Delete"
+    IDS_ADD                 "Add"
+    IDS_CONVERT_TO          "Change type"
+    IDS_ADD_AS_PARENT_NODE  "Add as parent"
 END
 
 STRINGTABLE
 BEGIN
-    ID_START_MONITOR        "开始监控\n开始监视"
-    ID_STOP_MONITOR         "停止监控\n停止监视"
-    ID_CLEARALL             "a\n清空日志"
+    ID_START_MONITOR        "Start monitor"
+    ID_STOP_MONITOR         "Stop monitor"
+    ID_CLEARALL             "Delete all logs"
 END
 
 STRINGTABLE
 BEGIN
-    ID_TOGGLE_BOOKMARK      "A\n设置/取消书签"
-    ID_NEXT_BOOKMARK        "a\n跳到下一个书签"
-    ID_PREV_BOOKMARK        "a\n跳到上一个书签"
+    ID_TOGGLE_BOOKMARK      "Toggle bookmark"
+    ID_NEXT_BOOKMARK        "Next bookmark"
+    ID_PREV_BOOKMARK        "Previous bookmark"
 END
 
 STRINGTABLE
 BEGIN
-    ID_FORCEAUTOSCROLL      "a\n自动滚动"
+    ID_FORCEAUTOSCROLL      "a\nauto scroll"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ALL                 "所有"
-    IDS_ALL_FILE            "所有文件"
-    IDS_ALL_LOG_LEVEL       "所有日志级别"
-    IDS_AND                 "与"
-    IDS_BETWEEN_s_AND_s     "在%s和%s之间"
-    IDS_CONNECTION_TIME     "连接时间"
-    IDS_CONTEXT_FILTER_EXCLUDE "上下文过滤-排除"
-    IDS_CONTEXT_FILTER_INCLUDE "上下文过滤-包含"
+    IDS_ALL                 "all"
+    IDS_ALL_FILE            "all files"
+    IDS_ALL_LOG_LEVEL       "all log levels"
+    IDS_AND                 "and"
+    IDS_BETWEEN_s_AND_s     "Between %s and %s"
+    IDS_CONNECTION_TIME     "Connect time"
+    IDS_CONTEXT_FILTER_EXCLUDE "Context filter:Exclude"
+    IDS_CONTEXT_FILTER_INCLUDE "Context filter:Include"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ERROR               "错误"
-    IDS_ERRORMSG_FILTER_RULE_EMPTY "过滤规则为空,请指定过滤规则"
-    IDS_ERRORMSG_FILTER_RULE_OMIT "未指定过滤规则"
+    IDS_ERROR               "Error"
+    IDS_ERRORMSG_FILTER_RULE_EMPTY "Empty filter rule"
+    IDS_ERRORMSG_FILTER_RULE_OMIT "Filter rules not specified"
     IDS_ERRORMSG_FUNCTION_LOG_MISSING 
-                            "未找到函数头/尾，可能是当前的过滤规则隐藏的对应的日志记录，或者对应的日志记录已被删除"
-    IDS_ERRORMSG_NOT_FUNCTION_LOG "无法定位到函数头/尾，因为当前日志不是函数日志(标签中不包含function)"
-    IDS_EXPORT              "导出"
-    IDS_FILTER_CONFIG_FILE  "过滤规则文件"
-    IDS_FILTER_RULE_LOG_CONTENT "日志内容过滤规则"
-    IDS_FILTER_RULE_LOG_LEVEL "日志级别过滤规则"
-    IDS_FILTER_RULE_LOG_TAG "日志标签过滤规则"
-    IDS_FILTER_RULE_PROCESS_ID "进程ID过滤规则"
-    IDS_FILTER_RULE_PROCESSNAME "进程名字过滤规则"
-    IDS_FILTER_RULE_THREAD_ID "线程ID过滤规则"
-    IDS_FILTEREDIT_ADVANCE_VIEW "高级视图"
-    IDS_FILTEREDIT_BASIC_VIEW "基本视图"
-    IDS_FILTEREDIT_TREE_VIEW "树形视图"
+                            "Cannot find function begin/end, the corresponding log is deleted or filtered out"
+    IDS_ERRORMSG_NOT_FUNCTION_LOG 
+                            "Cannot locate to function begin/end: current log is not a function log"
+    IDS_EXPORT              "Export"
+    IDS_FILTER_CONFIG_FILE  "Filter rules file"
+    IDS_FILTER_RULE_LOG_CONTENT "Filter: content"
+    IDS_FILTER_RULE_LOG_LEVEL "Filter: level"
+    IDS_FILTER_RULE_LOG_TAG "Filter: tag"
+    IDS_FILTER_RULE_PROCESS_ID "Filter: process ID"
+    IDS_FILTER_RULE_PROCESSNAME "Filter: process name"
+    IDS_FILTER_RULE_THREAD_ID "Filter: thread ID"
+    IDS_FILTEREDIT_ADVANCE_VIEW "Advanced view"
+    IDS_FILTEREDIT_BASIC_VIEW "Basic view"
+    IDS_FILTEREDIT_TREE_VIEW "Tree view"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_HILIGHT_NAME        "高亮名字"
-    IDS_IGNORE_CASE         "忽略大小写"
-    IDS_IMPORT              "导入"
-    IDS_INFORMATION         "提示"
-    IDS_INPUT               "输入"
-    IDS_INTERVAL_US         "时间间隔(微秒)"
-    IDS_LEVEL               "级别"
-    IDS_LL_DEBUG            "调试"
-    IDS_LL_DIAGNOSE         "诊断"
-    IDS_LL_ERROR            "错误"
-    IDS_LL_EVENT            "事件"
-    IDS_LL_INFORMATION      "信息"
-    IDS_LL_WARNING          "警告"
+    IDS_HILIGHT_NAME        "Highlight rule name"
+    IDS_IGNORE_CASE         "ignore case"
+    IDS_IMPORT              "Import"
+    IDS_INFORMATION         "information"
+    IDS_INPUT               "input"
+    IDS_INTERVAL_US         "Interval(us)"
+    IDS_LEVEL               "Level"
+    IDS_LL_DEBUG            "Debug"
+    IDS_LL_DIAGNOSE         "Diagnose"
+    IDS_LL_ERROR            "Error"
+    IDS_LL_EVENT            "Event"
+    IDS_LL_INFORMATION      "Information"
+    IDS_LL_WARNING          "Warning"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_LOG_CONTENT         "日志内容"
-    IDS_LOG_CONTENT_CONTAIN_s "日志内容包含[%s]"
-    IDS_LOG_CONTENT_MATCH_REGEX_s "日志内容匹配正则式[%s]"
-    IDS_LOG_FILE            "日志文件"
-    IDS_LOG_LEVEL           "日志级别"
-    IDS_LOG_SAMPLE_TEXT     "日志样例 Log sample text"
-    IDS_LOG_SOURCE          "日志源"
-    IDS_LOG_TAG             "日志标签"
-    IDS_LOG_TAG_MATCH_s     "日志标签匹配[%s]"
-    IDS_LOGICAL_AND         "逻辑与"
-    IDS_LOGICAL_NOT         "逻辑或"
-    IDS_LOGICAL_OR          "逻辑非"
-    IDS_LOWEST              "最低"
-    IDS_MAIN_THREAD         "主线程"
-    IDS_MODIFY_LOG_DEVICE_CONFIG_FROM_REGISTRY "从注册表修改pipe设备的配置失败"
-    IDS_MONITORING          "正在监控"
+    IDS_LOG_CONTENT         "Log content"
+    IDS_LOG_CONTENT_CONTAIN_s "Log content contains[%s]"
+    IDS_LOG_CONTENT_MATCH_REGEX_s "Log content regex matcher[%s]"
+    IDS_LOG_FILE            "Log file"
+    IDS_LOG_LEVEL           "Log level"
+    IDS_LOG_SAMPLE_TEXT     "Log sample text"
+    IDS_LOG_SOURCE          "Log source"
+    IDS_LOG_TAG             "Log tag"
+    IDS_LOG_TAG_MATCH_s     "Log tag matches [%s]"
+    IDS_LOGICAL_AND         "Logical and"
+    IDS_LOGICAL_NOT         "Logical or"
+    IDS_LOGICAL_OR          "Logical not"
+    IDS_LOWEST              "loweast"
+    IDS_MAIN_THREAD         "Main thread"
+    IDS_MODIFY_LOG_DEVICE_CONFIG_FROM_REGISTRY 
+                            "Error when change pipe device configuration from registry."
+    IDS_MONITORING          "monitoring"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_MSG                 "信息"
-    IDS_MSG_NO_UPDATE       "没有更新"
-    IDS_MSG_UPDATE_COMPLETE "更新完成"
-    IDS_MSG_UPDATE_DETAIL   "更新细节"
-    IDS_NOT                 "非"
-    IDS_OR                  "或"
-    IDS_PREFMARK            "性能标记"
-    IDS_PREVIEW             "预览"
-    IDS_PROCESS             "进程"
-    IDS_PROCESS_ID_IS_u     "进程ID为%u"
-    IDS_PROCESS_IS_s        "进程为%s"
-    IDS_PROCESS_NAME        "进程名"
-    IDS_PROCESS_PATH        "进程路径"
-    IDS_PROMPT_INPUT_SHAREMEMORY_NAME "输入共享内存名字"
-    IDS_REGEX_PARSE_ERROR   "正则表达式解析错误"
+    IDS_MSG                 "information"
+    IDS_MSG_NO_UPDATE       "No update"
+    IDS_MSG_UPDATE_COMPLETE "Update complete"
+    IDS_MSG_UPDATE_DETAIL   "Update detail"
+    IDS_NOT                 "not"
+    IDS_OR                  "or"
+    IDS_PREFMARK            "perfmark"
+    IDS_PREVIEW             "Preview"
+    IDS_PROCESS             "Process"
+    IDS_PROCESS_ID_IS_u     "process ID is %u"
+    IDS_PROCESS_IS_s        "process is %s"
+    IDS_PROCESS_NAME        "Process name"
+    IDS_PROCESS_PATH        "process executable path"
+    IDS_PROMPT_INPUT_SHAREMEMORY_NAME "Input share memory name"
+    IDS_REGEX_PARSE_ERROR   "Regex parse error"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_SCRIPT_FILE         "脚本文件"
-    IDS_SEQ                 "序号"
-    IDS_SETTING_WIZZARD     "设置向导"
-    IDS_SHOW                "显示"
-    IDS_SHOW_OR_HIDE_MENU   "显示/隐藏菜单"
-    IDS_SIMPLIFY            "简化"
-    IDS_START               "开始"
-    IDS_SYSTEM              "系统"
-    IDS_TEXT_FILE           "文本文件"
-    IDS_THREAD              "线程"
-    IDS_THREAD_ID_IS_u      "线程ID为%u"
-    IDS_TIME                "时间"
-    IDS_TOTAL               "总数"
-    IDS_TPLOGVIEW           "TPLOG日志查看器"
-    IDS_UPDATE_MSG          "已经完成更新，重启后生效。"
+    IDS_SCRIPT_FILE         "Script file"
+    IDS_SEQ                 "ID"
+    IDS_SETTING_WIZZARD     "Setting wizzard"
+    IDS_SHOW                "show"
+    IDS_SHOW_OR_HIDE_MENU   "Show/hide menu"
+    IDS_SIMPLIFY            "Simplify"
+    IDS_START               "start"
+    IDS_SYSTEM              "system"
+    IDS_TEXT_FILE           "text file"
+    IDS_THREAD              "Thread"
+    IDS_THREAD_ID_IS_u      "thread ID is %u"
+    IDS_TIME                "Time"
+    IDS_TOTAL               "total"
+    IDS_TPLOGVIEW           "TPLOG viewer"
+    IDS_UPDATE_MSG          "Update complete. Restart to use the new version."
 END
 
 STRINGTABLE
 BEGIN
-    ID_VIEW_DETAIL          "显示详细信息\n显示详细信息"
+    ID_VIEW_DETAIL          "Show detail"
 END
 
-#endif    // Chinese (Simplified, PRC) resources
+STRINGTABLE
+BEGIN
+    IDS_LOGSOURCE_PIPE      "Pipe"
+    IDS_LOGSOURCE_DEBUG_OUTPUT "Debug output"
+    IDS_LOGSOURCE_FILE      "File"
+    IDS_LOGSOURCE_SHARE_MEMORY "Share Memory"
+    IDS_LOG_SOURCE_PIPE     "Pipe"
+    IDS_LOG_SOURCE_FILE     "File"
+    IDS_LOG_SOURCE_DEBUG_OUTPUT "Debug output"
+    IDS_LOG_SOURCE_SHARE_MEMORY "Share memory"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

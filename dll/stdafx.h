@@ -9,13 +9,13 @@
 
 #include <compilerconf.h>
 
-BD_NO_WARNING_AREA_BEGIN()
+TP_NO_WARNING_AREA_BEGIN()
 
 #include <windows.h>
 #include <stdlib.h>
 
-BD_NO_WARNING_AREA_END()
-BD_CLEAR_WARNING_STACK()
+TP_NO_WARNING_AREA_END()
+TP_CLEAR_WARNING_STACK()
 
 
 #pragma warning(disable: 4514) // warning C4514: 'HRESULT_FROM_WIN32' : unreferenced inline function has been removed

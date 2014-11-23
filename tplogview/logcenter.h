@@ -4,6 +4,7 @@
 #include <vector>
 #include <deque>
 #include <atlsync.h>
+#include <tplib/include/service.h>
 #include "common.h"
 #include "serviceid.h"
 
