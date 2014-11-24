@@ -62,9 +62,6 @@ void CMainFrame::CreateReBar()
 		UINT iconID;
 	} tbbi[] =
 	{
-		{ID_START_MONITOR,   TBSTATE_ENABLED, BTNS_BUTTON, IDI_START},
-		{ID_STOP_MONITOR,    TBSTATE_ENABLED, BTNS_BUTTON, IDI_STOP},
-		{0,                  0, BTNS_SEP,    0},
 		{ID_TOGGLE_BOOKMARK, TBSTATE_ENABLED, BTNS_BUTTON, IDI_STAR},
 		{ID_PREV_BOOKMARK,   TBSTATE_ENABLED, BTNS_BUTTON, IDI_STAR_PREV},
 		{ID_NEXT_BOOKMARK,   TBSTATE_ENABLED, BTNS_BUTTON, IDI_STAR_NEXT},
@@ -227,7 +224,7 @@ LRESULT CMainFrame::OnCreate( LPCREATESTRUCTW /*cs*/ )
 	}
 	else
 	{
-		PostMessage(WM_COMMAND, ID_START_MONITOR);
+//		PostMessage(WM_COMMAND, ID_START_MONITOR);
 	}
 
 	return 0;
@@ -279,34 +276,13 @@ void CMainFrame::UpdateUI()
 	rebar.ShowBand(rebar.IdToIndex(ATL_IDW_BAND_FIRST + 2), ui.placement.show_filterbar);
 	UISetCheck(ID_VIEW_SEARCHBAR, ui.placement.show_filterbar);
 
+    UISetCheck(ID_TOGGLE_CONNECT_PIPE, ServiceHelper::GetLogCenter()->MonitoringSource(LogSource::Pipe));
+    UISetCheck(ID_TOGGLE_CONNECT_DEBUG_OUTPUT, ServiceHelper::GetLogCenter()->MonitoringSource(LogSource::DebugOutput));
+    UISetCheck(ID_TOGGLE_CONNECT_GLOBAL_DEBUGOUTPUT, ServiceHelper::GetLogCenter()->MonitoringSource(LogSource::GlobalDebugOutput));
+
 	::ShowWindow(m_hWndStatusBar, ui.placement.show_statusbar ? SW_SHOWNOACTIVATE : SW_HIDE);
 
 	UpdateLayout();
-}
-
-LRESULT CMainFrame::OnStopMonitor(WORD, WORD, HWND, BOOL&)
-{
-	ServiceHelper::GetLogCenter()->Disconnect();
-
-	m_toolbar.EnableButton(ID_STOP_MONITOR, FALSE);
-	m_toolbar.EnableButton(ID_START_MONITOR, TRUE);
-	UpdateWindowTitle();
-
-	return 0;
-}
-
-LRESULT CMainFrame::OnStartMonitor(WORD, WORD, HWND, BOOL&)
-{
-	ClearAllLog();
-
-	GD.strXLogFile = L"";
-	ServiceHelper::GetLogCenter()->ConnectPipe();
-
-	m_toolbar.EnableButton(ID_START_MONITOR, FALSE);
-	m_toolbar.EnableButton(ID_STOP_MONITOR, TRUE);
-	UpdateWindowTitle();
-
-	return 0;
 }
 
 void CMainFrame::Export(BOOL bFilter)
@@ -437,18 +413,6 @@ void CMainFrame::OnUserCommand(UINT /*uCode*/, int nID, HWND /*hWnd*/)
 void CMainFrame::UpdateWindowTitle(LPCWSTR pszFileName)
 {
 	CStringW strTitle = IDS(IDS_TPLOGVIEW);
-
-	if (ServiceHelper::GetLogCenter()->MonitoringPipe())
-	{
-		strTitle += L" - ";
-		strTitle += IDS(IDS_MONITORING);
-	}
-	else if (pszFileName)
-	{
-		strTitle += L" - ";
-		strTitle += pszFileName;
-	}
-
 	SetWindowTextW(strTitle);
 }
 
@@ -513,7 +477,7 @@ LRESULT CMainFrame::OnMqInvoke(UINT /*uMsg*/, WPARAM wp, LPARAM lp, BOOL &/*bHan
 
 void CMainFrame::OpenXLog(LPCWSTR pszFileName)
 {
-	SendMessage(m_hWnd, WM_COMMAND, ID_STOP_MONITOR, 0);
+//	SendMessage(m_hWnd, WM_COMMAND, ID_STOP_MONITOR, 0);
 	ClearAllLog();
 	UpdateWindowTitle(pszFileName);
 
@@ -532,7 +496,7 @@ void CMainFrame::OpenXLog(LPCWSTR pszFileName)
 
 	UpdateMRU();
 
-	ServiceHelper::GetLogCenter()->ConnectFile(pszFileName);
+	ServiceHelper::GetLogCenter()->ConnectToSource(LogSource::File, pszFileName);
 }
 
 void CMainFrame::OnTimer(UINT nID)
@@ -803,9 +767,6 @@ BOOL CMainFrame::OnIdle()
 {
 	UIUpdateToolBar();
 
-	bool bMonitoring = ServiceHelper::GetLogCenter()->MonitoringPipe();
-	UIEnable(ID_START_MONITOR, !bMonitoring);
-	UIEnable(ID_STOP_MONITOR, bMonitoring);
 	UISetCheck(ID_TOGGLE_TOOLBAR, m_toolbar.IsWindowVisible());
 	UISetCheck(ID_TOGGLE_STATUSBAR, m_wndStatusbar.IsWindowVisible());
 	UISetCheck(ID_SHOW_GRIDLINE, CConfig::Instance()->GetConfig().ui.list.show_gridline);
@@ -1068,7 +1029,7 @@ LRESULT CMainFrame::OnListGetDispInfo(int /**/, LPNMHDR pNMHDR, BOOL& /**/)
 
 void CMainFrame::OnDestroy()
 {
-	SendMessage(WM_COMMAND, ID_STOP_MONITOR);
+//	SendMessage(WM_COMMAND, ID_STOP_MONITOR);
 	ServiceHelper::GetLogCenter()->RemoveListener(this);
 	::PostQuitMessage(0);
 }
@@ -1715,11 +1676,11 @@ LRESULT CMainFrame::OnOpenShareMemoryLog(WORD, WORD, HWND, BOOL&)
 	CSimpleInputDlg dlg(IDS(IDS_INPUT), IDS(IDS_PROMPT_INPUT_SHAREMEMORY_NAME));
 	if (dlg.DoModal() == IDOK)
 	{
-		SendMessage(m_hWnd, WM_COMMAND, ID_STOP_MONITOR, 0);
+//		SendMessage(m_hWnd, WM_COMMAND, ID_STOP_MONITOR, 0);
 		ClearAllLog();
 		UpdateWindowTitle();
 
-		ServiceHelper::GetLogCenter()->ConnectShareMemory(dlg.GetInput());
+		ServiceHelper::GetLogCenter()->ConnectToSource(LogSource::ShareMemory, dlg.GetInput());
 	}
 
 	return 0;
@@ -1739,4 +1700,55 @@ LRESULT CMainFrame::OnRunScript(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 	SERVICE(CRunScriptDlg)->Show();
 
 	return 0;
+}
+
+
+LRESULT CMainFrame::OnToggleConnectPipe(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+    LogSource source = LogSource::Pipe;
+    CLogCenter* lc = ServiceHelper::GetLogCenter();
+    if (lc->MonitoringSource(source))
+    {
+        lc->DisconnectFromSource(source);
+    }
+    else
+    {
+        lc->ConnectToSource(source, nullptr);
+    }
+    UpdateUI();
+    return 0;
+}
+
+
+LRESULT CMainFrame::OnToggleConnectDebugOutput(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+    LogSource source = LogSource::DebugOutput;
+    CLogCenter* lc = ServiceHelper::GetLogCenter();
+    if (lc->MonitoringSource(source))
+    {
+        lc->DisconnectFromSource(source);
+    }
+    else
+    {
+        lc->ConnectToSource(source, nullptr);
+    }
+    UpdateUI();
+    return 0;
+}
+
+
+LRESULT CMainFrame::OnToggleConnectGlobalDebugoutput(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+    LogSource source = LogSource::GlobalDebugOutput;
+    CLogCenter* lc = ServiceHelper::GetLogCenter();
+    if (lc->MonitoringSource(source))
+    {
+        lc->DisconnectFromSource(source);
+    }
+    else
+    {
+        lc->ConnectToSource(source, nullptr);
+    }
+    UpdateUI();
+    return 0;
 }

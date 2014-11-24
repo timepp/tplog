@@ -120,12 +120,11 @@ public:
 		}
 	}
 
-	virtual void OnConnect()
+	virtual void OnConnect(LogSource source)
 	{
-		Clear();
 	}
 
-	virtual void OnDisconnect()
+	virtual void OnDisconnect(LogSource source)
 	{
 	}
 

@@ -203,6 +203,10 @@
     <Image Include="..\tplogview\res\Edit.ico" />
     <Image Include="..\tplogview\res\filter.ico" />
     <Image Include="..\tplogview\res\icon3.ico" />
+    <Image Include="..\tplogview\res\icon6.ico" />
+    <Image Include="..\tplogview\res\icon7.ico" />
+    <Image Include="..\tplogview\res\icon8.ico" />
+    <Image Include="..\tplogview\res\icon9.ico" />
     <Image Include="..\tplogview\res\level.ico" />
     <Image Include="..\tplogview\res\logical_and.ico" />
     <Image Include="..\tplogview\res\logical_not.ico" />

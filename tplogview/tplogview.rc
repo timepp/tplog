@@ -683,10 +683,9 @@ IDR_MAINFRAME MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "Start monitor &pipe",         ID_START_MONITOR
-        MENUITEM "Start monitor &debug output", ID_FILE_OPENDEBUGOUTPUT
-        MENUITEM "Start monitor global &debug output", ID_FILE_STARTMONITORGLOBALDEBUGOUTPUT
-        MENUITEM "&Stop monitor",               ID_STOP_MONITOR
+        MENUITEM "Connect to &pipe",            ID_TOGGLE_CONNECT_PIPE
+        MENUITEM "Connect to &debug output",    ID_TOGGLE_CONNECT_DEBUG_OUTPUT
+        MENUITEM "Connect to &debug output (global)", ID_TOGGLE_CONNECT_GLOBAL_DEBUGOUTPUT
         MENUITEM SEPARATOR
         MENUITEM "&Open file...\tCtrl+O",       ID_OPEN_XLOG
         POPUP "Open &Recent files"
@@ -795,6 +794,7 @@ IDI_PROCESS             ICON                    "res\\application.ico"
 IDI_LEVEL               ICON                    "res\\level.ico"
 IDI_FILTER              ICON                    "res\\filter.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
@@ -827,8 +827,6 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_START_MONITOR        "Start monitor"
-    ID_STOP_MONITOR         "Stop monitor"
     ID_CLEARALL             "Delete all logs"
 END
 

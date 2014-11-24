@@ -121,8 +121,7 @@ namespace tp
         {
             for (options_t::const_iterator it = m_options.begin(); it != m_options.end(); ++it)
             {
-                if (it->short_name && wcscmp(it->short_name, opt) == 0 || 
-                    it->long_name && wcscmp(it->long_name, opt) == 0)
+                if (wcscmp(it->short_name, opt) == 0 || wcscmp(it->long_name, opt) == 0)
                 {
                     return &(*it);
                 }
@@ -130,11 +129,10 @@ namespace tp
             return NULL;
         }
 
-        void save_option(const wchar_t* opt, const wchar_t* buffer, int position)
+        void save_option(const wchar_t* opt, const wchar_t* buffer)
         {
             option_info* oi = get_option_info(opt);
             oi->param_value_string = buffer;
-            oi->option_position = position;
 
             if (oi->param_type == param_type_string)
             {
@@ -287,7 +285,7 @@ namespace tp
                 if (p != NULL)
                 {
                     std::wstring param(arg + 2, static_cast<size_t>(p - arg - 2));
-                    save_option(param.c_str(), p+1, i);
+                    save_option(param.c_str(), p+1);
                 }
                 else
                 {
@@ -297,7 +295,7 @@ namespace tp
                     {
                         if (i + 1 < argc)
                         {
-                            save_option(param.c_str(), argv[i+1], i);
+                            save_option(param.c_str(), argv[i+1]);
                             i++;
                         }
                         else
@@ -307,7 +305,7 @@ namespace tp
                     }
                     else
                     {
-                        save_option(param.c_str(), L"1", i);
+                        save_option(param.c_str(), L"1");
                     }
                 }
             }
@@ -320,7 +318,7 @@ namespace tp
                     option_info* oi = get_option_info(param.c_str());
                     if (!oi->need_param)
                     {
-                        save_option(param.c_str(), L"1", i);
+                        save_option(param.c_str(), L"1");
                     }
                     else
                     {
@@ -336,7 +334,7 @@ namespace tp
                             }
                             else
                             {
-                                save_option(param.c_str(), argv[i+1], i);
+                                save_option(param.c_str(), argv[i+1]);
                                 i++;
                                 break;
                             }

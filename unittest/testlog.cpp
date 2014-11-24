@@ -595,6 +595,7 @@ void write_logs(int max_count)
     ILogController* ctrl = GetLogController();
     ctrl->Init(NULL);
     ctrl->AddOutputDevice(L"pipe", LODT_PIPE, L"enable:true");
+    ctrl->AddOutputDevice(L"dbgoutput", LODT_DEBUGOUTPUT, L"enable:true");
 
     for (int i = 0; i < max_count; i++)
     {

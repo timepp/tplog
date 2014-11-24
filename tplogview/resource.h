@@ -366,8 +366,6 @@
 #define ID_OPTION                       40085
 #define ID_40086                        40086
 #define ID_40087                        40087
-#define ID_START_MONITOR                40088
-#define ID_STOP_MONITOR                 40089
 #define ID_40090                        40090
 #define ID_CLEARALL                     40091
 #define ID_40092                        40092
@@ -457,13 +455,19 @@
 #define ID_EXIT                         40195
 #define ID_FILE_OPENDEBUGOUTPUT         40196
 #define ID_FILE_STARTMONITORGLOBALDEBUGOUTPUT 40197
+#define ID_CONNECT_FILE                 40198
+#define ID_CONNECT_DEBUG_OUTPUT         40199
+#define ID_CONNECT_GLOBAL_DEBUGOUTPUT   40200
+#define ID_TOGGLE_CONNECT_DEBUG_OUTPUT  40202
+#define ID_TOGGLE_CONNECT_GLOBAL_DEBUGOUTPUT 40203
+#define ID_TOGGLE_CONNECT_PIPE          40204
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        289
-#define _APS_NEXT_COMMAND_VALUE         40198
+#define _APS_NEXT_RESOURCE_VALUE        290
+#define _APS_NEXT_COMMAND_VALUE         40205
 #define _APS_NEXT_CONTROL_VALUE         1088
 #define _APS_NEXT_SYMED_VALUE           107
 #endif

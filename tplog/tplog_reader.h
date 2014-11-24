@@ -224,7 +224,7 @@ private:
 	HANDLE m_worker_thread;
 
 public:
-	pipe_reader() : m_exit_evt(NULL), m_worker_thread(NULL), m_stop_flag(false)
+    pipe_reader() : m_exit_evt(NULL), m_worker_thread(NULL), m_stop_flag(true), m_listener(nullptr)
 	{
 		::InitializeCriticalSection(&m_lsi_lock);
 		m_exit_evt = ::CreateEventW(NULL, TRUE, FALSE, NULL);
@@ -564,7 +564,7 @@ private:
 	lsi_map_t m_lsi_map;
 
 public:
-	file_reader() : m_stop_flag(true), m_worker_thread(NULL)
+    file_reader() : m_stop_flag(true), m_worker_thread(NULL), m_listener(nullptr)
 	{
 
 	}
@@ -800,7 +800,7 @@ private:
 	tplog::log_listener* m_listener;
 
 public:
-	sharememory_reader() : m_stop_flag(true), m_worker_thread(NULL)
+    sharememory_reader() : m_stop_flag(true), m_worker_thread(NULL), m_listener(nullptr)
 	{
 
 	}
@@ -932,12 +932,17 @@ private:
     bool m_stop_flag;
     tplog::log_listener* m_listener;
     bool m_global;
+    CLogAccurateTime *m_accutime;
 
 public:
 
-    debugoutput_reader(bool global) : m_global(global)
+    debugoutput_reader() : m_global(false), m_stop_flag(true), m_listener(nullptr), m_worker_thread(NULL), m_accutime(nullptr)
     {
+    }
 
+    void set_global_mode(bool global)
+    {
+        m_global = global;
     }
 
     virtual void set_listener(log_listener* listener)
@@ -951,6 +956,9 @@ public:
         {
             return S_FALSE;
         }
+
+        m_accutime = new CLogAccurateTime;
+        m_accutime->Init();
 
         m_stop_flag = false;
         m_worker_thread = (HANDLE) _beginthreadex(NULL, 0, work_thread, this, 0, NULL);
@@ -966,6 +974,9 @@ public:
             ::CloseHandle(m_worker_thread);
             m_worker_thread = NULL;
         }
+
+        delete m_accutime;
+        m_accutime = nullptr;
         return S_OK;
     }
 
@@ -1003,36 +1014,46 @@ private:
         PCWSTR bufferReadyEventName = m_global ? L"Global\\DBWIN_BUFFER_READY" : L"Local\\DBWIN_BUFFER_READY";
         PCWSTR dataReadyEventName = m_global ? L"Global\\DBWIN_DATA_READY" : L"Local\\DBWIN_DATA_READY";
 
-        HANDLE hMapping = ::CreateFileMappingW(
+        hMapping = ::CreateFileMappingW(
             INVALID_HANDLE_VALUE, 
             CLowestRightsSecurityAttribute(), 
             PAGE_READWRITE, 
             0, 4096, 
             shareMemoryName);
 
-        HANDLE hBufferReadyEvent = ::CreateEventW(CLowestRightsSecurityAttribute(), TRUE, FALSE, bufferReadyEventName);
-        HANDLE hDataReadyEvent = ::CreateEventW(CLowestRightsSecurityAttribute(), TRUE, FALSE, dataReadyEventName);
+        HANDLE hBufferReadyEvent = ::CreateEventW(CLowestRightsSecurityAttribute(), FALSE, FALSE, bufferReadyEventName);
+        HANDLE hDataReadyEvent = ::CreateEventW(CLowestRightsSecurityAttribute(), FALSE, FALSE, dataReadyEventName);
 
-        LPVOID pData = ::MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
+        pData = ::MapViewOfFile(hMapping, FILE_MAP_READ, 0, 0, 0);
         if (!pData) goto thread_exit;
 
-        ::SetEvent(hBufferReadyEvent);
         for (;;)
         {
+            ::SetEvent(hBufferReadyEvent);
             DWORD dwWaitResult = WaitForSingleObject(hDataReadyEvent, 1000);
             if (m_stop_flag) break;
             if (dwWaitResult == WAIT_TIMEOUT) continue;
             if (dwWaitResult != WAIT_OBJECT_0) break;
 
+            FILETIME ft = m_accutime->GetTime();
+            wchar_t content[2048];
+            mbstowcs_s(nullptr, content, static_cast<const char*>(pData) + 4, _TRUNCATE);
+
             logitem * li = new logitem;
             li->log_class = 0x25;
             li->log_depth = 0;
             li->log_index = 0;
-            li->log_content = (LPCWSTR)pData + 2;
+            li->log_content = content;
             li->log_pid = *(DWORD*)pData;
             li->log_tid = 0;
-            li->log_time_sec = tm_sec;
-            li->log_time_msec = tm_msec;
+
+            DWORD ns = ft.dwLowDateTime % 10000000;
+            li->log_time_msec = static_cast<int>(ns / 10);
+            INT64 t = ((INT64) ft.dwHighDateTime << 32) | (ft.dwLowDateTime - ns);
+            t = (t - 116444736000000000LL) / 10000000;
+            li->log_time_sec = t;
+
+            m_listener->on_new_log(li);
         }
 
 

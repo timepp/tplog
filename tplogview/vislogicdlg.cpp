@@ -75,7 +75,7 @@ void CVisLogicDlg::Refresh()
 
 	// if PID doesn't exist in log source, or isn't monitoring, this means that process is exit, don't use current time as T2, otherwise, use current time as T2
 	bool use_current_time_as_end_time = false;
-	if (ServiceHelper::GetLogCenter()->MonitoringPipe())
+	if (ServiceHelper::GetLogCenter()->MonitoringSource(LogSource::Pipe))
 	{
 		tplog::lsi_vec_t src = ServiceHelper::GetLogCenter()->get_sources();
 		for (size_t i = 0; i < src.size(); i++)

@@ -27,6 +27,7 @@ CLogCenter::CLogCenter()
 	m_buffer.reserve(1000);
 	m_logDB.reserve(100000);
 	m_autoEnablePipeDeviceReg = false;
+    m_globalDbgOutputReader.set_global_mode(true);
 }
 
 CLogCenter::~CLogCenter()
@@ -39,89 +40,94 @@ void CLogCenter::Init()
 
 }
 
-void CLogCenter::ConnectPipe()
+void CLogCenter::ConnectToSource(LogSource source, LPCWSTR param)
 {
-	Disconnect();
-	
-	m_cfgPathReg = CConfig::Instance()->GetConfig().log_config_path.c_str();
-	m_autoEnablePipeDeviceReg = EnablePipeDeviceReg(true);
+    DisconnectFromSource(source);
 
-	m_logPipeReader.set_listener(this);
-	m_logPipeReader.start();
+    switch (source)
+    {
+    case LogSource::File:
+        m_logFileReader.setpath(param);
+        break;
+    case LogSource::ShareMemory:
+        m_logShareMemoryReader.setsmname(param);
+        break;
+    default:
+        break;
+    }
 
-	{
-		CAutoCriticalSection cs(m_csListener);
-		for (ListenerList::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
-		{
-			(*it)->OnConnect();
-		}
-	}
+    tplog::log_reader * reader = GetLogReaderObject(source);
+    reader->set_listener(this);
+    if (SUCCEEDED(reader->start()))
+    {
+        CAutoCriticalSection cs(m_csListener);
+        for (ListenerList::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
+        {
+            (*it)->OnConnect(source);
+        }
+    }
 
-	m_timerID = ::SetTimer(NULL, 0, 500, &CLogCenter::TimerProc);
+    SyncTimer();
 }
 
-void CLogCenter::ConnectFile(LPCWSTR pszPath)
+void CLogCenter::DisconnectFromSource(LogSource source)
 {
-	Disconnect();
+    tplog::log_reader * reader = GetLogReaderObject(source);
+    reader->set_listener(nullptr);
+    if (SUCCEEDED(reader->stop()))
+    {
+        CAutoCriticalSection cs(m_csListener);
+        for (ListenerList::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
+        {
+            (*it)->OnConnect(source);
+        }
+    }
 
-	m_logFileReader.set_listener(this);
-	m_logFileReader.setpath(pszPath);
-	m_logFileReader.start();
-
-	{
-			CAutoCriticalSection cs(m_csListener);
-			for (ListenerList::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
-			{
-				(*it)->OnConnect();
-			}
-	}
-
-	m_timerID = ::SetTimer(NULL, 0, 500, &CLogCenter::TimerProc);
+    SyncTimer();
 }
 
-void CLogCenter::ConnectShareMemory(LPCWSTR name)
+bool CLogCenter::MonitoringSource(LogSource source) const
 {
-	Disconnect();
-
-	m_logShareMemoryReader.set_listener(this);
-	m_logShareMemoryReader.setsmname(name);
-	m_logShareMemoryReader.start();
-
-	{
-		CAutoCriticalSection cs(m_csListener);
-		for (ListenerList::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
-		{
-			(*it)->OnConnect();
-		}
-	}
-
-	m_timerID = ::SetTimer(NULL, 0, 500, &CLogCenter::TimerProc);
+    tplog::log_reader * reader = const_cast<CLogCenter*>(this)->GetLogReaderObject(source);
+    return reader->working();
 }
 
-void CLogCenter::Disconnect()
+tplog::log_reader * CLogCenter::GetLogReaderObject(LogSource source)
 {
-	m_logFileReader.stop();
-	m_logFileReader.set_listener(NULL);
-	m_logPipeReader.stop();
-	m_logPipeReader.set_listener(NULL);
-	m_logShareMemoryReader.stop();
-	m_logShareMemoryReader.set_listener(NULL);
+    switch (source)
+    {
+    case LogSource::Pipe:              return &m_logPipeReader;
+    case LogSource::File:              return &m_logFileReader;
+    case LogSource::DebugOutput:       return &m_dbgOutputReader;
+    case LogSource::GlobalDebugOutput: return &m_globalDbgOutputReader;
+    case LogSource::ShareMemory:       return &m_logShareMemoryReader;
+    }
+    return nullptr;
+}
 
-	{
-			CAutoCriticalSection cs(m_csListener);
-			for (ListenerList::iterator it = m_listeners.begin(); it != m_listeners.end(); ++it)
-			{
-				(*it)->OnDisconnect();
-			}
-	}
-
-	if (m_autoEnablePipeDeviceReg)
-	{
-		EnablePipeDeviceReg(false);
-	}
-	m_autoEnablePipeDeviceReg = false;
-
-	::KillTimer(NULL, m_timerID);
+void CLogCenter::SyncTimer()
+{
+    if (MonitoringSource(LogSource::Pipe) ||
+        MonitoringSource(LogSource::File) ||
+        MonitoringSource(LogSource::DebugOutput) ||
+        MonitoringSource(LogSource::GlobalDebugOutput) ||
+        MonitoringSource(LogSource::ShareMemory))
+    {
+        if (m_timerID == 0)
+        {
+            m_timerID = SetTimer(NULL, 0, 500, &CLogCenter::TimerProc);
+        }
+    }
+    else
+    {
+        if (m_timerID != 0)
+        {
+            if (KillTimer(NULL, m_timerID))
+            {
+                m_timerID = 0;
+            }
+        }
+    }
 }
 
 void CLogCenter::AddListener(CLogCenterListener* pListener)
@@ -309,11 +315,6 @@ bool CLogCenter::EnablePipeDeviceReg(bool bEnable)
 
 	::RegCloseKey(hKey);
 	return false;
-}
-
-bool CLogCenter::MonitoringPipe() const
-{
-	return m_logPipeReader.working();
 }
 
 size_t CLogCenter::source_count() const

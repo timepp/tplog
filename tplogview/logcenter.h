@@ -14,12 +14,21 @@ struct LogRange
 	UINT64 idmax;
 };
 
+enum class LogSource
+{
+    Pipe,
+    File,
+    ShareMemory,
+    DebugOutput,
+    GlobalDebugOutput
+};
+
 class CLogCenterListener
 {
 public:
 	virtual void OnNewLog(const LogRange& range) = 0;
-	virtual void OnConnect(){}
-	virtual void OnDisconnect(){}
+	virtual void OnConnect(LogSource source){}
+	virtual void OnDisconnect(LogSource source){}
 	virtual ~CLogCenterListener(){}
 };
 
@@ -35,11 +44,9 @@ public:
 	void Init();
 	void Uninit();
 
-	void ConnectPipe();
-	void ConnectFile(LPCWSTR pszPath);
-	void ConnectShareMemory(LPCWSTR name);
-	void Disconnect();
-	bool MonitoringPipe() const;
+    void ConnectToSource(LogSource source, LPCWSTR param);
+    void DisconnectFromSource(LogSource source);
+    bool MonitoringSource(LogSource source) const;
 
 	LogRange GetLogRange();
 	LogInfo* GetLog(UINT64 logid);
@@ -78,6 +85,9 @@ private:
 
 	void ShowNotifyMsg();
 
+    tplog::log_reader * GetLogReaderObject(LogSource source);
+    void SyncTimer();
+
 private:
 	// listener
 	typedef std::vector<CLogCenterListener*> ListenerList;
@@ -98,6 +108,8 @@ private:
 	tplog::pipe_reader m_logPipeReader;
 	tplog::file_reader m_logFileReader;
 	tplog::sharememory_reader m_logShareMemoryReader;
+    tplog::debugoutput_reader m_dbgOutputReader;
+    tplog::debugoutput_reader m_globalDbgOutputReader;
 
 	// occupytime
 	std::map<tplog::uint32_t, UINT64> m_lastLogInSameThread;
