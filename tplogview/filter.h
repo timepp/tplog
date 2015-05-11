@@ -265,7 +265,7 @@ public:
 			std::wstring child_desc = child->desc();
 			if (!child_desc.empty())
 			{
-				str += IDS(IDS_NOT);
+				str += IDS(IDS_NOT) + L" ";
 				if (child->child_count() > 1) str += L"( ";
 				str += child_desc;
 				if (child->child_count() > 1) str += L" )";

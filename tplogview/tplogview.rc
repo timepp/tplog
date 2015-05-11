@@ -794,7 +794,6 @@ IDI_PROCESS             ICON                    "res\\application.ico"
 IDI_LEVEL               ICON                    "res\\level.ico"
 IDI_FILTER              ICON                    "res\\filter.ico"
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
@@ -905,8 +904,8 @@ BEGIN
     IDS_LOG_TAG             "Log tag"
     IDS_LOG_TAG_MATCH_s     "Log tag matches [%s]"
     IDS_LOGICAL_AND         "Logical and"
-    IDS_LOGICAL_NOT         "Logical or"
-    IDS_LOGICAL_OR          "Logical not"
+    IDS_LOGICAL_NOT         "Logical not"
+    IDS_LOGICAL_OR          "Logical or"
     IDS_LOWEST              "loweast"
     IDS_MAIN_THREAD         "Main thread"
     IDS_MODIFY_LOG_DEVICE_CONFIG_FROM_REGISTRY 
