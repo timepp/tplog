@@ -5,6 +5,7 @@
 #include "logpropdb.h"
 #include "config.h"
 #include <tplib/include/msg_crack.h>
+#include <iterator>
 
 CQuickFilterDlg* g_dlg = NULL;
 

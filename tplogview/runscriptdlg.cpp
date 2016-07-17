@@ -4,6 +4,7 @@
 #include "config.h"
 #include "helper.h"
 #include <algorithm>
+#include <iterator>
 
 #define IDT_UPDATE_COLOR 1001
 
