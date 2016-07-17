@@ -2,11 +2,6 @@
 
 #include <tplog_singleton.h>
 
-void * operator new (unsigned int /*size*/, void * p)
-{ 
-	return p ; 
-}
-
 BOOL APIENTRY DllMain( HMODULE /*hModule*/, DWORD ul_reason_for_call, LPVOID /*lpReserved*/)
 {
 	if (ul_reason_for_call == DLL_PROCESS_ATTACH)
@@ -21,6 +16,11 @@ BOOL APIENTRY DllMain( HMODULE /*hModule*/, DWORD ul_reason_for_call, LPVOID /*l
 	return TRUE;
 
 }
+
+// TPLOG_MINIMAL_SIZE should be defined together with the following configurations
+// * Set entry point to DllMain 
+
+#ifdef TPLOG_MINIMAL_SIZE
 
 #define WIDE_STR_(x) L##x
 #define WIDE_STR(x) WIDE_STR_(x)
@@ -56,6 +56,11 @@ const wchar_t* wcschr(const wchar_t* src, wchar_t ch)
 	return NULL;
 }
 
+int wcsncmp(const wchar_t*, const wchar_t*, size_t)
+{
+    return 0;
+}
+
 #ifndef _DEBUG
 int _itow_s(int /*val*/, wchar_t* /*buf*/, size_t /*buflen*/, int /*redix*/)
 {
@@ -86,5 +91,7 @@ int atexit ( void ( * /*func*/ ) (void) )
 	SHOULD_NOT_LINK(L"we do not support atexit");
 	return 0;
 }
+
+#endif
 
 #endif
