@@ -14,12 +14,12 @@ struct MemLogQuene
 		WCHAR content[120];
 	};
 
-	UINT32 totalLength;                      //╧╡оМдз╢Ф╣д╢Сп║
-	UINT32 recordCount;                 //хуж╬╤сап╢Сп║
-	UINT32 recordLength;                      //╣╔лУхуж╬╢Сп║
-	UINT32 head;                         //╤сапм╥
-	UINT32 rear;                         //╤сапн╡
-	MemLogRecord record[1000]; //╤╗Ё╓╤сап
+	UINT32 totalLength;                      //Е┘╠Д╨╚Е├┘Е╜≤Г └Е╓╖Е╟▐
+	UINT32 recordCount;                 //Ф≈╔Е©≈И≤÷Е┬≈Е╓╖Е╟▐
+	UINT32 recordLength;                      //Е█∙Ф²║Ф≈╔Е©≈Е╓╖Е╟▐
+	UINT32 head;                         //И≤÷Е┬≈Е╓╢
+	UINT32 rear;                         //И≤÷Е┬≈Е╟╬
+	MemLogRecord record[1000]; //Е╝ И∙©И≤÷Е┬≈
 };
 #pragma pack(pop)
 

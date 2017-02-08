@@ -15,7 +15,7 @@ private:
 
 	wchar_t m_cvtbuf[4096];
 
-	// ÉÏ´ÎÈÕÖ¾µÄÊ±¼ä(ÃëÊý)
+	// ä¸Šæ¬¡æ—¥å¿—çš„æ—¶é—´(ç§’æ•°)
 	FILETIME m_lastTime;
 
 	OVERLAPPED m_overlap;
@@ -26,7 +26,7 @@ public:
 		TRUNCATED_COPY(m_path, opt->GetOption(L"path", L""));
 		DWORD shareMode = opt->GetOptionAsBool(L"share_read", true) ? FILE_SHARE_READ : 0U;
 
-		// ×Ô¶¨Òå±äÁ¿ºÍ»·¾³±äÁ¿À©Õ¹
+		// è‡ªå®šä¹‰å˜é‡å’ŒçŽ¯å¢ƒå˜é‡æ‰©å±•
 		WCHAR path[MAX_PATH];
 		helper::ExpandVariable(m_path, path, _countof(path));
 		::ExpandEnvironmentStringsW(path, m_path, _countof(m_path));
@@ -75,7 +75,7 @@ public:
 
 		textstream s(m_cvtbuf, _countof(m_cvtbuf));
 
-		// Èç¹ûÁ½´ÎÈÕÖ¾ÃëÊýÏàÍ¬£¬ºóÒ»´ÎÈÕÖ¾¾Í¿ÉÒÔÖ±½ÓÊ¹ÓÃÇ°Ò»´Î¸ñÊ½»¯¹ýµÄÊ±¼ä´®£¬Ã»±ØÒªÔÙ¸ñÊ½»¯Ò»±é
+		// å¦‚æžœä¸¤æ¬¡æ—¥å¿—ç§’æ•°ç›¸åŒï¼ŒåŽä¸€æ¬¡æ—¥å¿—å°±å¯ä»¥ç›´æŽ¥ä½¿ç”¨å‰ä¸€æ¬¡æ ¼å¼åŒ–è¿‡çš„æ—¶é—´ä¸²ï¼Œæ²¡å¿…è¦å†æ ¼å¼åŒ–ä¸€é
 		if (m_lastTime.dwLowDateTime / E7 != item->time.dwLowDateTime / E7 ||
 			m_lastTime.dwHighDateTime != item->time.dwHighDateTime)
 		{
@@ -196,7 +196,7 @@ private:
 		DWORD bytesWrite;
 		if (!::WriteFile(file, buffer, len, &bytesWrite, NULL))
 		{
-			LOGWINERR(L"Ð´ÎÄ¼þÊ§°Ü");
+			LOGWINERR(L"å†™æ–‡ä»¶å¤±è´¥");
 			return FALSE;
 		}
 

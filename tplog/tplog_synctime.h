@@ -3,15 +3,15 @@
 #include <windows.h>
 #include "detail/sharememory.h"
 
-// FIX ME: ÐÝÃßºó£¬ÓÃ»ù×¼Ê±¼ä+¼ÆÊýÆ÷Ëã³öÀ´µÄÊ±¼äÂäºóÓÚµ±Ç°Ê±¼ä
+// FIX ME: ä¼‘çœ åŽï¼Œç”¨åŸºå‡†æ—¶é—´+è®¡æ•°å™¨ç®—å‡ºæ¥çš„æ—¶é—´è½åŽäºŽå½“å‰æ—¶é—´
 
 #pragma pack(push, 1)
 struct TimingInfo
 {
-	FILETIME baseTime;                  // »ù×¼Ê±¼ä(unix time)
+	FILETIME baseTime;                  // åŸºå‡†æ—¶é—´(unix time)
 
-	INT64 basePerformanceCounter;       // »ù×¼¸ß¾«¶È¼ÆÊ±Æ÷¼ÆÊý
-	INT64 performanceFrequency;         // ¸ß¾«¶È¼ÆÊ±Æ÷ÆµÂÊ
+	INT64 basePerformanceCounter;       // åŸºå‡†é«˜ç²¾åº¦è®¡æ—¶å™¨è®¡æ•°
+	INT64 performanceFrequency;         // é«˜ç²¾åº¦è®¡æ—¶å™¨é¢‘çŽ‡
 };
 #pragma pack(pop)
 
@@ -47,7 +47,7 @@ public:
 
 	FILETIME GetTime() const
 	{
-		FILETIME t; // FILETIMEµÄµ¥Î»Îª 100ÄÉÃë£¬ ¼´ 1/E7 Ãë£¬ ËùÒÔÏÂÃæ¼ÆËãÊ±£¬ Òª³ËÒÔE7
+		FILETIME t; // FILETIMEçš„å•ä½ä¸º 100çº³ç§’ï¼Œ å³ 1/E7 ç§’ï¼Œ æ‰€ä»¥ä¸‹é¢è®¡ç®—æ—¶ï¼Œ è¦ä¹˜ä»¥E7
 		if (m_timingInfo.performanceFrequency > 0)
 		{
 			LARGE_INTEGER li;

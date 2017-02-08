@@ -12,3 +12,4 @@ output/Win32/
 /tplogview/tplogview_p.c
 /tplogview/tplogview_h.h
 /tplogview/dlldata.c
+build/tplog.VC.db

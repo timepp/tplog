@@ -39,12 +39,12 @@ public:
 	virtual HRESULT IncreaseCallDepth();
 	virtual HRESULT DecreaseCallDepth();
 
-	/** logcontrollerµÄ×´Ì¬
-	 *  ÒòÎªlogcontrollerÊÇÈ«¾Ö¶ÔÏó£¬ËùÒÔÔÚ¶ÔÏóÎ´¹¹ÔìÊ±ÕâĞ©±äÁ¿µÄÖµ¶¼ÊÇfalse£¬Ç¡ºÃÄÜ¹»±í´ï¶ÔÓ¦µÄÒâË¼
+	/** logcontrollerçš„çŠ¶æ€
+	 *  å› ä¸ºlogcontrolleræ˜¯å…¨å±€å¯¹è±¡ï¼Œæ‰€ä»¥åœ¨å¯¹è±¡æœªæ„é€ æ—¶è¿™äº›å˜é‡çš„å€¼éƒ½æ˜¯falseï¼Œæ°å¥½èƒ½å¤Ÿè¡¨è¾¾å¯¹åº”çš„æ„æ€
 	 */
-	bool m_inited;      // logcontroller¶ÔÏóÊÇ·ñÒÑ³õÊ¼»¯(¿ÉÒÔÊ¹ÓÃÆä·½·¨)
-	bool m_constructed; // logcontroller¶ÔÏóÊÇ·ñÒÑ¹¹Ôì
-	bool m_destructed;	// logcontroller¶ÔÏóÊÇ·ñÒÑÎö¹¹
+	bool m_inited;      // logcontrollerå¯¹è±¡æ˜¯å¦å·²åˆå§‹åŒ–(å¯ä»¥ä½¿ç”¨å…¶æ–¹æ³•)
+	bool m_constructed; // logcontrollerå¯¹è±¡æ˜¯å¦å·²æ„é€ 
+	bool m_destructed;	// logcontrollerå¯¹è±¡æ˜¯å¦å·²ææ„
 
 private: // types
 
@@ -54,8 +54,8 @@ private: // types
 		wchar_t name[32];
 		CLogOption defaultOption;
 		wchar_t overlayConfig[1024];
-		bool enabled;                             // ÊÇ·ñÆôÓÃ
-		CLogFilter* filter;                       // ¹ıÂËÆ÷
+		bool enabled;                             // æ˜¯å¦å¯ç”¨
+		CLogFilter* filter;                       // è¿‡æ»¤å™¨
 	};
 	
 private:
@@ -80,7 +80,7 @@ private:
 	HRESULT OnConfigFileChange();
 	BOOL CanMonitorConfig();
 
-	// ¼àÊÓÏß³Ì
+	// ç›‘è§†çº¿ç¨‹
 	static DWORD WINAPI MonitorThread(void* pParam);
 };
 
@@ -127,7 +127,7 @@ inline HRESULT CLogController::Init(const wchar_t* configpath)
 		::RegCreateKeyExW(HKEY_CURRENT_USER, configpath, 0, NULL, 0, KEY_QUERY_VALUE|KEY_NOTIFY, NULL, &m_hConfigKey, NULL);
 		if (!m_hConfigKey)
 		{
-			LOGWINERR(L"´ò¿ªÅäÖÃ¼üÖµ");
+			LOGWINERR(L"æ‰“å¼€é…ç½®é”®å€¼");
 		}
 	}
 
@@ -145,7 +145,7 @@ inline HRESULT CLogController::UnInit()
 	
 	for (size_t i = 0; i < m_odsLen; i++)
 	{
-		LOG(L"¹Ø±ÕÈÕÖ¾Éè±¸: ", m_ods[i]->name);
+		LOG(L"å…³é—­æ—¥å¿—è®¾å¤‡: ", m_ods[i]->name);
 		m_ods[i]->pDevice->Close();
 		m_ods[i]->pDevice->DecreaseRefCounter();
 		delete m_ods[i]->filter;
@@ -155,14 +155,14 @@ inline HRESULT CLogController::UnInit()
 
 	if (m_monitorThread)
 	{
-		LOG(L"¹Ø±Õ¼à¿ØÏß³Ì");
+		LOG(L"å…³é—­ç›‘æ§çº¿ç¨‹");
 		if (m_monitorThreadQuitEvent)
 		{
 			::SetEvent(m_monitorThreadQuitEvent);
 		}
 		if (::WaitForSingleObject(m_monitorThread, 5000) == WAIT_TIMEOUT)
 		{
-			LOG(L"¼à¿ØÏß³ÌµÈ´ı³¬Ê±");
+			LOG(L"ç›‘æ§çº¿ç¨‹ç­‰å¾…è¶…æ—¶");
 		}
 		DWORD dwExitCode;
 		::GetExitCodeThread(m_monitorThread, &dwExitCode);
@@ -198,7 +198,7 @@ inline HRESULT CLogController::MonitorConfigChange()
 	m_monitorThread = ::CreateThread(NULL, 0, MonitorThread, this, 0, NULL);
 	if (!m_monitorThread)
 	{
-		LOGWINERR(L"´´½¨¼àÊÓÏß³ÌÊ§°Ü");
+		LOGWINERR(L"åˆ›å»ºç›‘è§†çº¿ç¨‹å¤±è´¥");
 	}
 
 	return S_OK;
@@ -272,7 +272,7 @@ inline HRESULT CLogController::RemoveOutputDevice(const wchar_t* name)
 		if (!name || wcscmp(m_ods[i]->name, name) == 0)
 		{
 			ret = S_OK;
-			LOG(L"¹Ø±ÕÈÕÖ¾Éè±¸: ", m_ods[i]->name);
+			LOG(L"å…³é—­æ—¥å¿—è®¾å¤‡: ", m_ods[i]->name);
 			m_ods[i]->pDevice->Close();
 			m_ods[i]->pDevice->DecreaseRefCounter();
 			delete m_ods[i]->filter;
@@ -395,7 +395,7 @@ inline HRESULT CLogController::GetLogOutputDeviceOverlayConfig(const wchar_t* na
 
 inline DWORD WINAPI CLogController::MonitorThread(void* pParam)
 {
-	// ¼àÊÓÄ¿Â¼µÄ¸¨ÖúÀà
+	// ç›‘è§†ç›®å½•çš„è¾…åŠ©ç±»
 	class CEventDirMonitor
 	{
 	public:
@@ -421,11 +421,11 @@ inline DWORD WINAPI CLogController::MonitorThread(void* pParam)
 		HKEY m_hKey;
 	};
 
-	LOG(L"¼àÊÓÏß³ÌÆô¶¯");
+	LOG(L"ç›‘è§†çº¿ç¨‹å¯åŠ¨");
 	CLogController* pController = static_cast<CLogController*>(pParam);
 	if (!pController)
 	{
-		LOG(L"²ÎÊı²»ÕıÈ·£¬¼àÊÓÏß³ÌÒì³£ÍË³ö");
+		LOG(L"å‚æ•°ä¸æ­£ç¡®ï¼Œç›‘è§†çº¿ç¨‹å¼‚å¸¸é€€å‡º");
 		return 1;
 	}
 
@@ -438,18 +438,18 @@ inline DWORD WINAPI CLogController::MonitorThread(void* pParam)
 		DWORD dwRet = ::WaitForMultipleObjects(_countof(evts), evts, FALSE, INFINITE);
 		if (dwRet == WAIT_FAILED)
 		{
-			// µÈ´ıÊ§°Ü£¬²»µÈÁËÒÔÃâËÀÑ­»·
-			LOG(L"µÈ´ıÊÂ¼şÊ§°Ü£¬¼àÊÓÏß³ÌÍË³ö");
+			// ç­‰å¾…å¤±è´¥ï¼Œä¸ç­‰äº†ä»¥å…æ­»å¾ªç¯
+			LOG(L"ç­‰å¾…äº‹ä»¶å¤±è´¥ï¼Œç›‘è§†çº¿ç¨‹é€€å‡º");
 			break;
 		}
 		else if (dwRet == WAIT_OBJECT_0 + 1 || dwRet == WAIT_ABANDONED_0 + 1)
 		{
-			LOG(L"ÊÕµ½ÍË³öĞÅºÅ£¬¼àÊÓÏß³ÌÍË³ö");
+			LOG(L"æ”¶åˆ°é€€å‡ºä¿¡å·ï¼Œç›‘è§†çº¿ç¨‹é€€å‡º");
 			break;
 		}
 		else if (dwRet == WAIT_OBJECT_0 + 0 || dwRet == WAIT_ABANDONED_0 + 0)
 		{
-			LOG(L"¼àÊÓÄ¿Â¼ÄÚÈİ±ä»¯");
+			LOG(L"ç›‘è§†ç›®å½•å†…å®¹å˜åŒ–");
 			pController->OnConfigFileChange();
 			m.ReadChange();
 		}

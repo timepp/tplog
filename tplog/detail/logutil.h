@@ -26,15 +26,15 @@ struct ToStr
 
 struct helper
 {
-	/** ±äÁ¿À©Õ¹
-	 *  ${PID} ==> µ±Ç°½ø³ÌµÄPID
+	/** å˜é‡æ‰©å±•
+	 *  ${PID} ==> å½“å‰è¿›ç¨‹çš„PID
 	 */
 	static void ExpandVariable(const wchar_t* src, wchar_t* dest, size_t destlen);
 
-	/** Ê±¼ä×ª³É×Ö·û´®
-	 *  ²»Ê¹ÓÃwcsftime, É¥Ê§ÁËÉÙĞíÁé»îĞÔ£¬µ«¿ÉÒÔÊ¹³ÌĞò´óĞ¡¼õÉÙ20K£¬ĞÔÄÜÌáÉı3±¶
+	/** æ—¶é—´è½¬æˆå­—ç¬¦ä¸²
+	 *  ä¸ä½¿ç”¨wcsftime, ä¸§å¤±äº†å°‘è®¸çµæ´»æ€§ï¼Œä½†å¯ä»¥ä½¿ç¨‹åºå¤§å°å‡å°‘20Kï¼Œæ€§èƒ½æå‡3å€
 	 *
-	 *  \param fmt ÌØÊâ×Ö·û: Y=4Î»Äê m=2Î»ÔÂ d=2Î»ÈÕ H=2Î»Ğ¡Ê± M=2Î»·ÖÖÓ S=2Î»Ãë
+	 *  \param fmt ç‰¹æ®Šå­—ç¬¦: Y=4ä½å¹´ m=2ä½æœˆ d=2ä½æ—¥ H=2ä½å°æ—¶ M=2ä½åˆ†é’Ÿ S=2ä½ç§’
 	 */
 	static void FileTimeToString(FILETIME ft, const wchar_t* fmt, wchar_t* buf, size_t buflen);
 	static FILETIME UnixTimeToFileTime(__int64 t);
@@ -201,7 +201,7 @@ inline void helper::FileTimeToString(FILETIME ft, const wchar_t* fmt, wchar_t* b
     SYSTEMTIME st = {};
 	if (!::FileTimeToLocalFileTime(&ft, &lft) || !::FileTimeToSystemTime(&lft, &st))
 	{
-		LOGWINERR(L"Ê±¼ä×ª»»Ê§°Ü:");
+		LOGWINERR(L"æ—¶é—´è½¬æ¢å¤±è´¥:");
 	}
 
 	wchar_t* e = buf + buflen - 1;

@@ -143,8 +143,8 @@ public:
 
 	void start_new_connection()
 	{
-		/// ÒòÎªpipeserverÊÇ¹ÜµÀµÄ¶Á¶Ë£¬ÎªÁË±£Ö¤×îµÍÈ¨ÏŞµÄ½ø³Ì¶¼¿ÉÒÔÏò¹ÜµÀÖĞĞ´Êı¾İ£¬´´½¨pipeÊ±±ØĞëÓÃ×îµÍÈ¨ÏŞµÄSA
-		/// (È±Ê¡Çé¿öÏÂ£¬µÍÈ¨ÏŞ½ø³ÌÖ»¿ÉÒÔREAD_UP£¬²»¿ÉÒÔWRITE_UP)
+		/// å› ä¸ºpipeserveræ˜¯ç®¡é“çš„è¯»ç«¯ï¼Œä¸ºäº†ä¿è¯æœ€ä½æƒé™çš„è¿›ç¨‹éƒ½å¯ä»¥å‘ç®¡é“ä¸­å†™æ•°æ®ï¼Œåˆ›å»ºpipeæ—¶å¿…é¡»ç”¨æœ€ä½æƒé™çš„SA
+		/// (ç¼ºçœæƒ…å†µä¸‹ï¼Œä½æƒé™è¿›ç¨‹åªå¯ä»¥READ_UPï¼Œä¸å¯ä»¥WRITE_UP)
 
 		m_iopending = false;
 		m_pipe = ::CreateNamedPipeW(m_pipename, 
@@ -209,18 +209,18 @@ class pipe_reader : public log_reader, public log_source_support
 	
 
 private:
-	// ²¢·¢·ÃÎÊ
+	// å¹¶å‘è®¿é—®
 	typedef std::map<HANDLE, log_source_info> lsi_map_t;
 	lsi_map_t m_lsi_map;
 	mutable CRITICAL_SECTION m_lsi_lock;
 	HANDLE m_exit_evt;
 	bool m_stop_flag;
 
-	// ¹¤×÷Ïß³Ì·ÃÎÊ
+	// å·¥ä½œçº¿ç¨‹è®¿é—®
 	logsrc_map_t m_logsrc_map;
 	log_listener* m_listener;
 
-	// Ö÷Ïß³Ì·ÃÎÊ
+	// ä¸»çº¿ç¨‹è®¿é—®
 	HANDLE m_worker_thread;
 
 public:
@@ -271,7 +271,7 @@ public:
 			m_worker_thread = NULL;
 		}
 
-		// ´Ë´¦²»ĞèÒª¼ÓËø£¬ÒòÎª¹¤×÷Ïß³ÌÒÑ¾­ÍË³öÁË
+		// æ­¤å¤„ä¸éœ€è¦åŠ é”ï¼Œå› ä¸ºå·¥ä½œçº¿ç¨‹å·²ç»é€€å‡ºäº†
 		for (logsrc_map_t::const_iterator it = m_logsrc_map.begin(); it != m_logsrc_map.end(); ++it)
 		{
 			logsrc* ls = it->second;
@@ -652,7 +652,7 @@ public:
 		UINT64 id = 0;
 		li->log_index = id;
 
-		/** ÈÕÖ¾ĞĞ¸ñÊ½:
+		/** æ—¥å¿—è¡Œæ ¼å¼:
 		yyyy-mm-dd HH:MM:SS.ms c [pname:pid@hex:tid@hex] {tags} content...
 		*/
 
@@ -672,7 +672,7 @@ public:
 			bool is_title_line = false;
 			do 
 			{
-				if (szLine[0] == L' ') break; // ÒÔ¿Õ¸ñ¿ªÍ·µÄÒ»¶¨²»ÊÇ±êÌâĞĞ
+				if (szLine[0] == L' ') break; // ä»¥ç©ºæ ¼å¼€å¤´çš„ä¸€å®šä¸æ˜¯æ ‡é¢˜è¡Œ
 
 				int millisec;
 				unsigned int c;
@@ -684,7 +684,7 @@ public:
 					ptbuf, _countof(ptbuf), 
 					tags, _countof(tags)) != 10)
 				{
-					// ½âÎöÈÕÆÚ´íÎó,·Ç±êÌâĞĞ
+					// è§£ææ—¥æœŸé”™è¯¯,éæ ‡é¢˜è¡Œ
 					break;
 				}
 				tt.tm_year -= 1900;
@@ -693,11 +693,11 @@ public:
 				if (!te) break;
 				LPCWSTR content_start = te + 2;
 
-				// ÊÇ±êÌâĞĞÁË
+				// æ˜¯æ ‡é¢˜è¡Œäº†
 				li->log_index = ++id;
 				is_title_line = true;
 				last_prefix_len = static_cast<size_t>(content_start - szLine);
-				if (id > 1) // Êä³öÉÏÒ»ÌõÈÕÖ¾
+				if (id > 1) // è¾“å‡ºä¸Šä¸€æ¡æ—¥å¿—
 				{
 					m_listener->on_new_log(li);
 					li = new logitem();

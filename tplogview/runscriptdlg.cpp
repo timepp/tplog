@@ -57,9 +57,9 @@ LRESULT CRunScriptDlg::OnInitDialog(HWND /*hwndFocus*/, LPARAM /*lp*/)
 //	GetDlgItem(IDC_EDIT_SCRIPT).SetFont(m_editFont);
 	CHARFORMAT cf = {};
 	cf.cbSize = sizeof(cf);
-	cf.dwMask = CFM_FACE|CFM_SIZE;
+	cf.dwMask = CFM_FACE;
 	wcsncpy_s(cf.szFaceName, L"Consolas", _TRUNCATE);
-	cf.yHeight = 300;
+	//cf.yHeight = 300;
 	m_edit.SetDefaultCharFormat(cf);
 	CenterWindow(GetParent());
 
@@ -88,7 +88,8 @@ LRESULT CRunScriptDlg::OnCancel(WORD , WORD , HWND , BOOL& )
 LRESULT CRunScriptDlg::OnSaveScript(WORD , WORD , HWND , BOOL& )
 {
 	std::wstring& path = CConfig::Instance()->GetConfig().ui.savedpath.script;
-	CSaveFileDialog dlg(path.c_str(), L"js", L"script.js", IDS(IDS_SCRIPT_FILE) + L"(*.js)\0*.js\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
+	CStringW filter = IDS(IDS_SCRIPT_FILE) + L"(*.js)\0*.js\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0";
+	CSaveFileDialog dlg(path.c_str(), L"js", L"script.js", filter);
 	if (dlg.DoModal() == IDOK)
 	{
 		CStringW content;
@@ -102,7 +103,8 @@ LRESULT CRunScriptDlg::OnSaveScript(WORD , WORD , HWND , BOOL& )
 LRESULT CRunScriptDlg::OnLoadScript(WORD , WORD , HWND , BOOL& )
 {
 	std::wstring& path = CConfig::Instance()->GetConfig().ui.savedpath.script;
-	COpenFileDialog dlg(path.c_str(), IDS(IDS_SCRIPT_FILE) + L"(*.js)\0*.js\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
+	CStringW filter = IDS(IDS_SCRIPT_FILE) + L"(*.js)\0*.js\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0";
+	COpenFileDialog dlg(path.c_str(), filter);
 	if (dlg.DoModal() == IDOK)
 	{
 		CStringW content = helper::GetTextFileContent(dlg.m_szFileName);

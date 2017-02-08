@@ -287,16 +287,16 @@ namespace tplog
 		}                                                                     \
 	} while (0)
 
-/// 失败时打印日志（DEBUG下弹ASSERT窗口），程序流程继续执行
+/// 澶辫触鏃舵墦鍗版棩蹇楋紙DEBUG涓嬪脊ASSERT绐楀彛锛夛紝绋嬪簭娴佺▼缁х画鎵ц
 #define IGNORE_FAIL 
 
-/// 失败时打印日志（DEBUG下弹ASSERT窗口），函数返回
+/// 澶辫触鏃舵墦鍗版棩蹇楋紙DEBUG涓嬪脊ASSERT绐楀彛锛夛紝鍑芥暟杩斿洖
 #define RETURN_ON_FAIL return
 
-/// 失败时打印日志（DEBUG下弹ASSERT窗口），函数返回
+/// 澶辫触鏃舵墦鍗版棩蹇楋紙DEBUG涓嬪脊ASSERT绐楀彛锛夛紝鍑芥暟杩斿洖
 #define RETURN_VAL_ON_FAIL(val) return val;
 
-/// 失败时打印日志（DEBUG下弹ASSERT窗口），函数返回，把出错的HRESULT值传递给上层调用
+/// 澶辫触鏃舵墦鍗版棩蹇楋紙DEBUG涓嬪脊ASSERT绐楀彛锛夛紝鍑芥暟杩斿洖锛屾妸鍑洪敊鐨凥RESULT鍊间紶閫掔粰涓婂眰璋冪敤
 #define RETURN_HR_ON_FAIL return tpa_hr_;
 
 

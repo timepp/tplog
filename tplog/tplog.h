@@ -74,22 +74,22 @@ struct ILogOutputDevice
 	/** open log device
 	 * 
 	 *  @param config configuration in string
-	 *                ÅäÖÃĞÅÏ¢°üº¬¿Õ¸ñ·Ö¿ªµÄ¶à¸öÅäÖÃÏî£¬ÅäÖÃÏî¸ñÊ½ÊÇ KEY:VAL
-	 *                KEY=enable¼°KEY=filterµÄÅäÖÃÏîÓÉÈÕÖ¾ÏµÍ³½âÎö£¬ÆäËüÅäÖÃÏîÓÉ¾ßÌåµÄÈÕÖ¾Êä³öÉè±¸¶¨ÒåºÍ½âÊÍ
+	 *                é…ç½®ä¿¡æ¯åŒ…å«ç©ºæ ¼åˆ†å¼€çš„å¤šä¸ªé…ç½®é¡¹ï¼Œé…ç½®é¡¹æ ¼å¼æ˜¯ KEY:VAL
+	 *                KEY=enableåŠKEY=filterçš„é…ç½®é¡¹ç”±æ—¥å¿—ç³»ç»Ÿè§£æï¼Œå…¶å®ƒé…ç½®é¡¹ç”±å…·ä½“çš„æ—¥å¿—è¾“å‡ºè®¾å¤‡å®šä¹‰å’Œè§£é‡Š
 	 */
 	virtual HRESULT Open(ILogOption* opt) = 0;
 
-	/// ¹Ø±ÕÈÕÖ¾Éè±¸
+	/// å…³é—­æ—¥å¿—è®¾å¤‡
 	virtual HRESULT Close() = 0;
 
-	/// Ğ´ÈëÈÕÖ¾
+	/// å†™å…¥æ—¥å¿—
 	virtual HRESULT Write(const LogItem* item) = 0;
 
-	/// Ë¢ĞÂ»º´æ
+	/// åˆ·æ–°ç¼“å­˜
 	virtual HRESULT Flush() = 0;
 
-	/** ÏìÓ¦ÅäÖÃ±ä»¯
-	 *  ÓĞĞ©Çé¿öÏÂ£¬±ÈÈçÓÃ»§ÊÖ¶¯ĞŞ¸ÄÁËÈÕÖ¾ÅäÖÃÎÄ¼ş£¬Ê¹ÓÃÕâ¸öº¯ÊıÈÃÅäÖÃ¶¯Ì¬ÉúĞ§
+	/** å“åº”é…ç½®å˜åŒ–
+	 *  æœ‰äº›æƒ…å†µä¸‹ï¼Œæ¯”å¦‚ç”¨æˆ·æ‰‹åŠ¨ä¿®æ”¹äº†æ—¥å¿—é…ç½®æ–‡ä»¶ï¼Œä½¿ç”¨è¿™ä¸ªå‡½æ•°è®©é…ç½®åŠ¨æ€ç”Ÿæ•ˆ
 	 */
 	virtual HRESULT OnConfigChange(ILogOption* opt) = 0;
 
@@ -112,46 +112,46 @@ enum LogOutputDeviceType
 
 struct ILogController
 {
-	/** ³õÊ¼»¯ÈÕÖ¾¹ÜÀíÆ÷
+	/** åˆå§‹åŒ–æ—¥å¿—ç®¡ç†å™¨
 	 *  
-	 *  @param configname [opt] logcontroller»áÔÚHKCU\configpathÏÂ²éÕÒÅäÖÃĞÅÏ¢
-	 *         configname²»ÄÜ³¬¹ı32¸ö×Ö·û
-	 *         confignameÎªNULL±íÊ¾ÈÕÖ¾¹ÜÀíÆ÷²»»á´Ó×¢²á±í¶ÁÈ¡configĞÅÏ¢
+	 *  @param configname [opt] logcontrollerä¼šåœ¨HKCU\configpathä¸‹æŸ¥æ‰¾é…ç½®ä¿¡æ¯
+	 *         confignameä¸èƒ½è¶…è¿‡32ä¸ªå­—ç¬¦
+	 *         confignameä¸ºNULLè¡¨ç¤ºæ—¥å¿—ç®¡ç†å™¨ä¸ä¼šä»æ³¨å†Œè¡¨è¯»å–configä¿¡æ¯
 	 */
 	virtual HRESULT Init(const wchar_t* configpath) = 0;
 	virtual HRESULT UnInit() = 0;
 
-	/** Êä³öÈÕÖ¾
-	 *  ÈÕÖ¾¹ÜÀíÆ÷»á±éÀúÄ¿Ç°ÆôÓÃµÄÈÕÖ¾Éè±¸£¬¶ÔÂú×ã¹ıÂËÌõ¼şµÄÈÕÖ¾Éè±¸ÒÀ´Îµ÷ÓÃWrite·½·¨
-	 *  ÈÕÖ¾ID¡¢Ê±¼ä¡¢Ïß³ÌºÅµÈĞÅÏ¢ÓÉÈÕÖ¾¹ÜÀíÆ÷×Ô¶¯Éú³É
+	/** è¾“å‡ºæ—¥å¿—
+	 *  æ—¥å¿—ç®¡ç†å™¨ä¼šéå†ç›®å‰å¯ç”¨çš„æ—¥å¿—è®¾å¤‡ï¼Œå¯¹æ»¡è¶³è¿‡æ»¤æ¡ä»¶çš„æ—¥å¿—è®¾å¤‡ä¾æ¬¡è°ƒç”¨Writeæ–¹æ³•
+	 *  æ—¥å¿—IDã€æ—¶é—´ã€çº¿ç¨‹å·ç­‰ä¿¡æ¯ç”±æ—¥å¿—ç®¡ç†å™¨è‡ªåŠ¨ç”Ÿæˆ
 	 */
 	virtual BOOL NeedLog(LogLevel level, const wchar_t* tag) = 0;
 	virtual HRESULT Log(LogLevel level, const wchar_t* tag, const wchar_t* content) = 0;
 
-	/** ÈÕÖ¾Êä³öÉè±¸¹ÜÀí
+	/** æ—¥å¿—è¾“å‡ºè®¾å¤‡ç®¡ç†
 	 *
-	 *  @param name ÈÕÖ¾Éè±¸Ãû×Ö£¬ÒÔºóÎ¨Ò»±êÊ¶Õâ¸öÉè±¸¡£ÒªÇó³¤¶ÈĞ¡ÓÚ32¸ö×Ö·û
-	 *  @param type ÈÕÖ¾Éè±¸µÄÀàĞÍ
-	 *  @param config ÈÕÖ¾Éè±¸µÄÅäÖÃ´®
-	 *  @note Í¬Ò»ÖÖÀàĞÍµÄÈÕÖ¾Éè±¸¿ÉÒÔÓĞ²»Í¬Ãû×ÖµÄ¶à¸öÊµÀı
+	 *  @param name æ—¥å¿—è®¾å¤‡åå­—ï¼Œä»¥åå”¯ä¸€æ ‡è¯†è¿™ä¸ªè®¾å¤‡ã€‚è¦æ±‚é•¿åº¦å°äº32ä¸ªå­—ç¬¦
+	 *  @param type æ—¥å¿—è®¾å¤‡çš„ç±»å‹
+	 *  @param config æ—¥å¿—è®¾å¤‡çš„é…ç½®ä¸²
+	 *  @note åŒä¸€ç§ç±»å‹çš„æ—¥å¿—è®¾å¤‡å¯ä»¥æœ‰ä¸åŒåå­—çš„å¤šä¸ªå®ä¾‹
 	 */
 	virtual HRESULT AddOutputDevice(const wchar_t* name, LogOutputDeviceType type, const wchar_t* config) = 0;
 	virtual HRESULT AddCustomOutputDevice(const wchar_t* name, ILogOutputDevice* device, const wchar_t* config) = 0;
 	virtual HRESULT RemoveOutputDevice(const wchar_t* name) = 0;
 	virtual HRESULT ChangeOutputDeviceConfig(const wchar_t* name, const wchar_t* config) = 0;
 
-	/// ¸Ä±äÈÕÖ¾Éî¶È 
+	/// æ”¹å˜æ—¥å¿—æ·±åº¦ 
 	virtual HRESULT IncreaseCallDepth() = 0;
 	virtual HRESULT DecreaseCallDepth() = 0;
 
-	/** ¼àÊÓÈÕÖ¾ÅäÖÃ 
+	/** ç›‘è§†æ—¥å¿—é…ç½® 
 	 *
-	 *  ÈÕÖ¾¹ÜÀíÆ÷»áÆô¶¯Ò»¸öĞÂµÄÏß³Ì£¬¼àÊÓ×¢²á±íÏîµÄ¸Ä¶¯
+	 *  æ—¥å¿—ç®¡ç†å™¨ä¼šå¯åŠ¨ä¸€ä¸ªæ–°çš„çº¿ç¨‹ï¼Œç›‘è§†æ³¨å†Œè¡¨é¡¹çš„æ”¹åŠ¨
 	 */
 	virtual HRESULT MonitorConfigChange() = 0;
 };
 
-// ÈÕÖ¾Êä³ö½Ó¿Ú
+// æ—¥å¿—è¾“å‡ºæ¥å£
 TPLOGAPI ILogController* GetLogController();
 
 #ifdef TPLOG_USE_AS_DLL_DYNAMIC_LOAD
@@ -212,7 +212,7 @@ TPLOGAPI inline ILogController* GetLogController()
 }
 #endif
 
-// ÈÕÖ¾±êÇ©
+// æ—¥å¿—æ ‡ç­¾
 struct LogTag
 {
 	explicit LogTag(const wchar_t* t): tag(t) {}
@@ -267,8 +267,8 @@ inline void Log(LogLevel level, LogTag tag, __in_z __format_string const wchar_t
 }
 #else
 #ifdef STATIC_CODE_ANALYSIS
-// VS2005²»Ö§³Ö_Printf_format_string_,²»ÄÜÓÃCodeAnalysis¼ì²â³öprintfÑùÊ½¸ñÊ½´®µÄ´íÎó(Èç²ÎÊı¸öÊıºÍÀàĞÍ²»Æ¥ÅäµÈ),
-// ËùÒÔÔÚ¾²Ì¬´úÂë¼ì²éµÄÊ±ºòÊ¹ÓÃºêµÄĞÎÊ½½èÖúwprintfÈÃCodeAnalysis¼ì²â´íÎó
+// VS2005ä¸æ”¯æŒ_Printf_format_string_,ä¸èƒ½ç”¨CodeAnalysisæ£€æµ‹å‡ºprintfæ ·å¼æ ¼å¼ä¸²çš„é”™è¯¯(å¦‚å‚æ•°ä¸ªæ•°å’Œç±»å‹ä¸åŒ¹é…ç­‰),
+// æ‰€ä»¥åœ¨é™æ€ä»£ç æ£€æŸ¥çš„æ—¶å€™ä½¿ç”¨å®çš„å½¢å¼å€ŸåŠ©wprintfè®©CodeAnalysisæ£€æµ‹é”™è¯¯
 inline void LogF(LogLevel level, LogTag tag, __in_z const wchar_t* fmt, ...)
 {
 	TPLOG_ARGV(level, tag, fmt);

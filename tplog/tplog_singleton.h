@@ -16,7 +16,7 @@ namespace
 	{
 		#pragma warning(push)
 		#pragma warning(disable: 4640)
-//		static CLogController s_controller;  // 请确保在所有新线程启动之前调用GetLogController
+//		static CLogController s_controller;  // 璇风‘淇濆湪鎵�鏈夋柊绾跨▼鍚姩涔嬪墠璋冪敤GetLogController
 		#pragma warning(pop)
 
 		//return &s_controller;

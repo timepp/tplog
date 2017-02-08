@@ -93,10 +93,10 @@ private:
 		if (pipe == INVALID_HANDLE_VALUE)
 		{
 			DWORD dwErr = GetLastError();
-			LOG(L"¹ÜµÀ´ò¿ªÊ§°Ü:", ToStr(dwErr, L"%u"));
+			LOG(L"ç®¡é“æ‰“å¼€å¤±è´¥:", ToStr(dwErr, L"%u"));
 		}
 
-		// ·¢ËÍ³õÊ¼Êı¾İ
+		// å‘é€åˆå§‹æ•°æ®
 		binarystream bs;
 		bs.store((UINT32)3);                              // version
 		bs.store((UINT32)4);                              // header content len
