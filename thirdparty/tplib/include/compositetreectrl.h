@@ -59,7 +59,7 @@ namespace tp
     {
     public:
 
-        CCompositeTreeCtrl() : m_clipboard(NULL), m_fc(NULL), m_lb_down(false), m_dragging(false), m_translater(NULL)
+        CCompositeTreeCtrl()
         {
         }
         ~CCompositeTreeCtrl()
@@ -144,17 +144,17 @@ namespace tp
         };
 
         CRootComposite m_root;
-        component* m_clipboard;
-        component_creator* m_fc;
+        component* m_clipboard{};
+        component_creator* m_fc{};
         std::vector<std::wstring> m_cnames;
         CImageList m_dragImgList;
         CImageList m_imgList;
-        LocaleTranslater* m_translater;
+        LocaleTranslater* m_translater{};
         std::wstring m_transbuffer;
 
         // status
-        bool m_lb_down;
-        bool m_dragging;
+        bool m_lb_down{};
+        bool m_dragging{};
         CPoint m_dragpt;
         CTreeItem m_dragging_source;
         CTreeItem m_dragging_target;

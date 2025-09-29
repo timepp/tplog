@@ -149,6 +149,8 @@ struct ILogController
 	 *  日志管理器会启动一个新的线程，监视注册表项的改动
 	 */
 	virtual HRESULT MonitorConfigChange() = 0;
+
+	virtual ~ILogController() {}
 };
 
 // 日志输出接口

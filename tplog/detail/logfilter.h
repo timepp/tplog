@@ -22,8 +22,8 @@ public:
 		return level == m_val;
 	}
 
-	int m_relation;  // == > <
-	int m_val;
+	int m_relation = 0;  // == > <
+	int m_val = 0;
 };
 
 class CTagFilter : public CLogFilter
@@ -64,8 +64,8 @@ public:
 		return true;
 	}
 
-	CLogFilter* m_child1;
-	CLogFilter* m_child2;
+	CLogFilter* m_child1 = nullptr;
+	CLogFilter* m_child2 = nullptr;
 };
 
 class COrFilter : public CLogFilter
@@ -134,12 +134,14 @@ public:
 		}
 
 		// 2. spaces
-		size_t i = 0, j = 0;
-		for (; filterstr[i] == L' ' || filterstr[i] == L'\t'; i++);
-		for (; filterstr[len-1-j] == L' ' || filterstr[len-1-j] == L'\t'; j++);
-		filterstr += i;
-		len -= i + j;
-		if (len == 0) return NULL;
+		{
+			size_t i = 0, j = 0;
+			for (; filterstr[i] == L' ' || filterstr[i] == L'\t'; i++);
+			for (; filterstr[len - 1 - j] == L' ' || filterstr[len - 1 - j] == L'\t'; j++);
+			filterstr += i;
+			len -= i + j;
+			if (len == 0) return NULL;
+		}
 
 		// 3. !(A) or (A)
 		if (filterstr[0] == L'(' && filterstr[len-1] == L')')

@@ -5,7 +5,7 @@
 #include "filedialog.h"
 #include "helper.h"
 
-CFilterEditDlg::CFilterEditDlg(std::wstring& defaultFilterDir)
+CFilterEditDlg::CFilterEditDlg(std::wstring* defaultFilterDir)
 : m_defaultFilterDir(defaultFilterDir)
 {
 	m_defaultPage = 0;
@@ -136,10 +136,10 @@ LRESULT CFilterEditDlg::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
 LRESULT CFilterEditDlg::OnImport(WORD , WORD , HWND , BOOL& )
 {
-	COpenFileDialog dlg(m_defaultFilterDir.c_str(), IDS(IDS_FILTER_CONFIG_FILE) + L"(*.xml)\0*.xml\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
+	COpenFileDialog dlg(m_defaultFilterDir->c_str(), IDS(IDS_FILTER_CONFIG_FILE) + L"(*.xml)\0*.xml\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
-		m_defaultFilterDir = helper::GetDir(dlg.m_szFileName);
+		*m_defaultFilterDir = helper::GetDir(dlg.m_szFileName);
 		filter_creator* fc = filter_creator::instance();
 		filter* f = fc->load(dlg.m_szFileName);
 		for (size_t i = 0; i < m_editors.size(); i++)
@@ -152,10 +152,10 @@ LRESULT CFilterEditDlg::OnImport(WORD , WORD , HWND , BOOL& )
 
 LRESULT CFilterEditDlg::OnExport(WORD , WORD , HWND , BOOL& )
 {
-	CSaveFileDialog dlg(m_defaultFilterDir.c_str(), L"xml", L"filter.xml", IDS(IDS_FILTER_CONFIG_FILE) + L"(*.xml)\0*.xml\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
+	CSaveFileDialog dlg(m_defaultFilterDir->c_str(), L"xml", L"filter.xml", IDS(IDS_FILTER_CONFIG_FILE) + L"(*.xml)\0*.xml\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
-		m_defaultFilterDir = helper::GetDir(dlg.m_szFileName);
+		*m_defaultFilterDir = helper::GetDir(dlg.m_szFileName);
 		filter_creator* fc = filter_creator::instance();
 		filter* f = GetActiveEditor()->GetFilter();
 		fc->save(f, dlg.m_szFileName);

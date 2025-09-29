@@ -146,16 +146,16 @@ void CMainFrame::CreateList()
 	{
 		UINT strid;
 		int width;
-	}columnInfo[] =
+	} columnInfo[] =
 	{
-		IDS_NULL, 20,
-		IDS_SEQ, 60,
-		IDS_TIME, 120,
-		IDS_INTERVAL_US, 100,
-		IDS_LEVEL, 80,
-		IDS_PROCESS, 150,
-		IDS_THREAD, 60,
-		IDS_LOG_CONTENT, 600,
+		{IDS_NULL, 20},
+		{IDS_SEQ, 60},
+		{IDS_TIME, 120},
+		{IDS_INTERVAL_US, 100},
+		{IDS_LEVEL, 80},
+		{IDS_PROCESS, 150},
+		{IDS_THREAD, 60},
+		{IDS_LOG_CONTENT, 600},
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
 	{

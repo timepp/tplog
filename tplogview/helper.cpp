@@ -685,7 +685,7 @@ bool helper::FileExists(LPCWSTR path)
 	return _waccess_s(path, 0) == 0;
 }
 
-static CStringW GetSpecialDir(int csidl, LPCWSTR subdir)
+CStringW helper::GetSpecialDir(int csidl, LPCWSTR subdir)
 {
 	CStringW strPath;
 

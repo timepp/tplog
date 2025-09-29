@@ -8,9 +8,10 @@
 /// No warning aera. Use it to dismiss the 3rd party warnings.
 #define TP_NO_WARNING_AREA_BEGIN()                    \
 	__pragma(warning(push, 1))                        \
-	__pragma(warning(disable: 4505 4548 4819 4917 4555 4350))        \
-	__pragma(warning(disable: 6202 6328 6334 6385 6386 6387 6255 6031 6011 6400 6246 6401 6323 6211 6282)) \
-	__pragma(warning(disable: 6054 6001 28183))
+	__pragma(warning(disable: 4505 4548 4819 4838 4917 4555 4350 5045 5246))        \
+	__pragma(warning(disable: 6202 6269 6328 6334 6385 6386 6387 6255 6031 6011 6400 6246 6401 6323 6211 6282 6011)) \
+	__pragma(warning(disable: 6054 6001 28183)) \
+    __pragma(warning(disable: 26110 26495))
 
 #define TP_NO_WARNING_AREA_END()                      \
 	__pragma(warning(pop))
@@ -36,14 +37,17 @@
 #define TP_WARNING_WORKAROUND__BOOST_1_34_REGEX __pragma(warning(pop)) __pragma(warning(pop))
 
 /// Enable warnings that are disabled by default and disable warnings we don't care about
+/// FIXME: 4464, we need to change folder structure so that we don't include "../xxx"
 #define TP_TUNE_WARNINGS \
+__pragma(warning(disable: 4464 5045)) \
 __pragma(warning(default: 4061 4062 4191 4242 4254 4263 4264 4265 4266 4287 4296)) \
 __pragma(warning(default: 4302 4365 4514 4545 4546 4547 4548 4549 4555 4571)) \
 __pragma(warning(default: 4623 4625 4626 4640 4668 4682 4710 4711 4820 4826)) \
 __pragma(warning(default: 4905 4906 4917 4928 4946)) \
 \
 __pragma(warning(disable: 4061 4127 4503 4514 4571 4623 4625 4626 4710 4820)) \
-__pragma(warning(disable: 4505 4512 4711))
+__pragma(warning(disable: 4505 4512 4711)) \
+__pragma(warning(disable: 28251))
 
 #define TP_CONFIGURE_WARNINGS \
 	TP_CLEAR_WARNING_STACK \

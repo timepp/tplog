@@ -170,7 +170,7 @@ void TEST_DeadLoop()
 	ILogController* ctrl = GetLogController();
 	ctrl->AddOutputDevice(L"pipe2", LODT_PIPE, L"enable:true");
 
-	const wchar_t * longstr = L"aaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssssaaaaassssssssssssssssssssssssssaaaaaaaaaaasssssssssssssssssssssssss";
+	const wchar_t * longstr = L"aaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaaassssssssssssssssssssssssssaaaaaaaaaa";
 
 	for (;;)
 	{
@@ -363,10 +363,10 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:", 0, L"", TRUE,
-			L"filter:", 0, L"tag", TRUE,
-			L"filter:", 1, L"", TRUE,
-			L"filter:", LL_EVENT, L"tag", TRUE
+			{ L"filter:", 0, L"", TRUE },
+			{ L"filter:", 0, L"tag", TRUE },
+			{ L"filter:", 1, L"", TRUE },
+			{ L"filter:", LL_EVENT, L"tag", TRUE }
 		};
 		inner::RunTest(cases, _countof(cases), L"empty filter rule(match all)");
 	}
@@ -374,18 +374,18 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:level=25", 0,  L"", FALSE,
-			L"filter:level=25", 25, L"", TRUE,
-			L"filter:level=25", 10, L"", FALSE,
-			L"filter:level=0",  25, L"", FALSE,
-			L"filter:level>25", 0,  L"", FALSE,
-			L"filter:level>25", 25, L"", FALSE,
-			L"filter:level>25", 48, L"", TRUE,
-			L"filter:level>0",  25, L"", TRUE,
-			L"filter:level<25", 0,  L"", TRUE,
-			L"filter:level<25", 25, L"", FALSE,
-			L"filter:level<25", 10, L"", TRUE,
-			L"filter:level<0",  0, L"", FALSE,
+			{ L"filter:level=25", 0,  L"", FALSE },
+			{ L"filter:level=25", 25, L"", TRUE },
+			{ L"filter:level=25", 10, L"", FALSE },
+			{ L"filter:level=0",  25, L"", FALSE },
+			{ L"filter:level>25", 0,  L"", FALSE },
+			{ L"filter:level>25", 25, L"", FALSE },
+			{ L"filter:level>25", 48, L"", TRUE },
+			{ L"filter:level>0",  25, L"", TRUE },
+			{ L"filter:level<25", 0,  L"", TRUE },
+			{ L"filter:level<25", 25, L"", FALSE },
+			{ L"filter:level<25", 10, L"", TRUE },
+			{ L"filter:level<0",  0, L"", FALSE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Log level filter rule");
 	}
@@ -393,13 +393,13 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:tag=perf", 16,  L"perf", TRUE,
-			L"filter:tag=perf", 16,  L"peef", FALSE,
-			L"filter:tag=perf", 16,  L"perf;xyz", TRUE,
-			L"filter:tag=perf", 16,  L"xyz;perf", TRUE,
-			L"filter:tag=perf", 16,  L"abc;perf;xyz", TRUE,
-			L"filter:tag=perf", 16,  L"abc;prf;xyz", FALSE,
-			L"filter:tag=perf", 16,  L"perfa", FALSE,
+			{ L"filter:tag=perf", 16,  L"perf", TRUE },
+			{ L"filter:tag=perf", 16,  L"peef", FALSE },
+			{ L"filter:tag=perf", 16,  L"perf;xyz", TRUE },
+			{ L"filter:tag=perf", 16,  L"xyz;perf", TRUE },
+			{ L"filter:tag=perf", 16,  L"abc;perf;xyz", TRUE },
+			{ L"filter:tag=perf", 16,  L"abc;prf;xyz", FALSE },
+			{ L"filter:tag=perf", 16,  L"perfa", FALSE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Log tag filter rule");
 	}
@@ -407,9 +407,9 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:'tag=perf && level>16'", 17,  L"perf", TRUE,
-			L"filter:'tag=perf && level>16'", 17,  L"peef", FALSE,
-			L"filter:'tag=perf && level>16'", 15,  L"perf", FALSE,
+			{ L"filter:'tag=perf && level>16'", 17,  L"perf", TRUE },
+			{ L"filter:'tag=perf && level>16'", 17,  L"peef", FALSE },
+			{ L"filter:'tag=perf && level>16'", 15,  L"perf", FALSE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Composite filter rule£ºand");
 	}
@@ -417,9 +417,9 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:tag=perf||level>16", 16,  L"perf", TRUE,
-			L"filter:tag=perf||level>16", 17,  L"peef", TRUE,
-			L"filter:tag=perf||level>16", 15,  L"peef", FALSE,
+			{ L"filter:tag=perf||level>16", 16,  L"perf", TRUE },
+			{ L"filter:tag=perf||level>16", 17,  L"peef", TRUE },
+			{ L"filter:tag=perf||level>16", 15,  L"peef", FALSE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Composite filter rule£ºor");
 	}
@@ -427,10 +427,10 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:!(tag=perf)", 16,  L"peef", TRUE,
-			L"filter:!(tag=perf)", 16,  L"perf", FALSE,
-			L"filter:!(!(tag=perf))", 16,  L"peef", FALSE,
-			L"filter:!(!(tag=perf))", 16,  L"perf", TRUE,
+			{ L"filter:!(tag=perf)", 16,  L"peef", TRUE },
+			{ L"filter:!(tag=perf)", 16,  L"perf", FALSE },
+			{ L"filter:!(!(tag=perf))", 16,  L"peef", FALSE },
+			{ L"filter:!(!(tag=perf))", 16,  L"perf", TRUE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Composite filter rule£ºnot");
 	}
@@ -438,9 +438,9 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:'level>16 && level<32 || tag=perf'", 16,  L"perf", TRUE,
-			L"filter:'tag=perf || level<32 && level>16'", 16,  L"perf", FALSE,
-			L"filter:'tag=perf || level<32 && !(level>16)'", 16,  L"perf", TRUE,
+			{ L"filter:'level>16 && level<32 || tag=perf'", 16,  L"perf", TRUE },
+			{ L"filter:'tag=perf || level<32 && level>16'", 16,  L"perf", FALSE },
+			{ L"filter:'tag=perf || level<32 && !(level>16)'", 16,  L"perf", TRUE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Complicate filter rules combination");
 	}
@@ -448,14 +448,14 @@ TPUT_DEFINE_BLOCK(L"LogOption.Filter", L"")
 	{
 		testcase cases[] = 
 		{
-			L"filter:tag", 16,  L"perf", TRUE,
-			L"filter:=", 16,  L"pef", TRUE,
-			L"filter:&&&&&&&&&&&&&&&&&&&&&&", 16,  L"perf;xyz", TRUE,
-			L"filter:||||||||||||||||||||||", 16,  L"xyz;perf", TRUE,
-			L"filter:!!!!!!!!!!!!!!!!!!!!!!", 16,  L"abc;perf;xyz", TRUE,
-			L"filter:&}}&&}*&||&&||&&!&&|||", 16,  L"abc;prf;xyz", TRUE,
-			L"filter:======================", 16,  L"perfa", TRUE,
-			L"filter:()(((())))))))()())(()", 16,  L"perfa", TRUE,
+			{ L"filter:tag", 16,  L"perf", TRUE },
+			{ L"filter:=", 16,  L"pef", TRUE },
+			{ L"filter:&&&&&&&&&&&&&&&&&&&&&&", 16,  L"perf;xyz", TRUE },
+			{ L"filter:||||||||||||||||||||||", 16,  L"xyz;perf", TRUE },
+			{ L"filter:!!!!!!!!!!!!!!!!!!!!!!", 16,  L"abc;perf;xyz", TRUE },
+			{ L"filter:&}}&&}*&||&&||&&!&&|||", 16,  L"abc;prf;xyz", TRUE },
+			{ L"filter:======================", 16,  L"perfa", TRUE },
+			{ L"filter:()(((())))))))()())(()", 16,  L"perfa", TRUE },
 		};
 		inner::RunTest(cases, _countof(cases), L"Wrong filter string");
 	}
@@ -506,7 +506,6 @@ TPUT_DEFINE_BLOCK(L"LogOption.Enable", L"")
 TPUT_DEFINE_BLOCK(L"#a3", L"")
 {
 	ILogController* ctrl = GetLogController();
-	HRESULT hr;
 	ctrl->Init(L".");
 	TPUT_EXPECT(ctrl->RemoveOutputDevice(L"aaa") == TPLOG_E_NOT_INITED, 0);
 }
@@ -604,7 +603,7 @@ void write_logs(int max_count)
     }
 }
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPWSTR lpstrCmdLine, int nCmdShow)
+int WINAPI wWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpstrCmdLine*/, int /*nCmdShow*/)
 {
     bool as_server = false;
     int max_count = 10;

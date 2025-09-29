@@ -22,13 +22,13 @@ typedef unsigned __int64 uint64_t;
 
 struct logitem
 {
-	uint64_t     log_index;
-	int64_t      log_time_sec;
-	int32_t      log_time_msec;
-	uint32_t     log_pid;
-	uint32_t     log_tid;
-	uint32_t     log_class;
-	uint32_t     log_depth;
+	uint64_t     log_index{};
+	int64_t      log_time_sec{};
+	int32_t      log_time_msec{};
+	uint32_t     log_pid{};
+	uint32_t     log_tid{};
+	uint32_t     log_class{};
+	uint32_t     log_depth{};
 	std::wstring log_process_name;
 	std::wstring log_tags;
 	std::wstring log_content;
@@ -403,7 +403,7 @@ private:
 		}
 	}
 
-	static unsigned int __stdcall work_thread(void* param)
+	static unsigned int __stdcall work_thread(void* param) noexcept
 	{
 		pipe_reader* reader = reinterpret_cast<pipe_reader*>(param);
 		try
@@ -413,6 +413,10 @@ private:
 		catch(win32_exception& e)
 		{
 			reader->m_listener->on_notify(Error_Startup, e.hr);
+		}
+		catch (...)
+		{
+			return -1;
 		}
 		
 		return 0;
@@ -455,7 +459,7 @@ private:
 		}
 	}
 
-	static void WINAPI complete_read_routine(DWORD dwErr, DWORD cbBytesRead, LPOVERLAPPED overlap)
+	static void WINAPI complete_read_routine(DWORD dwErr, DWORD cbBytesRead, LPOVERLAPPED overlap) noexcept
 	{
 		logsrc* src = (logsrc*)overlap;
 		if (src->thisptr->m_stop_flag)

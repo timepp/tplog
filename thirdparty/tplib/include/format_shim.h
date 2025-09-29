@@ -38,10 +38,10 @@ namespace tp
         }
 
         T * m_buf;
-        size_t m_buf_size;
+        size_t m_buf_size{};
 
     private:
-        T m_buf_content[size];
+        T m_buf_content[size]{};
 
         void init()
         {

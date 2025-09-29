@@ -63,7 +63,7 @@ LRESULT CLogSourceInfoDlg::OnInitDialog(HWND , LPARAM)
 		wcsftime(timebuf, _countof(timebuf), L"%Y-%m-%d %H:%M:%S", &tt);
 
 		wchar_t pidbuf[1024];
-		swprintf_s(pidbuf, L"%s(%u)", (LPCWSTR)it->pname, it->pid);
+		swprintf_s(pidbuf, L"%s(%lu)", (LPCWSTR)it->pname, it->pid);
 
 		m_list.SetItemText(0, 0, pidbuf);
 		m_list.SetItemText(0, 1, timebuf);

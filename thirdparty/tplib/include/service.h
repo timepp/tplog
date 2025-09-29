@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <list>
+#include <stdexcept>
 #include "lock.h"
 #include "defs.h"
 
@@ -386,8 +387,8 @@ namespace tp
         {
             for (sidlist_t::const_iterator it = si.creating_requirements->begin(); it != si.creating_requirements->end(); ++it)
             {
-                service_info& si = get_service_info(*it);
-                create_service(si);
+                service_info& si2 = get_service_info(*it);
+                create_service(si2);
             }
         }
     }

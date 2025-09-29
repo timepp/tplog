@@ -14,11 +14,11 @@ namespace tp
         {
             std::wstring abs_path;
             std::wstring rela_path;
-            FILETIME create_time;
-            FILETIME modify_time;
-            FILETIME access_time;
-            UINT64 length;
-            DWORD attribute;
+            FILETIME create_time{};
+            FILETIME modify_time{};
+            FILETIME access_time{};
+            UINT64 length{};
+            DWORD attribute{};
         };
         class iniconf
         {
@@ -53,7 +53,8 @@ namespace tp
             }
             int loadint(const std::wstring& key, int defval)
             {
-                return ::GetPrivateProfileIntW(m_defsec.c_str(), key.c_str(), defval, m_path.c_str());
+                auto str = loadstr(key, std::to_wstring(defval));
+                return _wtoi(str.c_str());
             }
             bool loadbool(const std::wstring& key, bool defval)
             {
@@ -144,7 +145,11 @@ namespace tp
                 WCHAR buffer[1024] = {};
                 DWORD buffer_len = sizeof(buffer);
                 DWORD type = 0;
-                reg_read_value(root, path, name, type, (LPBYTE) buffer, &buffer_len);
+                try {
+                    reg_read_value(root, path, name, type, (LPBYTE)buffer, &buffer_len);
+                } catch (...) {
+                    return defval;
+				}
 
                 return buffer;
             }
@@ -154,7 +159,11 @@ namespace tp
                 DWORD buffer = 0;
                 DWORD buffer_len = sizeof(buffer);
                 DWORD type = 0;
-                reg_read_value(root, path, name, type, (LPBYTE) buffer, &buffer_len);
+                try {
+                    reg_read_value(root, path, name, type, (LPBYTE) &buffer, &buffer_len);
+                } catch (...) {
+					return defval;
+				}
 
                 return buffer;
             }
@@ -215,7 +224,7 @@ namespace tp
                 ON_LEAVE_1(RegCloseKey(hkey), HKEY, hkey);
 
                 WCHAR subKey[1024];
-                for (int i = 0;; i++)
+                for (DWORD i = 0;; i++)
                 {
                     ret = RegEnumKeyW(hkey, i, subKey, _countof(subKey));
                     if (ret != ERROR_SUCCESS) break;
@@ -292,7 +301,7 @@ namespace tp
                 {
                     f.rela_path = root + L"\\" + wfd.cFileName;
                     f.attribute = wfd.dwFileAttributes;
-                    f.length = (UINT64)wfd.nFileSizeHigh << 32 + wfd.nFileSizeLow;
+                    f.length = ((UINT64)wfd.nFileSizeHigh << 32) + wfd.nFileSizeLow;
                     f.access_time = wfd.ftLastAccessTime;
                     f.modify_time = wfd.ftLastWriteTime;
                     f.create_time = wfd.ftCreationTime;

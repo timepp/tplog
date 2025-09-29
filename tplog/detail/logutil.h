@@ -46,7 +46,7 @@ struct helper
 
 	static BOOL MakeRequiredDirectory(const wchar_t* path);
 
-	static HRESULT helper::GetLastErrorAsHRESULT()
+	static HRESULT GetLastErrorAsHRESULT()
 	{
 		DWORD dwErr = ::GetLastError();
 		return HRESULT_FROM_WIN32(dwErr);

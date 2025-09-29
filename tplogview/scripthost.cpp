@@ -4,7 +4,7 @@
 
 #include "tplogview_h.h"
 
-const GUID CLSID_VBScript = {0xb54f3741, 0x5b07, 0x11cf, {0xa4, 0xb0, 0x00, 0xaa, 0x00, 0x4a, 0x55, 0xe8}};
+//const GUID CLSID_VBScript = {0xb54f3741, 0x5b07, 0x11cf, {0xa4, 0xb0, 0x00, 0xaa, 0x00, 0x4a, 0x55, 0xe8}};
 const GUID CLSID_JScript  = {0xf414c260, 0x6ac0, 0x11cf, {0xb6, 0xd1, 0x00, 0xaa, 0x00, 0xbb, 0xbb, 0x58}};
 
 DECLARE_LIBID(LIBID_TpLogviewLib);
@@ -242,11 +242,8 @@ public:
 		pscripterror->GetSourcePosition(&dwSrcContext, &ulLine, &ichError);
 		pscripterror->GetSourceLineText(&bstrLine);
 
-		CString desc;
-		CString src;
-
-		desc = (LPCWSTR)ei.bstrDescription;
-		src = (LPCWSTR)ei.bstrSource;
+		LPCWSTR desc = (LPCWSTR)ei.bstrDescription;
+		LPCWSTR src = (LPCWSTR)ei.bstrSource;
 
 		strError.Format(L"%s\nSrc: %s\nLine:%d Error:%d Scode:%x", desc, src, ulLine, (int)ei.wCode, ei.scode);
 		MessageBoxW(NULL, strError, L"error", MB_OK);

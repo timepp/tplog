@@ -81,7 +81,7 @@ private:
 	BOOL CanMonitorConfig();
 
 	// 监视线程
-	static DWORD WINAPI MonitorThread(void* pParam);
+	static DWORD WINAPI MonitorThread(void* pParam) noexcept;
 };
 
 
@@ -393,7 +393,7 @@ inline HRESULT CLogController::GetLogOutputDeviceOverlayConfig(const wchar_t* na
 	return S_OK;
 }
 
-inline DWORD WINAPI CLogController::MonitorThread(void* pParam)
+inline DWORD WINAPI CLogController::MonitorThread(void* pParam) noexcept
 {
 	// 监视目录的辅助类
 	class CEventDirMonitor

@@ -17,6 +17,7 @@ TP_NO_WARNING_AREA_BEGIN()
 TP_NO_WARNING_AREA_END()
 TP_CLEAR_WARNING_STACK()
 
+TP_TUNE_WARNINGS
 
 #pragma warning(disable: 4514) // warning C4514: 'HRESULT_FROM_WIN32' : unreferenced inline function has been removed
 #pragma warning(disable: 4710) // warning C4710: 'void TPLog::Log(const wchar_t *,...)' : function not inlined

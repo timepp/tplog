@@ -22,7 +22,7 @@ static void RunPerformanceTest(const wchar_t* scene, double expect_us)
 	size_t times = 100000;
 	int total_us = 0;
 	total_us += PerformanceTest(times);
-	int total_count = times * 3;
+	auto total_count = times * 3;
 	double avg_us = static_cast<double>(total_us) / total_count;
 	wchar_t desc[1024];
 	_snwprintf_s(desc, _TRUNCATE, L"%s, everage time per log < %.2f us", scene, expect_us);

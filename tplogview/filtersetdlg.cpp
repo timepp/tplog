@@ -6,7 +6,7 @@
 extern HWND g_activeModlessDlg;
 
 CFilterSetDlg::CFilterSetDlg()
-: m_dlg(CConfig::Instance()->GetConfig().ui.savedpath.filter)
+: m_dlg(&CConfig::Instance()->GetConfig().ui.savedpath.filter)
 {
 
 }
