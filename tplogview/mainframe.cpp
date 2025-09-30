@@ -26,12 +26,12 @@
 extern CAppModule _Module;
 extern HANDLE g_pipe;
 
-#define IDT_FILL_TIMER 1001
-#define IDT_UPDATE_TIMER 1003
+//constexpr int IDT_FILL_TIMER = 1001;
+constexpr int IDT_UPDATE_TIMER = 1003;
 
-#define MQCMD_LOADCONFIG 1
-#define MQCMD_LOADLOGHISTORY 2
-#define MQCMD_OPENXLOG 3
+constexpr int MQCMD_LOADCONFIG = 1;
+//constexpr int MQCMD_LOADLOGHISTORY = 2;
+constexpr int MQCMD_OPENXLOG = 3;
 
 
 #undef MULTI_THREAD_GUARD
@@ -44,9 +44,9 @@ extern HANDLE g_pipe;
 CMainFrame::CMainFrame()
 : m_bShowToolbar(true)
 , m_bShowStatusbar(true)
-, m_cfg(CConfig::Instance()->GetConfig())
 , m_functionBegin(-1)
 , m_functionEnd(-1)
+, m_cfg(&CConfig::Instance()->GetConfig())
 , m_isHex(false)
 , m_showAbsTime(true)
 {
@@ -146,16 +146,16 @@ void CMainFrame::CreateList()
 	{
 		UINT strid;
 		int width;
-	}columnInfo[] =
+	} columnInfo[] =
 	{
-		IDS_NULL, 20,
-		IDS_SEQ, 60,
-		IDS_TIME, 120,
-		IDS_INTERVAL_US, 100,
-		IDS_LEVEL, 80,
-		IDS_PROCESS, 150,
-		IDS_THREAD, 60,
-		IDS_LOG_CONTENT, 600,
+		{IDS_NULL, 20},
+		{IDS_SEQ, 60},
+		{IDS_TIME, 120},
+		{IDS_INTERVAL_US, 100},
+		{IDS_LEVEL, 80},
+		{IDS_PROCESS, 150},
+		{IDS_THREAD, 60},
+		{IDS_LOG_CONTENT, 600},
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
 	{
@@ -308,7 +308,7 @@ void CMainFrame::Export(BOOL bFilter)
 		}
 	};
 	CSaveFileDialog dlg(
-		m_cfg.ui.savedpath.logfile.c_str(),
+		m_cfg->ui.savedpath.logfile.c_str(),
 		L"xlog",
 		CTime::GetCurrentTime().Format(L"%Y%m%d%H%M%S"),
 		IDS(IDS_LOG_FILE) + L"(*.xlog)\0*.xlog\0" + IDS(IDS_TEXT_FILE) + L"(*.txt)\0*.txt\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0",
@@ -355,7 +355,7 @@ void CMainFrame::Export(BOOL bFilter)
 LRESULT CMainFrame::OnOpenXLog(WORD, WORD, HWND, BOOL&)
 {
 	COpenFileDialog dlg(
-		m_cfg.ui.savedpath.logfile.c_str(),
+		m_cfg->ui.savedpath.logfile.c_str(),
 		IDS(IDS_LOG_FILE) + L"(*.log,*.txt,*.xlog,*.tplog)\0*.log;*.txt;*.xlog;*.tplog\0" + IDS(IDS_ALL_FILE) + L"(*.*)\0*.*\0\0");
 	if (dlg.DoModal() == IDOK)
 	{
@@ -617,7 +617,7 @@ LRESULT CMainFrame::OnNMCustomdrawList(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*b
 			if (index < m_list.GetItemCount())
 			{
 				const LogInfo* pInfo = GetLogInfo(index);
-				pNMCD->clrTextBk = helper::GetGradientColor(RGB(255, 255, 255), CFG.ui.perfmark.mark_color, pInfo->occupytime * 1.0 / CFG.ui.perfmark.maxinterval / 1000);
+				pNMCD->clrTextBk = helper::GetGradientColor(RGB(255, 255, 255), CFG.ui.perfmark.mark_color, (double)pInfo->occupytime * 1.0 / CFG.ui.perfmark.maxinterval / 1000);
 			}
 		}
 
@@ -632,11 +632,11 @@ LRESULT CMainFrame::OnNMCustomdrawList(int /*idCtrl*/, LPNMHDR pNMHDR, BOOL& /*b
 				if (pos)
 				{
 					std::wstring content;
-					size_t prefixlen = m_cfg.ui.list.calldepth_sign.length() * pInfo->item->log_depth;
+					size_t prefixlen = m_cfg->ui.list.calldepth_sign.length() * pInfo->item->log_depth;
 					content.reserve(pInfo->item->log_content.length() + prefixlen);
 					for (size_t i = 0; i < pInfo->item->log_depth; i++)
 					{
-						content += m_cfg.ui.list.calldepth_sign;
+						content += m_cfg->ui.list.calldepth_sign;
 					}
 					content += pInfo->item->log_content;
 					const wchar_t* dispstr = content.c_str();
@@ -1005,7 +1005,7 @@ LRESULT CMainFrame::OnListGetDispInfo(int /**/, LPNMHDR pNMHDR, BOOL& /**/)
 		case 7:
 			{
 				size_t pos = 0;
-				const std::wstring& sign = m_cfg.ui.list.calldepth_sign;
+				const std::wstring& sign = m_cfg->ui.list.calldepth_sign;
 				for (size_t i = li->item->log_depth; i > 0; i--)
 				{
 					StringCchCopy(pItem->pszText + pos, textlen - pos, sign.c_str());
@@ -1450,7 +1450,7 @@ LRESULT CMainFrame::OnQuickFilterExclude(WORD , WORD nID, HWND , BOOL&)
 
 LRESULT CMainFrame::OnOpenMRU(WORD , WORD nID, HWND , BOOL&)
 {
-	const strlist_t& files = m_cfg.ui.recent_files;
+	const strlist_t& files = m_cfg->ui.recent_files;
 	strlist_t::const_iterator it = files.begin();
 	std::advance(it, nID - ID_MRU_BEGIN);
 
@@ -1657,7 +1657,7 @@ void CMainFrame::UpdateMRU()
 		if (!m_mru.DeleteMenu(0, MF_BYPOSITION)) break;
 	}
 
-	const strlist_t& files = m_cfg.ui.recent_files;
+	const strlist_t& files = m_cfg->ui.recent_files;
 	UINT_PTR menuid = ID_MRU_BEGIN;
 	for (strlist_t::const_iterator it = files.begin(); it != files.end(); ++it)
 	{

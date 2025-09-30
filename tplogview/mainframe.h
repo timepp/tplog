@@ -263,12 +263,12 @@ private:
 	CLogInfoDlg m_infoDlg;
 	StatusInfo m_status;
 	CLogAccurateTime m_lat;
-	bool m_isHex;
-	bool m_showAbsTime;
+	bool m_isHex{};
+	bool m_showAbsTime{};
 
 	accutime m_relativeTimeBase;
 
-	const config& m_cfg;
+	config* m_cfg{};
 public:
 	LRESULT OnClearall(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);

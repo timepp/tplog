@@ -58,7 +58,7 @@ private:
 
 	BOOL HasFilter();
 
-	HHOOK m_hook;
+	HHOOK m_hook{};
 
 	CBrush m_brsNormal;
 	CBrush m_brsHasFilter;
@@ -68,11 +68,11 @@ private:
 	CEdit m_editTags;
 	CWindow m_frame;
 
-	int m_lvlVersion;
-	int m_tagVersion;
+	int m_lvlVersion = 0;
+	int m_tagVersion = 0;
 
-	bool m_initing;
-	bool m_internalUpdatingUI;
+	bool m_initing = true;
+	bool m_internalUpdatingUI = false;
 public:
 	LRESULT OnEnSetfocusQfTags(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 	LRESULT OnEnKillfocusQfTags(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);

@@ -32,8 +32,8 @@ struct str_segment
 
 struct helper
 {
-	static void helper::SplitString(const CStringW& str, LPCWSTR pszSpliter, StrSet& ss);
-	static CStringW helper::ConcatString(const StrSet& ss, LPCWSTR pszSpliter);
+	static void SplitString(const CStringW& str, LPCWSTR pszSpliter, StrSet& ss);
+	static CStringW ConcatString(const StrSet& ss, LPCWSTR pszSpliter);
 	static CStringW GetModuleFilePath();
 	static CStringW GetModuleDir();
 	static CStringW GetDir(const CStringW& strPath);

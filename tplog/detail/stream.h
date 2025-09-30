@@ -21,7 +21,7 @@ private:
 	size_t m_avail;
 public:
 	textstream(wchar_t* buffer, size_t len)
-		: m_buffer(buffer), m_avail(len), m_p(buffer)
+		: m_buffer(buffer), m_p(buffer), m_avail(len)
 	{
 	}
 
@@ -76,7 +76,7 @@ private:
 class binarystream
 {
 public:
-	binarystream() : m_buffer(m_static_buffer), m_capacity(sizeof(m_static_buffer)), m_len(0)
+	binarystream() : m_buffer(m_static_buffer), m_capacity(sizeof(m_static_buffer))
 	{
 	}
 	~binarystream()
@@ -126,10 +126,10 @@ public:
 
 private:
 	char* m_buffer;
-	char m_static_buffer[256];
-	size_t m_capacity;
-	size_t m_len;
-	size_t m_read_pos;
+	char m_static_buffer[256]{};
+	size_t m_capacity{};
+	size_t m_len{};
+	size_t m_read_pos{};
 
 	void enlarge(size_t cap)
 	{

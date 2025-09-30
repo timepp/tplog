@@ -5,20 +5,20 @@
 class CLOD_File : public CLogOutputDeviceBase
 {
 private:
-	wchar_t m_path[MAX_PATH];
-	bool m_syncMode;
-	HANDLE m_file;
+	wchar_t m_path[MAX_PATH]{};
+	bool m_syncMode{};
+	HANDLE m_file{};
 
-	char* m_buffer;
-	size_t m_bufferLen;
-	size_t m_pos;
+	char* m_buffer{};
+	size_t m_bufferLen{};
+	size_t m_pos{};
 
-	wchar_t m_cvtbuf[4096];
+	wchar_t m_cvtbuf[4096]{};
 
 	// 上次日志的时间(秒数)
-	FILETIME m_lastTime;
+	FILETIME m_lastTime{};
 
-	OVERLAPPED m_overlap;
+	OVERLAPPED m_overlap{};
 
 public:
 	virtual HRESULT Open(ILogOption* opt)
@@ -133,11 +133,7 @@ public:
 	}
 
 	CLOD_File()
-		: m_file(NULL), m_buffer(NULL), m_bufferLen(0), m_pos(0), m_syncMode(true)
 	{
-		m_lastTime.dwHighDateTime = m_lastTime.dwLowDateTime = 0;
-		m_path[0] = L'\0';
-		memset(&m_overlap, 0, sizeof(m_overlap));
 	}
 
 	~CLOD_File()

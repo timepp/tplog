@@ -219,7 +219,7 @@ filter* CSimpleFilterEditDlg::GetFilter() const
 		if (strText.GetLength() > 0)
 		{
 			DWORD pid;
-			swscanf_s((LPCWSTR)strText, L"%u", &pid);
+			swscanf_s((LPCWSTR)strText, L"%lu", &pid);
 			f->add_child(new logpid_filter(pid));
 		}
 	}
@@ -230,7 +230,7 @@ filter* CSimpleFilterEditDlg::GetFilter() const
 		if (strText.GetLength() > 0)
 		{
 			DWORD tid;
-			swscanf_s((LPCWSTR)strText, L"%u", &tid);
+			swscanf_s((LPCWSTR)strText, L"%lu", &tid);
 			f->add_child(new logtid_filter(tid));
 		}
 	}

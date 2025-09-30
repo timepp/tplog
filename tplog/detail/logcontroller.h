@@ -42,37 +42,37 @@ public:
 	/** logcontroller的状态
 	 *  因为logcontroller是全局对象，所以在对象未构造时这些变量的值都是false，恰好能够表达对应的意思
 	 */
-	bool m_inited;      // logcontroller对象是否已初始化(可以使用其方法)
-	bool m_constructed; // logcontroller对象是否已构造
-	bool m_destructed;	// logcontroller对象是否已析构
+	bool m_inited{};      // logcontroller对象是否已初始化(可以使用其方法)
+	bool m_constructed{}; // logcontroller对象是否已构造
+	bool m_destructed{};	// logcontroller对象是否已析构
 
 private: // types
 
 	struct OutputDevice
 	{
-		ILogOutputDevice* pDevice;
-		wchar_t name[32];
+		ILogOutputDevice* pDevice{};
+		wchar_t name[32]{};
 		CLogOption defaultOption;
-		wchar_t overlayConfig[1024];
-		bool enabled;                             // 是否启用
-		CLogFilter* filter;                       // 过滤器
+		wchar_t overlayConfig[1024]{};
+		bool enabled{};                             // 是否启用
+		CLogFilter* filter{};                       // 过滤器
 	};
 	
 private:
 
 	cslock m_csLog;
-	HANDLE m_monitorThreadQuitEvent;
-	HANDLE m_monitorThread;
+	HANDLE m_monitorThreadQuitEvent{};
+	HANDLE m_monitorThread{};
 
-	OutputDevice* m_ods[32];
-	size_t m_odsLen;
+	OutputDevice* m_ods[32]{};
+	size_t m_odsLen{};
 
-	HKEY m_hConfigKey;
+	HKEY m_hConfigKey{};
 
-	unsigned __int64 m_logID;
-	unsigned int m_pid;
+	unsigned __int64 m_logID{};
+	unsigned int m_pid{};
 	CLogAccurateTime m_accurateTime;
-	DWORD m_calldepthTlsIndex;
+	DWORD m_calldepthTlsIndex{};
 
 private:
 	HRESULT GetLogOutputDeviceOverlayConfig(const wchar_t* name, wchar_t* buffer, size_t len);
@@ -87,15 +87,6 @@ private:
 
 
 inline CLogController::CLogController()
-: m_inited(false)
-, m_destructed(false)
-, m_monitorThread(NULL)
-, m_monitorThreadQuitEvent(NULL)
-, m_odsLen(0)
-, m_logID(1)
-, m_pid(0)
-, m_calldepthTlsIndex(0)
-, m_hConfigKey(NULL)
 {
 	LOGFUNC;
 

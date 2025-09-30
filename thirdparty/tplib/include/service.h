@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <list>
+#include <stdexcept>
 #include "lock.h"
 #include "defs.h"
 
@@ -117,20 +118,20 @@ namespace tp
         typedef std::list<sid_t> sidlist_t;
         struct service_info
         {
-            sid_t sid;
-            service_factory* factory;
-            service* obj;
-            service_status_t status;
-            sidlist_t* creating_requirements;      // 创建时依赖哪些服务
-            sidlist_t* creating_dependants;        // 被哪些服务在创建时依赖
-            sidlist_t* destroying_requirements;    // 销毁时依赖哪些服务
-            sidlist_t* destroying_dependants;      // 被哪些服务在销毁时依赖
-            service_state_t state;
+            sid_t sid{};
+            service_factory* factory{};
+            service* obj{};
+            service_status_t status{};
+            sidlist_t* creating_requirements{};      // 创建时依赖哪些服务
+            sidlist_t* creating_dependants{};        // 被哪些服务在创建时依赖
+            sidlist_t* destroying_requirements{};    // 销毁时依赖哪些服务
+            sidlist_t* destroying_dependants{};      // 被哪些服务在销毁时依赖
+            service_state_t state{};
         };
 
         service_info m_services[TP_SERVICE_MAX];
-        bool m_destroying;
-        bool m_creating_service;             // 是否正在创建某个服务
+        bool m_destroying = false;
+        bool m_creating_service = false;             // 是否正在创建某个服务
         critical_section_lock m_lock;
 
     private:
@@ -159,8 +160,8 @@ namespace tp
                 m_mgr->enable_services(NULL, SS_ENABLED);
             }
         private:
-            const sidlist_t* m_lst;
             servicemgr* m_mgr;
+            const sidlist_t* m_lst;
         };
     };
 
@@ -386,8 +387,8 @@ namespace tp
         {
             for (sidlist_t::const_iterator it = si.creating_requirements->begin(); it != si.creating_requirements->end(); ++it)
             {
-                service_info& si = get_service_info(*it);
-                create_service(si);
+                service_info& si2 = get_service_info(*it);
+                create_service(si2);
             }
         }
     }

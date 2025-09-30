@@ -15,20 +15,20 @@ public:
 	void Append(const CLogOption& opt);
 
 private:
-	wchar_t m_optstr[1024];
+	wchar_t m_optstr[1024]{};
 
 	struct Field
 	{
 		const wchar_t* key;
 		const wchar_t* val;
 	};
-	Field m_fields[256];
-	size_t m_fieldLen;
+	Field m_fields[256]{};
+	size_t m_fieldLen{};
 
 	void AppendField(const wchar_t* key, const wchar_t* val);
 };
 
-inline CLogOption::CLogOption() : m_fieldLen(0)
+inline CLogOption::CLogOption()
 {
 }
 

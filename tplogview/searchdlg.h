@@ -32,7 +32,7 @@ public:
 		CHAIN_MSG_MAP(CDialogResize<CSearchDlg>)
 	END_MSG_MAP()
 
-	CSearchDlg() : m_combo(CConfig::Instance()->GetConfig().search.history)
+	CSearchDlg() : m_combo(&CConfig::Instance()->GetConfig().search.history)
 	{
 
 	}

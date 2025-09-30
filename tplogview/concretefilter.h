@@ -48,13 +48,13 @@ public:
 	bool setfilter(const std::wstring& matcher, bool ignore_case, bool use_regex);
 	
 	logcontent_filter(const std::wstring& matcher, bool ignore_case, bool use_regex);
+	~logcontent_filter();
 
 public:
 	std::wstring m_matcher;
 	bool m_ignore_case;
 	bool m_use_regex;
-	mutable ATL::CAtlRegExp<> m_regexp;
-
+	ATL::CAtlRegExp<> *m_regexp = nullptr;
 };
 
 class logtag_filter: public filter, public leaf

@@ -7,6 +7,7 @@ class COptPage
 {
 public:
 	virtual void Save() = 0;
+	virtual ~COptPage() {}
 };
 
 class COptPage_PerfMark 

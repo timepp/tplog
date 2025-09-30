@@ -2,7 +2,7 @@
 #include "hilightereditdlg.h"
 
 CHilighterEditDlg::CHilighterEditDlg()
-: m_dlg(CConfig::Instance()->GetConfig().ui.savedpath.filter)
+: m_dlg(&CConfig::Instance()->GetConfig().ui.savedpath.filter)
 {
 	m_hl.d.bkcolor = RGB(255, 255, 255);
 	m_hl.d.color = RGB(0, 0, 0);

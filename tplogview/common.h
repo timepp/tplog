@@ -26,12 +26,12 @@ struct disp_info
 	}
 };
 
-#define M 1000000
+constexpr INT32 M = 1000000; // 1 second = 1,000,000 microseconds
 
 struct accutime
 {
-	INT64 sec;
-	INT32 usec;
+	INT64 sec{};
+	INT32 usec{};
 
 	accutime(INT64 s = 0, INT32 us = 0): sec(s), usec(us)
 	{

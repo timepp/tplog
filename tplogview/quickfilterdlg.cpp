@@ -11,7 +11,7 @@ CQuickFilterDlg* g_dlg = NULL;
 
 #define IDT_REFRESH 1001
 
-CQuickFilterDlg::CQuickFilterDlg() : m_lvlVersion(0), m_initing(true), m_internalUpdatingUI(false), m_tagVersion(0)
+CQuickFilterDlg::CQuickFilterDlg()
 {
 
 }

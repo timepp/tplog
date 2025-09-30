@@ -31,9 +31,9 @@ LRESULT CLogSourceInfoDlg::OnInitDialog(HWND , LPARAM)
 		int width;
 	}columnInfo[] =
 	{
-		IDS_PROCESS, 160,
-		IDS_CONNECTION_TIME, 120,
-		IDS_PROCESS_PATH, 400,
+		{IDS_PROCESS, 160},
+		{IDS_CONNECTION_TIME, 120},
+		{IDS_PROCESS_PATH, 400},
 	};
 	for (int i = 0; i < _countof(columnInfo); i++)
 	{
@@ -63,7 +63,7 @@ LRESULT CLogSourceInfoDlg::OnInitDialog(HWND , LPARAM)
 		wcsftime(timebuf, _countof(timebuf), L"%Y-%m-%d %H:%M:%S", &tt);
 
 		wchar_t pidbuf[1024];
-		swprintf_s(pidbuf, L"%s(%u)", (LPCWSTR)it->pname, it->pid);
+		swprintf_s(pidbuf, L"%s(%lu)", (LPCWSTR)it->pname, it->pid);
 
 		m_list.SetItemText(0, 0, pidbuf);
 		m_list.SetItemText(0, 1, timebuf);

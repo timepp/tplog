@@ -135,7 +135,7 @@ namespace tp
         }
 
     private:
-        unittest(): m_testid(1), m_total_count(0), m_success_count(0), m_blockid(1), m_output(NULL)
+        unittest()
         {
             
         }
@@ -185,14 +185,14 @@ namespace tp
             return !*pattern;
         }
 
-        TestOutput* m_output;
-        int m_testid;
-        int m_blockid;
-        int m_total_count;
-        int m_success_count;
+        TestOutput* m_output{};
+        int m_testid = 1;
+        int m_blockid = 1;
+        int m_total_count = 0;
+        int m_success_count = 0;
         typedef std::list<TestBlock> TestBlockList;
         TestBlockList m_blocks;
-        const TestBlock* m_current_block;
+        const TestBlock* m_current_block{};
     };
 
     class test_register

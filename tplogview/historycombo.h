@@ -3,7 +3,7 @@
 class CHistoryComboBox : public ATL::CWindowImpl<CHistoryComboBox, CComboBox>
 {
 public:
-	CHistoryComboBox(std::wstring& history) : m_history(history)
+	CHistoryComboBox(std::wstring* history) : m_history(history)
 	{
 	}
 
@@ -12,13 +12,14 @@ public:
 
 	void LoadHistory()
 	{
-		for (size_t a = 0, b = 0; a < m_history.length();)
+		const std::wstring& h = *m_history;
+		for (size_t a = 0, b = 0; a < h.length();)
 		{
-			b = m_history.find(L'\t', a);
-			if (b == std::wstring::npos) b = m_history.length();
+			b = h.find(L'\t', a);
+			if (b == std::wstring::npos) b = h.length();
 			if (b > a)
 			{
-				AddString(m_history.substr(a, b-a).c_str());
+				AddString(h.substr(a, b-a).c_str());
 			}
 			a = b+1;
 		}
@@ -52,9 +53,9 @@ public:
 		}
 
 		InsertString(0, text);
-		m_history = std::wstring(text) + L"\t" + history;
+		*m_history = std::wstring(text) + L"\t" + history;
 	}
 
 private:
-	std::wstring& m_history;
+	std::wstring* m_history;
 };

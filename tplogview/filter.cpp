@@ -146,7 +146,7 @@ bool logcontent_filter::meet(const LogInfo& log) const
 	if (m_use_regex)
 	{
 		CAtlREMatchContext<CAtlRECharTraits> context;
-		return m_regexp.Match(log.item->log_content.c_str(), &context)? true:false;
+		return m_regexp->Match(log.item->log_content.c_str(), &context)? true:false;
 	}
 	if (m_ignore_case)
 	{
@@ -170,7 +170,7 @@ bool logcontent_filter::load(component_creator* /*cc*/, serializer* s)
 
 	if (m_use_regex)
 	{
-		m_regexp.Parse(m_matcher.c_str(), m_ignore_case);
+		m_regexp->Parse(m_matcher.c_str(), m_ignore_case);
 	}
 
 	return true;
@@ -205,7 +205,7 @@ bool logcontent_filter::setfilter(const std::wstring& matcher, bool ignore_case,
 	m_use_regex = use_regex;
 	if (m_use_regex)
 	{
-		ATL::REParseError ret = m_regexp.Parse(matcher.c_str(), m_ignore_case);
+		ATL::REParseError ret = m_regexp->Parse(matcher.c_str(), m_ignore_case);
 		return (ret == REPARSE_ERROR_OK);
 	}
 
@@ -217,7 +217,17 @@ logcontent_filter::logcontent_filter(const std::wstring& matcher, bool ignore_ca
 {
 	if (m_use_regex)
 	{
-		m_regexp.Parse(matcher.c_str(), m_ignore_case);
+		m_regexp = new ATL::CAtlRegExp<>();
+		m_regexp->Parse(matcher.c_str(), m_ignore_case);
+	}
+}
+
+logcontent_filter::~logcontent_filter()
+{
+	if (m_regexp)
+	{
+		delete m_regexp;
+		m_regexp = nullptr;
 	}
 }
 

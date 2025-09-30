@@ -143,7 +143,7 @@ public:
 	void SetDefaultPage(int page);
 	int GetActivePage() const;
 
-	CFilterEditDlg(std::wstring& defaultFilterDir);
+	CFilterEditDlg(std::wstring* defaultFilterDir);
 
 private:
 	void ResizeChildDialogs();
@@ -164,7 +164,7 @@ private:
 	int m_activePage;
 	int m_defaultPage;
 
-	std::wstring& m_defaultFilterDir;
+	std::wstring* m_defaultFilterDir;
 
 public:
 	LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

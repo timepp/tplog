@@ -151,10 +151,10 @@ namespace tp
                 int width;
             }columnInfo [] =
             {
-                L"result", 50,
-                L"group", 150,
-                L"test case", 500,
-                L"comment", 200
+                {L"result", 50},
+                {L"group", 150},
+                {L"test case", 500},
+                {L"comment", 200}
             };
             for (size_t i = 0; i < _countof(columnInfo); i++)
             {

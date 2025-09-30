@@ -46,7 +46,7 @@ struct helper
 
 	static BOOL MakeRequiredDirectory(const wchar_t* path);
 
-	static HRESULT helper::GetLastErrorAsHRESULT()
+	static HRESULT GetLastErrorAsHRESULT()
 	{
 		DWORD dwErr = ::GetLastError();
 		return HRESULT_FROM_WIN32(dwErr);
@@ -156,6 +156,17 @@ inline void helper::ExpandVariable(const wchar_t* src, wchar_t* dest, size_t des
 				{
 					::GetSystemTimeAsFileTime(&t);
 					helper::FileTimeToString(t, L"HMS", cvtbuf, _countof(cvtbuf));
+				}
+				else if (StringEqual(p, r, L"EXE_DIR"))
+				{
+					wchar_t exepath[MAX_PATH];
+					DWORD len = ::GetModuleFileNameW(NULL, exepath, _countof(exepath));
+					if (len > 0 && len < _countof(exepath))
+					{
+						wchar_t* x = wcsrchr(exepath, L'\\');
+						if (x) *x = L'\0';
+						SafeCopyString(exepath, wcslen(exepath) + 1, cvtbuf, _countof(cvtbuf));
+					}
 				}
 
 				size_t buflen = wcslen(cvtbuf);

@@ -65,9 +65,9 @@ public:
 	}
 
 private:
+	PSECURITY_DESCRIPTOR m_pSD;
 	BOOL m_bValid;
 	SECURITY_ATTRIBUTES m_SA;
-	PSECURITY_DESCRIPTOR m_pSD;
 };
 
 

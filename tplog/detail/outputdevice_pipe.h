@@ -5,9 +5,9 @@
 class CLOD_Pipe : public CLogOutputDeviceBase
 {
 private:
-	HANDLE m_pipe;
-	DWORD m_lastTryConnectTime;
-	wchar_t m_pipeName[256];
+	HANDLE m_pipe{};
+	DWORD m_lastTryConnectTime{};
+	wchar_t m_pipeName[256]{};
 
 	binarystream m_stream;
 
@@ -71,8 +71,6 @@ public:
 	}
 
 	CLOD_Pipe()
-		: m_pipe(INVALID_HANDLE_VALUE)
-		, m_lastTryConnectTime(0)
 	{
 
 	}

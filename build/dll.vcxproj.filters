@@ -65,6 +65,7 @@
     </ClInclude>
     <ClInclude Include="..\dll\resource.h" />
     <ClInclude Include="..\dll\stdafx.h" />
+    <ClInclude Include="tplog\detail\logcontroller.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dll\stdafx.cpp" />

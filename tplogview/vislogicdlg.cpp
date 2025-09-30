@@ -205,36 +205,37 @@ void CVisLogicDlg::DrawThreads(time_range range, int usec_per_pixel, CDC* pDC, C
 		if (r.t1 > r.t2) continue;
 
 		SetThreadStyle(ti, pDC);
-		int line_start = TimeIntervalToPixel(r.t1 - range.t1, usec_per_pixel);
-		int line_end = TimeIntervalToPixel(r.t2 - range.t1, usec_per_pixel);
-		int y = i * 10 + 5 + rc.top;
-		pDC->MoveTo(line_start + rc.left, y);
-		pDC->LineTo(line_end + rc.left, y);
-
-		// draw line link to parent tid
-		if (ti->parent_tid != 0)
 		{
-			for (int j = 0; j < _countof(m_channel); j++)
+			int line_start = TimeIntervalToPixel(r.t1 - range.t1, usec_per_pixel);
+			int line_end = TimeIntervalToPixel(r.t2 - range.t1, usec_per_pixel);
+			int y = i * 10 + 5 + rc.top;
+			pDC->MoveTo(line_start + rc.left, y);
+			pDC->LineTo(line_end + rc.left, y);
+			// draw line link to parent tid
+			if (ti->parent_tid != 0)
 			{
-				if (m_channel[j] == ti->parent_tid)
+				for (int j = 0; j < _countof(m_channel); j++)
 				{
-					int y1 = j * 10 + 5 + rc.top;
-					int y2 = i * 10 + 5 + rc.top;
-					int x = line_start + rc.left;
-					pDC->SelectPen(m_pen[4]);
-					pDC->MoveTo(x, y1);
-					pDC->LineTo(x, y2);
-					break;
+					if (m_channel[j] == ti->parent_tid)
+					{
+						int y1 = j * 10 + 5 + rc.top;
+						int y2 = i * 10 + 5 + rc.top;
+						int x = line_start + rc.left;
+						pDC->SelectPen(m_pen[4]);
+						pDC->MoveTo(x, y1);
+						pDC->LineTo(x, y2);
+						break;
+					}
 				}
 			}
 		}
 
 		// draw tasks
 		pDC->SelectPen(m_pen[3]);
-		for (task_infos_t::const_iterator it = ti->m_tasks.begin(); it != ti->m_tasks.end(); ++it)
+		for (task_infos_t::const_iterator it2 = ti->m_tasks.begin(); it2 != ti->m_tasks.end(); ++it2)
 		{
-			const task_info& task = *it;
-			time_range r = task.life;
+			const task_info& task = *it2;
+			r = task.life;
 			int line_start = TimeIntervalToPixel(r.t1 - range.t1, usec_per_pixel);
 			int line_end = TimeIntervalToPixel(r.t2 - range.t1, usec_per_pixel);
 			int y = i * 10 + 5 + rc.top;

@@ -32,6 +32,8 @@ public:
 			&& ::IsDialogMessageW(GlobalData<CModlessDlgKeyProcessor>::m_hActiveDlg, pMsg);
 	}
 
+	virtual ~CModlessDlgKeyProcessor() = default;
+
 };
 
 HWND CModlessDlgKeyProcessor::GlobalData<CModlessDlgKeyProcessor>::m_hActiveDlg;
